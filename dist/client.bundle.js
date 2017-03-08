@@ -81,8 +81,8 @@
 
 
 
-var base64 = __webpack_require__(85)
-var ieee754 = __webpack_require__(127)
+var base64 = __webpack_require__(86)
+var ieee754 = __webpack_require__(128)
 var isArray = __webpack_require__(56)
 
 exports.Buffer = Buffer
@@ -5335,15 +5335,15 @@ if (typeof Object.create === 'function') {
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(120).version;
-elliptic.utils = __webpack_require__(119);
+elliptic.version = __webpack_require__(121).version;
+elliptic.utils = __webpack_require__(120);
 elliptic.rand = __webpack_require__(43);
 elliptic.curve = __webpack_require__(22);
-elliptic.curves = __webpack_require__(111);
+elliptic.curves = __webpack_require__(112);
 
 // Protocols
-elliptic.ec = __webpack_require__(112);
-elliptic.eddsa = __webpack_require__(115);
+elliptic.ec = __webpack_require__(113);
+elliptic.eddsa = __webpack_require__(116);
 
 
 /***/ }),
@@ -5352,11 +5352,11 @@ elliptic.eddsa = __webpack_require__(115);
 
 var hash = exports;
 
-hash.utils = __webpack_require__(125);
-hash.common = __webpack_require__(121);
-hash.sha = __webpack_require__(124);
-hash.ripemd = __webpack_require__(123);
-hash.hmac = __webpack_require__(122);
+hash.utils = __webpack_require__(126);
+hash.common = __webpack_require__(122);
+hash.sha = __webpack_require__(125);
+hash.ripemd = __webpack_require__(124);
+hash.hmac = __webpack_require__(123);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -5603,7 +5603,7 @@ var util = __webpack_require__(14);
 util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
-var Readable = __webpack_require__(67);
+var Readable = __webpack_require__(68);
 var Writable = __webpack_require__(35);
 
 util.inherits(Duplex, Readable);
@@ -6023,10 +6023,10 @@ Stream.prototype.pipe = function(dest, options) {
 
 var base = exports;
 
-base.Reporter = __webpack_require__(79).Reporter;
+base.Reporter = __webpack_require__(80).Reporter;
 base.DecoderBuffer = __webpack_require__(39).DecoderBuffer;
 base.EncoderBuffer = __webpack_require__(39).EncoderBuffer;
-base.Node = __webpack_require__(78);
+base.Node = __webpack_require__(79);
 
 
 /***/ }),
@@ -6559,11 +6559,11 @@ var asn1 = exports;
 
 asn1.bignum = __webpack_require__(2);
 
-asn1.define = __webpack_require__(77).define;
+asn1.define = __webpack_require__(78).define;
 asn1.base = __webpack_require__(12);
 asn1.constants = __webpack_require__(40);
-asn1.decoders = __webpack_require__(81);
-asn1.encoders = __webpack_require__(83);
+asn1.decoders = __webpack_require__(82);
+asn1.encoders = __webpack_require__(84);
 
 
 /***/ }),
@@ -6974,10 +6974,10 @@ exports.encrypt = function (self, chunk) {
 
 var curve = exports;
 
-curve.base = __webpack_require__(107);
-curve.short = __webpack_require__(110);
-curve.mont = __webpack_require__(109);
-curve.edwards = __webpack_require__(108);
+curve.base = __webpack_require__(108);
+curve.short = __webpack_require__(111);
+curve.mont = __webpack_require__(110);
+curve.edwards = __webpack_require__(109);
 
 
 /***/ }),
@@ -7603,9 +7603,9 @@ function EVP_BytesToKey (password, salt, keyLen, ivLen) {
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(130)
-var aesid = __webpack_require__(129)
-var fixProc = __webpack_require__(131)
+/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(131)
+var aesid = __webpack_require__(130)
+var fixProc = __webpack_require__(132)
 var ciphers = __webpack_require__(28)
 var compat = __webpack_require__(61)
 module.exports = parseKeys
@@ -7723,10 +7723,10 @@ module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ciphers = __webpack_require__(87)
+var ciphers = __webpack_require__(88)
 exports.createCipher = exports.Cipher = ciphers.createCipher
 exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
-var deciphers = __webpack_require__(86)
+var deciphers = __webpack_require__(87)
 exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 var modes = __webpack_require__(20)
@@ -7982,11 +7982,11 @@ module.exports = function createHmac(alg, key) {
 "use strict";
 
 
-exports.utils = __webpack_require__(103);
-exports.Cipher = __webpack_require__(100);
-exports.DES = __webpack_require__(101);
-exports.CBC = __webpack_require__(99);
-exports.EDE = __webpack_require__(102);
+exports.utils = __webpack_require__(104);
+exports.Cipher = __webpack_require__(101);
+exports.DES = __webpack_require__(102);
+exports.CBC = __webpack_require__(100);
+exports.EDE = __webpack_require__(103);
 
 
 /***/ }),
@@ -9027,7 +9027,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _gui = __webpack_require__(73);
+var _gui = __webpack_require__(74);
 
 var _gui2 = _interopRequireDefault(_gui);
 
@@ -9063,11 +9063,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _user = __webpack_require__(72);
+var _user = __webpack_require__(73);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _channelmanager = __webpack_require__(71);
+var _channelmanager = __webpack_require__(72);
 
 var _channelmanager2 = _interopRequireDefault(_channelmanager);
 
@@ -9075,7 +9075,7 @@ var _config = __webpack_require__(37);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _peerjs = __webpack_require__(135);
+var _peerjs = __webpack_require__(63);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
@@ -9277,7 +9277,7 @@ constants._reverse = function reverse(map) {
   return res;
 };
 
-constants.der = __webpack_require__(80);
+constants.der = __webpack_require__(81);
 
 
 /***/ }),
@@ -9989,7 +9989,7 @@ if (typeof self === 'object') {
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(19)
 var Transform = __webpack_require__(8)
 var inherits = __webpack_require__(1)
-var GHASH = __webpack_require__(88)
+var GHASH = __webpack_require__(89)
 var xor = __webpack_require__(13)
 inherits(StreamCipher, Transform)
 module.exports = StreamCipher
@@ -10391,7 +10391,7 @@ exports['1.3.132.0.35'] = 'p521'
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-var helpers = __webpack_require__(96);
+var helpers = __webpack_require__(97);
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -11444,7 +11444,7 @@ utils.encode = function encode(arr, enc) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, Buffer) {var createHmac = __webpack_require__(31)
-var checkParameters = __webpack_require__(132)
+var checkParameters = __webpack_require__(133)
 
 exports.pbkdf2 = function (password, salt, iterations, keylen, digest, callback) {
   if (typeof digest === 'function') {
@@ -11833,6 +11833,509 @@ module.exports = Negotiator;
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var util = __webpack_require__(15);
+var EventEmitter = __webpack_require__(23);
+var Socket = __webpack_require__(136);
+var MediaConnection = __webpack_require__(135);
+var DataConnection = __webpack_require__(134);
+
+/**
+ * A peer who can initiate connections with other peers.
+ */
+function Peer(id, options) {
+  if (!(this instanceof Peer)) return new Peer(id, options);
+  EventEmitter.call(this);
+
+  // Deal with overloading
+  if (id && id.constructor == Object) {
+    options = id;
+    id = undefined;
+  } else if (id) {
+    // Ensure id is a string
+    id = id.toString();
+  }
+  //
+
+  // Configurize options
+  options = util.extend({
+    debug: 0, // 1: Errors, 2: Warnings, 3: All logs
+    host: util.CLOUD_HOST,
+    port: util.CLOUD_PORT,
+    key: 'peerjs',
+    path: '/',
+    token: util.randomToken(),
+    config: util.defaultConfig
+  }, options);
+  this.options = options;
+  // Detect relative URL host.
+  if (options.host === '/') {
+    options.host = window.location.hostname;
+  }
+  // Set path correctly.
+  if (options.path[0] !== '/') {
+    options.path = '/' + options.path;
+  }
+  if (options.path[options.path.length - 1] !== '/') {
+    options.path += '/';
+  }
+
+  // Set whether we use SSL to same as current host
+  if (options.secure === undefined && options.host !== util.CLOUD_HOST) {
+    options.secure = util.isSecure();
+  }
+  // Set a custom log function if present
+  if (options.logFunction) {
+    util.setLogFunction(options.logFunction);
+  }
+  util.setLogLevel(options.debug);
+  //
+
+  // Sanity checks
+  // Ensure WebRTC supported
+  if (!util.supports.audioVideo && !util.supports.data ) {
+    this._delayedAbort('browser-incompatible', 'The current browser does not support WebRTC');
+    return;
+  }
+  // Ensure alphanumeric id
+  if (!util.validateId(id)) {
+    this._delayedAbort('invalid-id', 'ID "' + id + '" is invalid');
+    return;
+  }
+  // Ensure valid key
+  if (!util.validateKey(options.key)) {
+    this._delayedAbort('invalid-key', 'API KEY "' + options.key + '" is invalid');
+    return;
+  }
+  // Ensure not using unsecure cloud server on SSL page
+  if (options.secure && options.host === '0.peerjs.com') {
+    this._delayedAbort('ssl-unavailable',
+      'The cloud server currently does not support HTTPS. Please run your own PeerServer to use HTTPS.');
+    return;
+  }
+  //
+
+  // States.
+  this.destroyed = false; // Connections have been killed
+  this.disconnected = false; // Connection to PeerServer killed but P2P connections still active
+  this.open = false; // Sockets and such are not yet open.
+  //
+
+  // References
+  this.connections = {}; // DataConnections for this peer.
+  this._lostMessages = {}; // src => [list of messages]
+  //
+
+  // Start the server connection
+  this._initializeServerConnection();
+  if (id) {
+    this._initialize(id);
+  } else {
+    this._retrieveId();
+  }
+  //
+}
+
+util.inherits(Peer, EventEmitter);
+
+// Initialize the 'socket' (which is actually a mix of XHR streaming and
+// websockets.)
+Peer.prototype._initializeServerConnection = function() {
+  var self = this;
+  this.socket = new Socket(this.options.secure, this.options.host, this.options.port, this.options.path, this.options.key);
+  this.socket.on('message', function(data) {
+    self._handleMessage(data);
+  });
+  this.socket.on('error', function(error) {
+    self._abort('socket-error', error);
+  });
+  this.socket.on('disconnected', function() {
+    // If we haven't explicitly disconnected, emit error and disconnect.
+    if (!self.disconnected) {
+      self.emitError('network', 'Lost connection to server.');
+      self.disconnect();
+    }
+  });
+  this.socket.on('close', function() {
+    // If we haven't explicitly disconnected, emit error.
+    if (!self.disconnected) {
+      self._abort('socket-closed', 'Underlying socket is already closed.');
+    }
+  });
+};
+
+/** Get a unique ID from the server via XHR. */
+Peer.prototype._retrieveId = function(cb) {
+  var self = this;
+  var http = new XMLHttpRequest();
+  var protocol = this.options.secure ? 'https://' : 'http://';
+  var url = protocol + this.options.host + ':' + this.options.port +
+    this.options.path + this.options.key + '/id';
+  var queryString = '?ts=' + new Date().getTime() + '' + Math.random();
+  url += queryString;
+
+  // If there's no ID we need to wait for one before trying to init socket.
+  http.open('get', url, true);
+  http.onerror = function(e) {
+    util.error('Error retrieving ID', e);
+    var pathError = '';
+    if (self.options.path === '/' && self.options.host !== util.CLOUD_HOST) {
+      pathError = ' If you passed in a `path` to your self-hosted PeerServer, ' +
+        'you\'ll also need to pass in that same path when creating a new ' +
+        'Peer.';
+    }
+    self._abort('server-error', 'Could not get an ID from the server.' + pathError);
+  };
+  http.onreadystatechange = function() {
+    if (http.readyState !== 4) {
+      return;
+    }
+    if (http.status !== 200) {
+      http.onerror();
+      return;
+    }
+    self._initialize(http.responseText);
+  };
+  http.send(null);
+};
+
+/** Initialize a connection with the server. */
+Peer.prototype._initialize = function(id) {
+  this.id = id;
+  this.socket.start(this.id, this.options.token);
+};
+
+/** Handles messages from the server. */
+Peer.prototype._handleMessage = function(message) {
+  var type = message.type;
+  var payload = message.payload;
+  var peer = message.src;
+  var connection;
+
+  switch (type) {
+    case 'OPEN': // The connection to the server is open.
+      this.emit('open', this.id);
+      this.open = true;
+      break;
+    case 'ERROR': // Server error.
+      this._abort('server-error', payload.msg);
+      break;
+    case 'ID-TAKEN': // The selected ID is taken.
+      this._abort('unavailable-id', 'ID `' + this.id + '` is taken');
+      break;
+    case 'INVALID-KEY': // The given API key cannot be found.
+      this._abort('invalid-key', 'API KEY "' + this.options.key + '" is invalid');
+      break;
+
+    //
+    case 'LEAVE': // Another peer has closed its connection to this peer.
+      util.log('Received leave message from', peer);
+      this._cleanupPeer(peer);
+      break;
+
+    case 'EXPIRE': // The offer sent to a peer has expired without response.
+      this.emitError('peer-unavailable', 'Could not connect to peer ' + peer);
+      break;
+    case 'OFFER': // we should consider switching this to CALL/CONNECT, but this is the least breaking option.
+      var connectionId = payload.connectionId;
+      connection = this.getConnection(peer, connectionId);
+
+      if (connection) {
+        util.warn('Offer received for existing Connection ID:', connectionId);
+        //connection.handleMessage(message);
+      } else {
+        // Create a new connection.
+        if (payload.type === 'media') {
+          connection = new MediaConnection(peer, this, {
+            connectionId: connectionId,
+            _payload: payload,
+            metadata: payload.metadata
+          });
+          this._addConnection(peer, connection);
+          this.emit('call', connection);
+        } else if (payload.type === 'data') {
+          connection = new DataConnection(peer, this, {
+            connectionId: connectionId,
+            _payload: payload,
+            metadata: payload.metadata,
+            label: payload.label,
+            serialization: payload.serialization,
+            reliable: payload.reliable
+          });
+          this._addConnection(peer, connection);
+          this.emit('connection', connection);
+        } else {
+          util.warn('Received malformed connection type:', payload.type);
+          return;
+        }
+        // Find messages.
+        var messages = this._getMessages(connectionId);
+        for (var i = 0, ii = messages.length; i < ii; i += 1) {
+          connection.handleMessage(messages[i]);
+        }
+      }
+      break;
+    default:
+      if (!payload) {
+        util.warn('You received a malformed message from ' + peer + ' of type ' + type);
+        return;
+      }
+
+      var id = payload.connectionId;
+      connection = this.getConnection(peer, id);
+
+      if (connection && connection.pc) {
+        // Pass it on.
+        connection.handleMessage(message);
+      } else if (id) {
+        // Store for possible later use
+        this._storeMessage(id, message);
+      } else {
+        util.warn('You received an unrecognized message:', message);
+      }
+      break;
+  }
+};
+
+/** Stores messages without a set up connection, to be claimed later. */
+Peer.prototype._storeMessage = function(connectionId, message) {
+  if (!this._lostMessages[connectionId]) {
+    this._lostMessages[connectionId] = [];
+  }
+  this._lostMessages[connectionId].push(message);
+};
+
+/** Retrieve messages from lost message store */
+Peer.prototype._getMessages = function(connectionId) {
+  var messages = this._lostMessages[connectionId];
+  if (messages) {
+    delete this._lostMessages[connectionId];
+    return messages;
+  } else {
+    return [];
+  }
+};
+
+/**
+ * Returns a DataConnection to the specified peer. See documentation for a
+ * complete list of options.
+ */
+Peer.prototype.connect = function(peer, options) {
+  if (this.disconnected) {
+    util.warn('You cannot connect to a new Peer because you called ' +
+      '.disconnect() on this Peer and ended your connection with the ' +
+      'server. You can create a new Peer to reconnect, or call reconnect ' +
+      'on this peer if you believe its ID to still be available.');
+    this.emitError('disconnected', 'Cannot connect to new Peer after disconnecting from server.');
+    return;
+  }
+  var connection = new DataConnection(peer, this, options);
+  this._addConnection(peer, connection);
+  return connection;
+};
+
+/**
+ * Returns a MediaConnection to the specified peer. See documentation for a
+ * complete list of options.
+ */
+Peer.prototype.call = function(peer, stream, options) {
+  if (this.disconnected) {
+    util.warn('You cannot connect to a new Peer because you called ' +
+      '.disconnect() on this Peer and ended your connection with the ' +
+      'server. You can create a new Peer to reconnect.');
+    this.emitError('disconnected', 'Cannot connect to new Peer after disconnecting from server.');
+    return;
+  }
+  if (!stream) {
+    util.error('To call a peer, you must provide a stream from your browser\'s `getUserMedia`.');
+    return;
+  }
+  options = options || {};
+  options._stream = stream;
+  var call = new MediaConnection(peer, this, options);
+  this._addConnection(peer, call);
+  return call;
+};
+
+/** Add a data/media connection to this peer. */
+Peer.prototype._addConnection = function(peer, connection) {
+  if (!this.connections[peer]) {
+    this.connections[peer] = [];
+  }
+  this.connections[peer].push(connection);
+};
+
+/** Retrieve a data/media connection for this peer. */
+Peer.prototype.getConnection = function(peer, id) {
+  var connections = this.connections[peer];
+  if (!connections) {
+    return null;
+  }
+  for (var i = 0, ii = connections.length; i < ii; i++) {
+    if (connections[i].id === id) {
+      return connections[i];
+    }
+  }
+  return null;
+};
+
+Peer.prototype._delayedAbort = function(type, message) {
+  var self = this;
+  util.setZeroTimeout(function(){
+    self._abort(type, message);
+  });
+};
+
+/**
+ * Destroys the Peer and emits an error message.
+ * The Peer is not destroyed if it's in a disconnected state, in which case
+ * it retains its disconnected state and its existing connections.
+ */
+Peer.prototype._abort = function(type, message) {
+  util.error('Aborting!');
+  if (!this._lastServerId) {
+    this.destroy();
+  } else {
+    this.disconnect();
+  }
+  this.emitError(type, message);
+};
+
+/** Emits a typed error message. */
+Peer.prototype.emitError = function(type, err) {
+  util.error('Error:', err);
+  if (typeof err === 'string') {
+    err = new Error(err);
+  }
+  err.type = type;
+  this.emit('error', err);
+};
+
+/**
+ * Destroys the Peer: closes all active connections as well as the connection
+ *  to the server.
+ * Warning: The peer can no longer create or accept connections after being
+ *  destroyed.
+ */
+Peer.prototype.destroy = function() {
+  if (!this.destroyed) {
+    this._cleanup();
+    this.disconnect();
+    this.destroyed = true;
+  }
+};
+
+
+/** Disconnects every connection on this peer. */
+Peer.prototype._cleanup = function() {
+  if (this.connections) {
+    var peers = Object.keys(this.connections);
+    for (var i = 0, ii = peers.length; i < ii; i++) {
+      this._cleanupPeer(peers[i]);
+    }
+  }
+  this.emit('close');
+};
+
+/** Closes all connections to this peer. */
+Peer.prototype._cleanupPeer = function(peer) {
+  var connections = this.connections[peer];
+  for (var j = 0, jj = connections.length; j < jj; j += 1) {
+    connections[j].close();
+  }
+};
+
+/**
+ * Disconnects the Peer's connection to the PeerServer. Does not close any
+ *  active connections.
+ * Warning: The peer can no longer create or accept connections after being
+ *  disconnected. It also cannot reconnect to the server.
+ */
+Peer.prototype.disconnect = function() {
+  var self = this;
+  util.setZeroTimeout(function(){
+    if (!self.disconnected) {
+      self.disconnected = true;
+      self.open = false;
+      if (self.socket) {
+        self.socket.close();
+      }
+      self.emit('disconnected', self.id);
+      self._lastServerId = self.id;
+      self.id = null;
+    }
+  });
+};
+
+/** Attempts to reconnect with the same ID. */
+Peer.prototype.reconnect = function() {
+  if (this.disconnected && !this.destroyed) {
+    util.log('Attempting reconnection to server with ID ' + this._lastServerId);
+    this.disconnected = false;
+    this._initializeServerConnection();
+    this._initialize(this._lastServerId);
+  } else if (this.destroyed) {
+    throw new Error('This peer cannot reconnect to the server. It has already been destroyed.');
+  } else if (!this.disconnected && !this.open) {
+    // Do nothing. We're still connecting the first time.
+    util.error('In a hurry? We\'re still trying to make the initial connection!');
+  } else {
+    throw new Error('Peer ' + this.id + ' cannot reconnect because it is not disconnected from the server!');
+  }
+};
+
+/**
+ * Get a list of available peer IDs. If you're running your own server, you'll
+ * want to set allow_discovery: true in the PeerServer options. If you're using
+ * the cloud server, email team@peerjs.com to get the functionality enabled for
+ * your key.
+ */
+Peer.prototype.listAllPeers = function(cb) {
+  cb = cb || function() {};
+  var self = this;
+  var http = new XMLHttpRequest();
+  var protocol = this.options.secure ? 'https://' : 'http://';
+  var url = protocol + this.options.host + ':' + this.options.port +
+    this.options.path + this.options.key + '/peers';
+  var queryString = '?ts=' + new Date().getTime() + '' + Math.random();
+  url += queryString;
+
+  // If there's no ID we need to wait for one before trying to init socket.
+  http.open('get', url, true);
+  http.onerror = function(e) {
+    self._abort('server-error', 'Could not get peers from the server.');
+    cb([]);
+  };
+  http.onreadystatechange = function() {
+    if (http.readyState !== 4) {
+      return;
+    }
+    if (http.status === 401) {
+      var helpfulError = '';
+      if (self.options.host !== util.CLOUD_HOST) {
+        helpfulError = 'It looks like you\'re using the cloud server. You can email ' +
+          'team@peerjs.com to enable peer listing for your API key.';
+      } else {
+        helpfulError = 'You need to enable `allow_discovery` on your self-hosted ' +
+          'PeerServer to use this feature.';
+      }
+      cb([]);
+      throw new Error('It doesn\'t look like you have permission to list peers IDs. ' + helpfulError);
+    } else if (http.status !== 200) {
+      cb([]);
+    } else {
+      cb(JSON.parse(http.responseText));
+    }
+  };
+  http.send(null);
+};
+
+module.exports = Peer;
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(9);
 module.exports = function (seed, len) {
   var t = new Buffer('');
@@ -11852,7 +12355,7 @@ function i2ops(c) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(2);
@@ -11868,7 +12371,7 @@ module.exports = withPublic;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = function xor(a, b) {
@@ -11881,7 +12384,7 @@ module.exports = function xor(a, b) {
 };
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11913,7 +12416,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12861,7 +13364,7 @@ function indexOf(xs, x) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -13002,7 +13505,7 @@ module.exports = Sha256
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(1)
@@ -13268,14 +13771,14 @@ module.exports = Sha512
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -13284,9 +13787,13 @@ var _factory = __webpack_require__(38);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _keygenerator = __webpack_require__(75);
+var _keygenerator = __webpack_require__(76);
 
 var _keygenerator2 = _interopRequireDefault(_keygenerator);
+
+var _peerjs = __webpack_require__(63);
+
+var _peerjs2 = _interopRequireDefault(_peerjs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13297,71 +13804,190 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Chat = function () {
 
-  /**
-   * Constructor
-   */
-  function Chat() {
-    _classCallCheck(this, Chat);
-
-    this._userList = {};
-    this._peer = null;
-
-    this._peer = _factory2.default.createPeerConnection();
-    // this._channelManager = Factory.createChannelManager();
-  }
-
-  /**
-   * Registers user and public key
-   *
-   * @param name
-   * @param image
-   * @param pubkey
-   */
+    /**
+     * Constructor
+     */
 
 
-  /**
-   * @type {Peer}
-   * @private
-   */
+    /**
+     * @type {Peer}
+     * @private
+     */
+    function Chat() {
+        _classCallCheck(this, Chat);
 
+        this._userList = {};
+        this._peer = null;
+        this._connectedPeers = {};
 
-  _createClass(Chat, [{
-    key: "registerNewUser",
-    value: function registerNewUser(name, image, pubkey) {
-      this._userList[name] = _factory2.default.createUser(name, image, pubkey);
+        this.connect = function (c) {
+
+            // fix for peer call of this in closure connect
+            var chat = this;
+            if (this instanceof _peerjs2.default) {
+                chat = this.chat;
+            }
+
+            // Handle a chat connection.
+            if (c.label === 'chat') {
+                var chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
+                var header = $('<h3></h3>').html('<strong>' + c.peer + '</strong>');
+                var messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
+                chatbox.append(header);
+                chatbox.append(messages);
+
+                // Select connection handler.
+                chatbox.on('click', function () {
+                    if ($(this).attr('class').indexOf('active') === -1) {
+                        $(this).addClass('active');
+                    } else {
+                        $(this).removeClass('active');
+                    }
+                });
+                $('.filler').hide();
+                $('#connections').append(chatbox);
+
+                c.on('data', function (data) {
+                    messages.append('<div><span class="peer">' + c.peer + '</span>: ' + data + '</div>');
+                });
+                c.on('close', function () {
+                    alert(c.peer + ' has left the chat.');
+                    chatbox.remove();
+                    if ($('.connection').length === 0) {
+                        $('.filler').show();
+                    }
+                    // todo somehow replace with class reference.
+                    chat.deleteConnectedPeer(c.peer);
+                });
+            } else if (c.label === 'file') {
+                c.on('data', function (data) {
+                    // If we're getting a file, create a URL for it.
+                    if (data.constructor === ArrayBuffer) {
+                        var dataView = new Uint8Array(data);
+                        var dataBlob = new Blob([dataView]);
+                        var url = window.URL.createObjectURL(dataBlob);
+                        $('#' + c.peer).find('.messages').append('<div><span class="file">' + c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+                    }
+                });
+            }
+            // todo somehow replace with class reference
+            chat.addConnectedPeer(c.peer);
+        };
+
+        this._peer = _factory2.default.createPeerConnection();
+
+        // fix for peer call of function connect when connecting
+        this._peer.chat = this;
+        // this._channelManager = Factory.createChannelManager();
     }
 
     /**
-     * Post public key to server and other clients
-     *
-     * @param publicKey
+     * @returns {Peer}
      */
 
-  }, {
-    key: "postPublicKey",
-    value: function postPublicKey(publicKey) {}
 
-    /**
-     * Start the chat client
-     */
+    _createClass(Chat, [{
+        key: "addConnectedPeer",
+        value: function addConnectedPeer(peerId) {
+            this._connectedPeers[peerId] = 1;
+        }
+    }, {
+        key: "deleteConnectedPeer",
+        value: function deleteConnectedPeer(peerId) {
+            delete this._connectedPeers[peerId];
+        }
 
-  }, {
-    key: "start",
-    value: function start() {
-      var keyPair = _keygenerator2.default.generateKeyPair();
-      var publicKey = keyPair.publicKey;
+        /**
+         * Registers user and public key
+         *
+         * @param name
+         * @param image
+         * @param pubkey
+         */
 
-      this.postPublicKey(publicKey);
-    }
-  }]);
+    }, {
+        key: "registerNewUser",
+        value: function registerNewUser(name, image, pubkey) {
+            this._userList[name] = _factory2.default.createUser(name, image, pubkey);
+        }
 
-  return Chat;
+        /**
+         * Post public key to server and other clients
+         *
+         * @param publicKey
+         */
+
+    }, {
+        key: "postPublicKey",
+        value: function postPublicKey(publicKey) {}
+
+        /**
+         * Start the chat client
+         */
+
+    }, {
+        key: "start",
+        value: function start() {
+            var keyPair = _keygenerator2.default.generateKeyPair();
+            var publicKey = keyPair.publicKey;
+
+            this.postPublicKey(publicKey);
+
+            // Show this peer's ID.
+            this._peer.on('open', function (id) {
+                $('#pid').text(id);
+            });
+
+            // Await connections from others
+            this._peer.on('connection', this.connect);
+
+            this._peer.on('error', function (err) {
+                console.log(err);
+            });
+        }
+    }, {
+        key: "eachActiveConnection",
+        value: function eachActiveConnection(fn) {
+            var actives = $('.connection.active');
+            var checkedIds = {};
+
+            var chat = this;
+
+            actives.each(function () {
+                var peerId = $(this).attr('id');
+
+                if (!checkedIds[peerId]) {
+                    var conns = chat._peer.connections[peerId];
+                    for (var i = 0, ii = conns.length; i < ii; i += 1) {
+                        var conn = conns[i];
+                        fn(conn, $(this));
+                    }
+                }
+
+                checkedIds[peerId] = 1;
+            });
+        }
+    }, {
+        key: "peer",
+        get: function get() {
+            return this._peer;
+        }
+    }, {
+        key: "connectedPeers",
+        get: function get() {
+            return this._connectedPeers;
+        }
+    }]);
+
+    return Chat;
 }();
 
 exports.default = Chat;
 
+// Make sure things clean up properly.
+
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13393,7 +14019,7 @@ var ChannelManager = function ChannelManager() {
 exports.default = ChannelManager;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13470,7 +14096,7 @@ var User = function () {
 exports.default = User;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13484,36 +14110,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Gui = function () {
-  function Gui() {
-    _classCallCheck(this, Gui);
-  }
-
-  _createClass(Gui, null, [{
-    key: 'logFunction',
-
-
-    /**
-     * Function for logging to logfield
-     */
-    get: function get() {
-      var copy = Array.prototype.slice.call(arguments).join(' ');
-      Gui.logField.append(copy + '<br>');
-    }
-  }]);
-
-  return Gui;
-}();
+var Gui = function Gui() {
+  _classCallCheck(this, Gui);
+};
 
 Gui.logField = $('.log');
+
+Gui.logFunction = function () {
+  var copy = Array.prototype.slice.call(arguments).join(' ');
+  Gui.logField.append(copy + '<br>');
+};
+
 exports.default = Gui;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13577,7 +14190,7 @@ var KeyPair = function () {
 exports.default = KeyPair;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13589,11 +14202,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _keypair = __webpack_require__(74);
+var _keypair = __webpack_require__(75);
 
 var _keypair2 = _interopRequireDefault(_keypair);
 
-var _rsalibwrapper = __webpack_require__(76);
+var _rsalibwrapper = __webpack_require__(77);
 
 var _rsalibwrapper2 = _interopRequireDefault(_rsalibwrapper);
 
@@ -13639,7 +14252,7 @@ var KeyGenerator = function () {
 exports.default = KeyGenerator;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13655,7 +14268,7 @@ var _config = __webpack_require__(37);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _cryptico = __webpack_require__(97);
+var _cryptico = __webpack_require__(98);
 
 var _cryptico2 = _interopRequireDefault(_cryptico);
 
@@ -13709,7 +14322,7 @@ var RSALibWrapper = function () {
 exports.default = RSALibWrapper;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(18);
@@ -13776,7 +14389,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Reporter = __webpack_require__(12).Reporter;
@@ -14416,7 +15029,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -14543,7 +15156,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = __webpack_require__(40);
@@ -14591,17 +15204,17 @@ exports.tagByName = constants._reverse(exports.tag);
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var decoders = exports;
 
 decoders.der = __webpack_require__(41);
-decoders.pem = __webpack_require__(82);
+decoders.pem = __webpack_require__(83);
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -14656,17 +15269,17 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var encoders = exports;
 
 encoders.der = __webpack_require__(42);
-encoders.pem = __webpack_require__(84);
+encoders.pem = __webpack_require__(85);
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -14693,7 +15306,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14814,7 +15427,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(19)
@@ -14958,7 +15571,7 @@ exports.createDecipheriv = createDecipheriv
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(19)
@@ -15087,7 +15700,7 @@ exports.createCipher = createCipher
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var zeros = new Buffer(16)
@@ -15192,13 +15805,13 @@ function xor (a, b) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ebtk = __webpack_require__(25)
 var aes = __webpack_require__(28)
-var DES = __webpack_require__(90)
-var desModes = __webpack_require__(91)
+var DES = __webpack_require__(91)
+var desModes = __webpack_require__(92)
 var aesModes = __webpack_require__(20)
 function createCipher (suite, password) {
   var keyLen, ivLen
@@ -15271,7 +15884,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var CipherBase = __webpack_require__(8)
@@ -15321,7 +15934,7 @@ DES.prototype._final = function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports) {
 
 exports['des-ecb'] = {
@@ -15351,15 +15964,15 @@ exports['des-ede'] = {
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var _algos = __webpack_require__(52)
 var createHash = __webpack_require__(9)
 var inherits = __webpack_require__(1)
-var sign = __webpack_require__(93)
+var sign = __webpack_require__(94)
 var stream = __webpack_require__(11)
-var verify = __webpack_require__(94)
+var verify = __webpack_require__(95)
 
 var algos = {}
 Object.keys(_algos).forEach(function (key) {
@@ -15461,7 +16074,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -15653,7 +16266,7 @@ module.exports.makeKey = makeKey
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -15763,7 +16376,7 @@ module.exports = verify
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(3);
@@ -15892,7 +16505,7 @@ function formatReturnValue(bn, enc, len) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15933,7 +16546,7 @@ exports.hash = hash;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright (c) 2005  Tom Wu
@@ -17896,7 +18509,7 @@ SecureRandom.prototype.nextBytes = rng_get_bytes;/**
 *
 **/
 
-var crypto = __webpack_require__(98);
+var crypto = __webpack_require__(99);
  
 function SHA256(s){
 	return crypto.createHash('sha256').update(s, 'utf8').digest('hex');
@@ -18931,7 +19544,7 @@ var aes = (function () {
 module.exports.RSAKey = RSAKey;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18950,7 +19563,7 @@ var p = __webpack_require__(61)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
-var aes = __webpack_require__(89)
+var aes = __webpack_require__(90)
 ;[
   'Cipher',
   'createCipher',
@@ -18966,7 +19579,7 @@ var aes = __webpack_require__(89)
   exports[key] = aes[key]
 })
 
-var dh = __webpack_require__(104)
+var dh = __webpack_require__(105)
 ;[
   'DiffieHellmanGroup',
   'createDiffieHellmanGroup',
@@ -18977,7 +19590,7 @@ var dh = __webpack_require__(104)
   exports[key] = dh[key]
 })
 
-var sign = __webpack_require__(92)
+var sign = __webpack_require__(93)
 ;[
   'createSign',
   'Sign',
@@ -18987,7 +19600,7 @@ var sign = __webpack_require__(92)
   exports[key] = sign[key]
 })
 
-exports.createECDH = __webpack_require__(95)
+exports.createECDH = __webpack_require__(96)
 
 var publicEncrypt = __webpack_require__(137)
 
@@ -19015,7 +19628,7 @@ var publicEncrypt = __webpack_require__(137)
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19087,7 +19700,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19235,7 +19848,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19385,7 +19998,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19447,7 +20060,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19710,13 +20323,13 @@ exports.padSplit = function padSplit(num, size, group) {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(55)
-var primes = __webpack_require__(106)
+var primes = __webpack_require__(107)
 
-var DH = __webpack_require__(105)
+var DH = __webpack_require__(106)
 
 function getDiffieHellman (mod) {
   var prime = new Buffer(primes[mod].prime, 'hex')
@@ -19759,7 +20372,7 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(2);
@@ -19930,7 +20543,7 @@ function formatReturnValue(bn, enc) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -19969,7 +20582,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20351,7 +20964,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20791,7 +21404,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20978,7 +21591,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21923,7 +22536,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22096,7 +22709,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(118);
+  pre = __webpack_require__(119);
 } catch (e) {
   pre = undefined;
 }
@@ -22135,20 +22748,20 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var BN = __webpack_require__(2);
-var HmacDRBG = __webpack_require__(126);
+var HmacDRBG = __webpack_require__(127);
 var elliptic = __webpack_require__(3);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(113);
-var Signature = __webpack_require__(114);
+var KeyPair = __webpack_require__(114);
+var Signature = __webpack_require__(115);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -22382,7 +22995,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22508,7 +23121,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22650,7 +23263,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22661,8 +23274,8 @@ var elliptic = __webpack_require__(3);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(116);
-var Signature = __webpack_require__(117);
+var KeyPair = __webpack_require__(117);
+var Signature = __webpack_require__(118);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -22775,7 +23388,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22878,7 +23491,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22951,7 +23564,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -23737,7 +24350,7 @@ module.exports = {
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23864,7 +24477,7 @@ utils.intFromLE = intFromLE;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -23991,7 +24604,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(4);
@@ -24088,7 +24701,7 @@ BlockHash.prototype._pad = function pad() {
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hmac = exports;
@@ -24142,7 +24755,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(4);
@@ -24292,7 +24905,7 @@ var sh = [
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(4);
@@ -24862,7 +25475,7 @@ function g1_512_lo(xh, xl) {
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var utils = exports;
@@ -25125,7 +25738,7 @@ exports.shr64_lo = shr64_lo;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25245,7 +25858,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -25335,7 +25948,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports) {
 
 
@@ -25350,7 +25963,7 @@ module.exports = function(arr, obj){
 };
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -25369,7 +25982,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
@@ -25492,7 +26105,7 @@ exports.signature = asn1.define('signature', function () {
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// adapted from https://github.com/apatil/pemstrip
@@ -25529,7 +26142,7 @@ module.exports = function (okey, password) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports) {
 
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -25553,7 +26166,7 @@ module.exports = function (iterations, keylen) {
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(15);
@@ -25826,7 +26439,7 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(15);
@@ -25924,509 +26537,6 @@ MediaConnection.prototype.close = function() {
 };
 
 module.exports = MediaConnection;
-
-
-/***/ }),
-/* 135 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var util = __webpack_require__(15);
-var EventEmitter = __webpack_require__(23);
-var Socket = __webpack_require__(136);
-var MediaConnection = __webpack_require__(134);
-var DataConnection = __webpack_require__(133);
-
-/**
- * A peer who can initiate connections with other peers.
- */
-function Peer(id, options) {
-  if (!(this instanceof Peer)) return new Peer(id, options);
-  EventEmitter.call(this);
-
-  // Deal with overloading
-  if (id && id.constructor == Object) {
-    options = id;
-    id = undefined;
-  } else if (id) {
-    // Ensure id is a string
-    id = id.toString();
-  }
-  //
-
-  // Configurize options
-  options = util.extend({
-    debug: 0, // 1: Errors, 2: Warnings, 3: All logs
-    host: util.CLOUD_HOST,
-    port: util.CLOUD_PORT,
-    key: 'peerjs',
-    path: '/',
-    token: util.randomToken(),
-    config: util.defaultConfig
-  }, options);
-  this.options = options;
-  // Detect relative URL host.
-  if (options.host === '/') {
-    options.host = window.location.hostname;
-  }
-  // Set path correctly.
-  if (options.path[0] !== '/') {
-    options.path = '/' + options.path;
-  }
-  if (options.path[options.path.length - 1] !== '/') {
-    options.path += '/';
-  }
-
-  // Set whether we use SSL to same as current host
-  if (options.secure === undefined && options.host !== util.CLOUD_HOST) {
-    options.secure = util.isSecure();
-  }
-  // Set a custom log function if present
-  if (options.logFunction) {
-    util.setLogFunction(options.logFunction);
-  }
-  util.setLogLevel(options.debug);
-  //
-
-  // Sanity checks
-  // Ensure WebRTC supported
-  if (!util.supports.audioVideo && !util.supports.data ) {
-    this._delayedAbort('browser-incompatible', 'The current browser does not support WebRTC');
-    return;
-  }
-  // Ensure alphanumeric id
-  if (!util.validateId(id)) {
-    this._delayedAbort('invalid-id', 'ID "' + id + '" is invalid');
-    return;
-  }
-  // Ensure valid key
-  if (!util.validateKey(options.key)) {
-    this._delayedAbort('invalid-key', 'API KEY "' + options.key + '" is invalid');
-    return;
-  }
-  // Ensure not using unsecure cloud server on SSL page
-  if (options.secure && options.host === '0.peerjs.com') {
-    this._delayedAbort('ssl-unavailable',
-      'The cloud server currently does not support HTTPS. Please run your own PeerServer to use HTTPS.');
-    return;
-  }
-  //
-
-  // States.
-  this.destroyed = false; // Connections have been killed
-  this.disconnected = false; // Connection to PeerServer killed but P2P connections still active
-  this.open = false; // Sockets and such are not yet open.
-  //
-
-  // References
-  this.connections = {}; // DataConnections for this peer.
-  this._lostMessages = {}; // src => [list of messages]
-  //
-
-  // Start the server connection
-  this._initializeServerConnection();
-  if (id) {
-    this._initialize(id);
-  } else {
-    this._retrieveId();
-  }
-  //
-}
-
-util.inherits(Peer, EventEmitter);
-
-// Initialize the 'socket' (which is actually a mix of XHR streaming and
-// websockets.)
-Peer.prototype._initializeServerConnection = function() {
-  var self = this;
-  this.socket = new Socket(this.options.secure, this.options.host, this.options.port, this.options.path, this.options.key);
-  this.socket.on('message', function(data) {
-    self._handleMessage(data);
-  });
-  this.socket.on('error', function(error) {
-    self._abort('socket-error', error);
-  });
-  this.socket.on('disconnected', function() {
-    // If we haven't explicitly disconnected, emit error and disconnect.
-    if (!self.disconnected) {
-      self.emitError('network', 'Lost connection to server.');
-      self.disconnect();
-    }
-  });
-  this.socket.on('close', function() {
-    // If we haven't explicitly disconnected, emit error.
-    if (!self.disconnected) {
-      self._abort('socket-closed', 'Underlying socket is already closed.');
-    }
-  });
-};
-
-/** Get a unique ID from the server via XHR. */
-Peer.prototype._retrieveId = function(cb) {
-  var self = this;
-  var http = new XMLHttpRequest();
-  var protocol = this.options.secure ? 'https://' : 'http://';
-  var url = protocol + this.options.host + ':' + this.options.port +
-    this.options.path + this.options.key + '/id';
-  var queryString = '?ts=' + new Date().getTime() + '' + Math.random();
-  url += queryString;
-
-  // If there's no ID we need to wait for one before trying to init socket.
-  http.open('get', url, true);
-  http.onerror = function(e) {
-    util.error('Error retrieving ID', e);
-    var pathError = '';
-    if (self.options.path === '/' && self.options.host !== util.CLOUD_HOST) {
-      pathError = ' If you passed in a `path` to your self-hosted PeerServer, ' +
-        'you\'ll also need to pass in that same path when creating a new ' +
-        'Peer.';
-    }
-    self._abort('server-error', 'Could not get an ID from the server.' + pathError);
-  };
-  http.onreadystatechange = function() {
-    if (http.readyState !== 4) {
-      return;
-    }
-    if (http.status !== 200) {
-      http.onerror();
-      return;
-    }
-    self._initialize(http.responseText);
-  };
-  http.send(null);
-};
-
-/** Initialize a connection with the server. */
-Peer.prototype._initialize = function(id) {
-  this.id = id;
-  this.socket.start(this.id, this.options.token);
-};
-
-/** Handles messages from the server. */
-Peer.prototype._handleMessage = function(message) {
-  var type = message.type;
-  var payload = message.payload;
-  var peer = message.src;
-  var connection;
-
-  switch (type) {
-    case 'OPEN': // The connection to the server is open.
-      this.emit('open', this.id);
-      this.open = true;
-      break;
-    case 'ERROR': // Server error.
-      this._abort('server-error', payload.msg);
-      break;
-    case 'ID-TAKEN': // The selected ID is taken.
-      this._abort('unavailable-id', 'ID `' + this.id + '` is taken');
-      break;
-    case 'INVALID-KEY': // The given API key cannot be found.
-      this._abort('invalid-key', 'API KEY "' + this.options.key + '" is invalid');
-      break;
-
-    //
-    case 'LEAVE': // Another peer has closed its connection to this peer.
-      util.log('Received leave message from', peer);
-      this._cleanupPeer(peer);
-      break;
-
-    case 'EXPIRE': // The offer sent to a peer has expired without response.
-      this.emitError('peer-unavailable', 'Could not connect to peer ' + peer);
-      break;
-    case 'OFFER': // we should consider switching this to CALL/CONNECT, but this is the least breaking option.
-      var connectionId = payload.connectionId;
-      connection = this.getConnection(peer, connectionId);
-
-      if (connection) {
-        util.warn('Offer received for existing Connection ID:', connectionId);
-        //connection.handleMessage(message);
-      } else {
-        // Create a new connection.
-        if (payload.type === 'media') {
-          connection = new MediaConnection(peer, this, {
-            connectionId: connectionId,
-            _payload: payload,
-            metadata: payload.metadata
-          });
-          this._addConnection(peer, connection);
-          this.emit('call', connection);
-        } else if (payload.type === 'data') {
-          connection = new DataConnection(peer, this, {
-            connectionId: connectionId,
-            _payload: payload,
-            metadata: payload.metadata,
-            label: payload.label,
-            serialization: payload.serialization,
-            reliable: payload.reliable
-          });
-          this._addConnection(peer, connection);
-          this.emit('connection', connection);
-        } else {
-          util.warn('Received malformed connection type:', payload.type);
-          return;
-        }
-        // Find messages.
-        var messages = this._getMessages(connectionId);
-        for (var i = 0, ii = messages.length; i < ii; i += 1) {
-          connection.handleMessage(messages[i]);
-        }
-      }
-      break;
-    default:
-      if (!payload) {
-        util.warn('You received a malformed message from ' + peer + ' of type ' + type);
-        return;
-      }
-
-      var id = payload.connectionId;
-      connection = this.getConnection(peer, id);
-
-      if (connection && connection.pc) {
-        // Pass it on.
-        connection.handleMessage(message);
-      } else if (id) {
-        // Store for possible later use
-        this._storeMessage(id, message);
-      } else {
-        util.warn('You received an unrecognized message:', message);
-      }
-      break;
-  }
-};
-
-/** Stores messages without a set up connection, to be claimed later. */
-Peer.prototype._storeMessage = function(connectionId, message) {
-  if (!this._lostMessages[connectionId]) {
-    this._lostMessages[connectionId] = [];
-  }
-  this._lostMessages[connectionId].push(message);
-};
-
-/** Retrieve messages from lost message store */
-Peer.prototype._getMessages = function(connectionId) {
-  var messages = this._lostMessages[connectionId];
-  if (messages) {
-    delete this._lostMessages[connectionId];
-    return messages;
-  } else {
-    return [];
-  }
-};
-
-/**
- * Returns a DataConnection to the specified peer. See documentation for a
- * complete list of options.
- */
-Peer.prototype.connect = function(peer, options) {
-  if (this.disconnected) {
-    util.warn('You cannot connect to a new Peer because you called ' +
-      '.disconnect() on this Peer and ended your connection with the ' +
-      'server. You can create a new Peer to reconnect, or call reconnect ' +
-      'on this peer if you believe its ID to still be available.');
-    this.emitError('disconnected', 'Cannot connect to new Peer after disconnecting from server.');
-    return;
-  }
-  var connection = new DataConnection(peer, this, options);
-  this._addConnection(peer, connection);
-  return connection;
-};
-
-/**
- * Returns a MediaConnection to the specified peer. See documentation for a
- * complete list of options.
- */
-Peer.prototype.call = function(peer, stream, options) {
-  if (this.disconnected) {
-    util.warn('You cannot connect to a new Peer because you called ' +
-      '.disconnect() on this Peer and ended your connection with the ' +
-      'server. You can create a new Peer to reconnect.');
-    this.emitError('disconnected', 'Cannot connect to new Peer after disconnecting from server.');
-    return;
-  }
-  if (!stream) {
-    util.error('To call a peer, you must provide a stream from your browser\'s `getUserMedia`.');
-    return;
-  }
-  options = options || {};
-  options._stream = stream;
-  var call = new MediaConnection(peer, this, options);
-  this._addConnection(peer, call);
-  return call;
-};
-
-/** Add a data/media connection to this peer. */
-Peer.prototype._addConnection = function(peer, connection) {
-  if (!this.connections[peer]) {
-    this.connections[peer] = [];
-  }
-  this.connections[peer].push(connection);
-};
-
-/** Retrieve a data/media connection for this peer. */
-Peer.prototype.getConnection = function(peer, id) {
-  var connections = this.connections[peer];
-  if (!connections) {
-    return null;
-  }
-  for (var i = 0, ii = connections.length; i < ii; i++) {
-    if (connections[i].id === id) {
-      return connections[i];
-    }
-  }
-  return null;
-};
-
-Peer.prototype._delayedAbort = function(type, message) {
-  var self = this;
-  util.setZeroTimeout(function(){
-    self._abort(type, message);
-  });
-};
-
-/**
- * Destroys the Peer and emits an error message.
- * The Peer is not destroyed if it's in a disconnected state, in which case
- * it retains its disconnected state and its existing connections.
- */
-Peer.prototype._abort = function(type, message) {
-  util.error('Aborting!');
-  if (!this._lastServerId) {
-    this.destroy();
-  } else {
-    this.disconnect();
-  }
-  this.emitError(type, message);
-};
-
-/** Emits a typed error message. */
-Peer.prototype.emitError = function(type, err) {
-  util.error('Error:', err);
-  if (typeof err === 'string') {
-    err = new Error(err);
-  }
-  err.type = type;
-  this.emit('error', err);
-};
-
-/**
- * Destroys the Peer: closes all active connections as well as the connection
- *  to the server.
- * Warning: The peer can no longer create or accept connections after being
- *  destroyed.
- */
-Peer.prototype.destroy = function() {
-  if (!this.destroyed) {
-    this._cleanup();
-    this.disconnect();
-    this.destroyed = true;
-  }
-};
-
-
-/** Disconnects every connection on this peer. */
-Peer.prototype._cleanup = function() {
-  if (this.connections) {
-    var peers = Object.keys(this.connections);
-    for (var i = 0, ii = peers.length; i < ii; i++) {
-      this._cleanupPeer(peers[i]);
-    }
-  }
-  this.emit('close');
-};
-
-/** Closes all connections to this peer. */
-Peer.prototype._cleanupPeer = function(peer) {
-  var connections = this.connections[peer];
-  for (var j = 0, jj = connections.length; j < jj; j += 1) {
-    connections[j].close();
-  }
-};
-
-/**
- * Disconnects the Peer's connection to the PeerServer. Does not close any
- *  active connections.
- * Warning: The peer can no longer create or accept connections after being
- *  disconnected. It also cannot reconnect to the server.
- */
-Peer.prototype.disconnect = function() {
-  var self = this;
-  util.setZeroTimeout(function(){
-    if (!self.disconnected) {
-      self.disconnected = true;
-      self.open = false;
-      if (self.socket) {
-        self.socket.close();
-      }
-      self.emit('disconnected', self.id);
-      self._lastServerId = self.id;
-      self.id = null;
-    }
-  });
-};
-
-/** Attempts to reconnect with the same ID. */
-Peer.prototype.reconnect = function() {
-  if (this.disconnected && !this.destroyed) {
-    util.log('Attempting reconnection to server with ID ' + this._lastServerId);
-    this.disconnected = false;
-    this._initializeServerConnection();
-    this._initialize(this._lastServerId);
-  } else if (this.destroyed) {
-    throw new Error('This peer cannot reconnect to the server. It has already been destroyed.');
-  } else if (!this.disconnected && !this.open) {
-    // Do nothing. We're still connecting the first time.
-    util.error('In a hurry? We\'re still trying to make the initial connection!');
-  } else {
-    throw new Error('Peer ' + this.id + ' cannot reconnect because it is not disconnected from the server!');
-  }
-};
-
-/**
- * Get a list of available peer IDs. If you're running your own server, you'll
- * want to set allow_discovery: true in the PeerServer options. If you're using
- * the cloud server, email team@peerjs.com to get the functionality enabled for
- * your key.
- */
-Peer.prototype.listAllPeers = function(cb) {
-  cb = cb || function() {};
-  var self = this;
-  var http = new XMLHttpRequest();
-  var protocol = this.options.secure ? 'https://' : 'http://';
-  var url = protocol + this.options.host + ':' + this.options.port +
-    this.options.path + this.options.key + '/peers';
-  var queryString = '?ts=' + new Date().getTime() + '' + Math.random();
-  url += queryString;
-
-  // If there's no ID we need to wait for one before trying to init socket.
-  http.open('get', url, true);
-  http.onerror = function(e) {
-    self._abort('server-error', 'Could not get peers from the server.');
-    cb([]);
-  };
-  http.onreadystatechange = function() {
-    if (http.readyState !== 4) {
-      return;
-    }
-    if (http.status === 401) {
-      var helpfulError = '';
-      if (self.options.host !== util.CLOUD_HOST) {
-        helpfulError = 'It looks like you\'re using the cloud server. You can email ' +
-          'team@peerjs.com to enable peer listing for your API key.';
-      } else {
-        helpfulError = 'You need to enable `allow_discovery` on your self-hosted ' +
-          'PeerServer to use this feature.';
-      }
-      cb([]);
-      throw new Error('It doesn\'t look like you have permission to list peers IDs. ' + helpfulError);
-    } else if (http.status !== 200) {
-      cb([]);
-    } else {
-      cb(JSON.parse(http.responseText));
-    }
-  };
-  http.send(null);
-};
-
-module.exports = Peer;
 
 
 /***/ }),
@@ -26669,12 +26779,12 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(26);
-var mgf = __webpack_require__(63);
-var xor = __webpack_require__(65);
+var mgf = __webpack_require__(64);
+var xor = __webpack_require__(66);
 var bn = __webpack_require__(2);
 var crt = __webpack_require__(29);
 var createHash = __webpack_require__(9);
-var withPublic = __webpack_require__(64);
+var withPublic = __webpack_require__(65);
 module.exports = function privateDecrypt(private_key, enc, reverse) {
   var padding;
   if (private_key.padding) {
@@ -26785,10 +26895,10 @@ function compare(a, b){
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(26);
 var randomBytes = __webpack_require__(16);
 var createHash = __webpack_require__(9);
-var mgf = __webpack_require__(63);
-var xor = __webpack_require__(65);
+var mgf = __webpack_require__(64);
+var xor = __webpack_require__(66);
 var bn = __webpack_require__(2);
-var withPublic = __webpack_require__(64);
+var withPublic = __webpack_require__(65);
 var crt = __webpack_require__(29);
 
 var constants = {
@@ -26960,7 +27070,7 @@ BufferList.prototype.concat = function (n) {
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(66)
+module.exports = __webpack_require__(67)
 
 
 /***/ }),
@@ -26972,13 +27082,13 @@ module.exports = __webpack_require__(66)
     return __webpack_require__(11); // hack to fix a circular dependency issue when used with browserify
   } catch(_){}
 }());
-exports = module.exports = __webpack_require__(67);
+exports = module.exports = __webpack_require__(68);
 exports.Stream = Stream || exports;
 exports.Readable = exports;
 exports.Writable = __webpack_require__(35);
 exports.Duplex = __webpack_require__(7);
 exports.Transform = __webpack_require__(34);
-exports.PassThrough = __webpack_require__(66);
+exports.PassThrough = __webpack_require__(67);
 
 if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
   module.exports = Stream;
@@ -27851,9 +27961,9 @@ var exports = module.exports = function SHA (algorithm) {
 exports.sha = __webpack_require__(151)
 exports.sha1 = __webpack_require__(152)
 exports.sha224 = __webpack_require__(153)
-exports.sha256 = __webpack_require__(68)
+exports.sha256 = __webpack_require__(69)
 exports.sha384 = __webpack_require__(154)
-exports.sha512 = __webpack_require__(69)
+exports.sha512 = __webpack_require__(70)
 
 
 /***/ }),
@@ -28074,7 +28184,7 @@ module.exports = Sha1
  */
 
 var inherits = __webpack_require__(1)
-var Sha256 = __webpack_require__(68)
+var Sha256 = __webpack_require__(69)
 var Hash = __webpack_require__(10)
 
 var W = new Array(64)
@@ -28125,7 +28235,7 @@ module.exports = Sha224
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(1)
-var SHA512 = __webpack_require__(69)
+var SHA512 = __webpack_require__(70)
 var Hash = __webpack_require__(10)
 
 var W = new Array(160)
@@ -28320,7 +28430,7 @@ function config (name) {
 /* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var indexOf = __webpack_require__(128);
+var indexOf = __webpack_require__(129);
 
 var Object_keys = function (obj) {
     if (Object.keys) return Object.keys(obj)
@@ -28507,13 +28617,91 @@ module.exports = function(module) {
 "use strict";
 
 
-var _chat = __webpack_require__(70);
+var _chat = __webpack_require__(71);
 
 var _chat2 = _interopRequireDefault(_chat);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-new _chat2.default().start();
+$(document).ready(function () {
+
+    var chat = new _chat2.default();
+    chat.start();
+
+    // Prepare file drop box.
+    var box = $('#box');
+    box.on('dragenter', doNothing);
+    box.on('dragover', doNothing);
+    box.on('drop', function (e) {
+        e.originalEvent.preventDefault();
+        var file = e.originalEvent.dataTransfer.files[0];
+        chat.eachActiveConnection(function (c, $c) {
+            if (c.label === 'file') {
+                c.send(file);
+                $c.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
+            }
+        });
+    });
+    function doNothing(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    // Connect to a peer
+    $('#connect').click(function () {
+        var requestedPeer = $('#rid').val();
+        if (!chat.connectedPeers[requestedPeer]) {
+            // Create 2 connections, one labelled chat and another labelled file.
+            var c = chat.peer.connect(requestedPeer, {
+                label: 'chat',
+                serialization: 'none',
+                metadata: { message: 'hi i want to chat with you!' }
+            });
+            c.on('open', function () {
+                chat.connect(c);
+            });
+            c.on('error', function (err) {
+                alert(err);
+            });
+            var f = chat.peer.connect(requestedPeer, { label: 'file', reliable: true });
+            f.on('open', function () {
+                chat.connect(f);
+            });
+            f.on('error', function (err) {
+                alert(err);
+            });
+        }
+        chat.connectedPeers[requestedPeer] = 1;
+    });
+
+    // Close a connection.
+    $('#close').click(function () {
+        chat.eachActiveConnection(function (c) {
+            c.close();
+        });
+    });
+
+    // Send a chat message to all active connections.
+    $('#send').submit(function (e) {
+        e.preventDefault();
+        // For each active connection, send the message.
+        var msg = $('#text').val();
+        chat.eachActiveConnection(function (c, $c) {
+            if (c.label === 'chat') {
+                c.send(msg);
+                $c.find('.messages').append('<div><span class="you">You: </span>' + msg + '</div>');
+            }
+        });
+        $('#text').val('');
+        $('#text').focus();
+    });
+
+    window.onunload = window.onbeforeunload = function (e) {
+        if (!!chat.peer && !chat.peer.destroyed) {
+            chat.peer.destroy();
+        }
+    };
+});
 
 /***/ })
 /******/ ]);

@@ -64,9 +64,12 @@ $(document).ready(function () {
             fileConnection.on('error', function (err) {
                 alert(err);
             });
-        }
 
-        chat.addUserToList(username);
+            let user = chat.getOrCreateUser();
+            chat.addUserToList(username);
+        } else {
+            alert('You are already connected to ' + username);
+        }
     });
 
     // Close a connection.
@@ -84,7 +87,7 @@ $(document).ready(function () {
         chat.eachActiveConnection(function (connection, activeChat) {
             if (connection.label === 'chat') {
                 connection.send(msg);
-                activeChat.find('.messages').append('<div><span class="you">You: </span>' + msg
+                activeChat.append('<div><span class="you">You: </span>' + msg
                     + '</div>');
             }
         });
@@ -94,7 +97,7 @@ $(document).ready(function () {
 
     window.onunload = window.onbeforeunload = function (e) {
         if (!!chat.peer && !chat.peer.destroyed) {
-            chat.peer.destroy();
+            chat.peer.connect()
         }
     };
 });

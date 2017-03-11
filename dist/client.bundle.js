@@ -28920,9 +28920,12 @@ $(document).ready(function () {
             fileConnection.on('error', function (err) {
                 alert(err);
             });
-        }
 
-        chat.addUserToList(username);
+            var user = chat.getOrCreateUser();
+            chat.addUserToList(username);
+        } else {
+            alert('You are already connected to ' + username);
+        }
     });
 
     // Close a connection.

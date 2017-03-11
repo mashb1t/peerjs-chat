@@ -73,7 +73,7 @@
 var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
-var BinaryPack = __webpack_require__(5);
+var BinaryPack = __webpack_require__(6);
 var RTCPeerConnection = __webpack_require__(2).RTCPeerConnection;
 
 var util = {
@@ -645,7 +645,48 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _utils = __webpack_require__(4);
+
+var _utils2 = _interopRequireDefault(_utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var config = {
+    peerjs: {
+        username: $('#username').text(),
+        options: {
+            host: window.location.hostname,
+            port: 9000,
+            path: "/",
+            debug: 3,
+            logFunction: _utils2.default.logFunction
+        }
+    },
+    encryption: {
+        bits: 1024
+    }
+};
+
+exports.default = config;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -772,6 +813,40 @@ var Utils = function () {
 
             return htmlString;
         }
+
+        /**
+         * @param e
+         */
+
+    }, {
+        key: 'doNothing',
+        value: function doNothing(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Did nothing');
+        }
+    }, {
+        key: 'checkCompatibility',
+        value: function checkCompatibility() {
+            var supportedFeatures = _util2.default.supports;
+            var chatDiv = $('#chat');
+            var errorHtml = $('<div class="errors"></div>');
+
+            for (var property in supportedFeatures) {
+                if (supportedFeatures.hasOwnProperty(property)) {
+                    errorHtml.append('<div class="error">' + property + ': ' + supportedFeatures[property] + '</div>');
+                }
+            }
+
+            if (!supportedFeatures.data) {
+                chatDiv.append('<div class="error">Your browser does not support WebRTC Data Channels, sry!</div>');
+                chatDiv.append(errorHtml);
+                return false;
+            }
+
+            chatDiv.find('.content').show();
+            return true;
+        }
     }]);
 
     return Utils;
@@ -787,7 +862,7 @@ Utils.logFunction = function () {
 exports.default = Utils;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -811,11 +886,11 @@ var _channelmanager = __webpack_require__(11);
 
 var _channelmanager2 = _interopRequireDefault(_channelmanager);
 
-var _config = __webpack_require__(10);
+var _config = __webpack_require__(3);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _peerjs = __webpack_require__(8);
+var _peerjs = __webpack_require__(9);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
@@ -839,7 +914,7 @@ var Factory = function () {
      * @returns {Peer}
      */
     value: function createPeerConnection() {
-      return new _peerjs2.default(_config2.default.peerjs.options);
+      return new _peerjs2.default(_config2.default.peerjs.username, _config2.default.peerjs.options);
     }
 
     /**
@@ -883,11 +958,11 @@ var Factory = function () {
 exports.default = Factory;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BufferBuilder = __webpack_require__(6).BufferBuilder;
-var binaryFeatures = __webpack_require__(6).binaryFeatures;
+var BufferBuilder = __webpack_require__(7).BufferBuilder;
+var binaryFeatures = __webpack_require__(7).binaryFeatures;
 
 var BinaryPack = {
   unpack: function(data){
@@ -1408,7 +1483,7 @@ function utf8Length(str){
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 var binaryFeatures = {};
@@ -1478,7 +1553,7 @@ module.exports.BufferBuilder = BufferBuilder;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
@@ -1793,7 +1868,7 @@ module.exports = Negotiator;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
@@ -2296,7 +2371,7 @@ module.exports = Peer;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2308,13 +2383,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(4);
+var _factory = __webpack_require__(5);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _peerjs = __webpack_require__(8);
+var _peerjs = __webpack_require__(9);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
+
+var _config = __webpack_require__(3);
+
+var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2462,11 +2541,6 @@ var Chat = function () {
             //
             // this.postPublicKey(publicKey);
 
-            // Show this peer's ID.
-            this._peer.on('open', function (id) {
-                $('#pid').text(id);
-            });
-
             // Await connections from others
             this._peer.on('connection', this.connect);
 
@@ -2609,40 +2683,6 @@ var Chat = function () {
 exports.default = Chat;
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _utils = __webpack_require__(3);
-
-var _utils2 = _interopRequireDefault(_utils);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var config = {
-    "peerjs": {
-        "options": {
-            "host": "localhost",
-            "port": 9000,
-            "path": "/",
-            "debug": 3,
-            "logFunction": _utils2.default.logFunction
-        }
-    },
-    "encryption": {
-        "bits": 1024
-    }
-};
-
-exports.default = config;
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2653,7 +2693,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _factory = __webpack_require__(4);
+var _factory = __webpack_require__(5);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2754,7 +2794,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(3);
+var _utils = __webpack_require__(4);
 
 var _utils2 = _interopRequireDefault(_utils);
 
@@ -2892,7 +2932,7 @@ exports.default = ChatWindow;
 
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
-var Negotiator = __webpack_require__(7);
+var Negotiator = __webpack_require__(8);
 var Reliable = __webpack_require__(17);
 
 /**
@@ -3165,7 +3205,7 @@ module.exports = DataConnection;
 
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
-var Negotiator = __webpack_require__(7);
+var Negotiator = __webpack_require__(8);
 
 /**
  * Wraps the streaming interface between two Peers.
@@ -3808,7 +3848,7 @@ module.exports.Reliable = Reliable;
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BinaryPack = __webpack_require__(5);
+var BinaryPack = __webpack_require__(6);
 
 var util = {
   debug: false,
@@ -3912,124 +3952,127 @@ module.exports = util;
 "use strict";
 
 
-var _chat = __webpack_require__(9);
+var _chat = __webpack_require__(10);
 
 var _chat2 = _interopRequireDefault(_chat);
 
-var _utils = __webpack_require__(3);
+var _utils = __webpack_require__(4);
 
 var _utils2 = _interopRequireDefault(_utils);
+
+var _config = __webpack_require__(3);
+
+var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(function () {
 
-    var chat = new _chat2.default();
-    chat.start();
+    if (_utils2.default.checkCompatibility()) {
 
-    // Prepare file drop box.
-    var box = $('#box');
-    box.on('dragenter', doNothing);
-    box.on('dragover', doNothing);
-    box.on('drop', function (e) {
-        e.originalEvent.preventDefault();
-        var file = e.originalEvent.dataTransfer.files[0];
+        var chat = new _chat2.default();
+        chat.start();
 
-        chat.eachActiveConnection(function (connection, activeChat) {
-            if (connection.label === 'file') {
-                var fileWithMetaData = {
-                    filename: file.name,
-                    type: file.type,
-                    file: file
-                };
-                connection.send(fileWithMetaData);
+        // Prepare file drop box.
+        var box = $('#box');
+        box.on('dragenter', _utils2.default.doNothing);
+        box.on('dragover', _utils2.default.doNothing);
+        box.on('drop', function (e) {
+            e.originalEvent.preventDefault();
+            var file = e.originalEvent.dataTransfer.files[0];
 
-                var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
+            chat.eachActiveConnection(function (connection, activeChat) {
+                if (connection.label === 'file') {
+                    var fileWithMetaData = {
+                        filename: file.name,
+                        type: file.type,
+                        file: file
+                    };
+                    connection.send(fileWithMetaData);
 
-                if (htmlString) {
-                    _utils2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+                    var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
+
+                    if (htmlString) {
+                        _utils2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+                    }
+                }
+            });
+        });
+
+        /**
+         * Connect to a peer
+         */
+        $('#connect').click(function () {
+            var username = $('#rid').val();
+            if (!chat.getUserFromList(username) && username !== _config2.default.peerjs.username) {
+
+                // Create 2 connections, one labelled chat and another labelled file.
+                var dataConnection = chat.peer.connect(username, {
+                    label: 'chat',
+                    serialization: 'none',
+                    metadata: { message: 'hi i want to chat with you!' }
+                });
+                dataConnection.on('open', function () {
+                    chat.connect(dataConnection);
+                });
+                dataConnection.on('error', function (err) {
+                    alert(err);
+                });
+
+                var fileConnection = chat.peer.connect(username, {
+                    label: 'file', reliable: true
+                });
+
+                fileConnection.on('open', function () {
+                    chat.connect(fileConnection);
+                });
+
+                fileConnection.on('error', function (err) {
+                    alert(err);
+                });
+
+                var user = chat.getOrCreateUser();
+                chat.addUserToList(username);
+            } else {
+                if (username == _config2.default.peerjs.username) {
+                    alert('You can\'t connect to yourself!');
+                } else {
+                    alert('You are already connected to ' + username);
                 }
             }
         });
-    });
 
-    /**
-     * @param e
-     */
-    function doNothing(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-
-    /**
-     * Connect to a peer
-     */
-    $('#connect').click(function () {
-        var username = $('#rid').val();
-        if (!chat.getUserFromList(username)) {
-
-            // Create 2 connections, one labelled chat and another labelled file.
-            var dataConnection = chat.peer.connect(username, {
-                label: 'chat',
-                serialization: 'none',
-                metadata: { message: 'hi i want to chat with you!' }
+        // Close a connection.
+        $('#close').click(function () {
+            chat.eachActiveConnection(function (connection) {
+                connection.close();
             });
-            dataConnection.on('open', function () {
-                chat.connect(dataConnection);
-            });
-            dataConnection.on('error', function (err) {
-                alert(err);
-            });
-
-            var fileConnection = chat.peer.connect(username, {
-                label: 'file', reliable: true
-            });
-
-            fileConnection.on('open', function () {
-                chat.connect(fileConnection);
-            });
-
-            fileConnection.on('error', function (err) {
-                alert(err);
-            });
-
-            var user = chat.getOrCreateUser();
-            chat.addUserToList(username);
-        } else {
-            alert('You are already connected to ' + username);
-        }
-    });
-
-    // Close a connection.
-    $('#close').click(function () {
-        chat.eachActiveConnection(function (connection) {
-            connection.close();
         });
-    });
 
-    // Send a chat message to all active connections.
-    $('#send').submit(function (e) {
-        e.preventDefault();
-        // For each active connection, send the message.
-        var msg = $('#text').val();
+        // Send a chat message to all active connections.
+        $('#send').submit(function (e) {
+            e.preventDefault();
+            // For each active connection, send the message.
+            var msg = $('#text').val();
 
-        if (msg) {
-            chat.eachActiveConnection(function (connection, activeChat) {
-                if (connection.label === 'chat') {
-                    connection.send(msg);
-                    _utils2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
-                }
-            });
-        }
-        $('#text').val('');
-        $('#text').focus();
-    });
+            if (msg) {
+                chat.eachActiveConnection(function (connection, activeChat) {
+                    if (connection.label === 'chat') {
+                        connection.send(msg);
+                        _utils2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
+                    }
+                });
+            }
+            $('#text').val('');
+            $('#text').focus();
+        });
 
-    window.onunload = window.onbeforeunload = function (e) {
-        if (!!chat.peer && !chat.peer.destroyed) {
-            chat.peer.connect();
-        }
-    };
+        window.onunload = window.onbeforeunload = function (e) {
+            if (!!chat.peer && !chat.peer.destroyed) {
+                chat.peer.connect();
+            }
+        };
+    }
 });
 
 /***/ })

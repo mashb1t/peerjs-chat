@@ -2,6 +2,7 @@
 
 import Factory from "./factory";
 import Peer from "peerjs";
+import config from "./config";
 
 /**
  * Chat main class
@@ -104,11 +105,6 @@ class Chat {
         // let publicKey = keyPair.publicKey;
         //
         // this.postPublicKey(publicKey);
-
-        // Show this peer's ID.
-        this._peer.on('open', function (id) {
-            $('#pid').text(id);
-        });
 
         // Await connections from others
         this._peer.on('connection', this.connect);

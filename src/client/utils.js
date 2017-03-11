@@ -1,5 +1,7 @@
 'use strict';
 
+import util from "peerjs/lib/util";
+
 class Utils {
 
     static logField = $('.log');
@@ -119,6 +121,37 @@ class Utils {
         }
 
         return htmlString;
+    }
+
+    /**
+     * @param e
+     */
+    static doNothing(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Did nothing');
+    }
+
+    static checkCompatibility() {
+        let supportedFeatures = util.supports;
+        let chatDiv = $('#chat');
+        let errorHtml = $('<div class="errors"></div>');
+
+        for (let property in supportedFeatures) {
+            if (supportedFeatures.hasOwnProperty(property)) {
+                errorHtml.append('<div class="error">' + property + ': ' + supportedFeatures[property] + '</div>');
+            }
+        }
+
+
+        if(!supportedFeatures.data) {
+            chatDiv.append('<div class="error">Your browser does not support WebRTC Data Channels, sry!</div>');
+            chatDiv.append(errorHtml);
+            return false;
+        }
+
+        chatDiv.find('.content').show();
+        return true;
     }
 }
 

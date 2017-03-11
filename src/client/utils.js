@@ -98,18 +98,21 @@ class Utils {
         switch (firstPartOfType) {
             case 'image':
                 htmlString = '<img src="' + url + '" alt="' + filename + '">';
+                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
                 break;
             case 'audio':
                 htmlString = '<audio controls>' +
                     '<source src="' + url + '" type="' + type + '">' +
                     'Your browser does not support html5 audio elements.' +
                     '</audio>';
+                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
                 break;
             case 'video':
                 htmlString = '<video controls>' +
                     '<source src="' + url + '" type="' + type + '">' +
                     'Your browser does not support html5 video elements.' +
                     '</video>';
+                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
                 break;
             default:
                 htmlString = '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';

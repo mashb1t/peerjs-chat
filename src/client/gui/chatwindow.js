@@ -1,5 +1,7 @@
 'use strict';
 
+import Utils from "../util";
+
 /**
  * Class for all gui elements
  */
@@ -66,8 +68,7 @@ class ChatWindow {
         $('#connections').append(this._chatbox);
 
         this._dataConnection.on('data', function (data) {
-            chatbox.append('<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
-            chatbox.animate({scrollTop: chatbox[0].scrollHeight}, 1000);
+            Utils.appendAndScrollDown(chatbox, '<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
         });
 
         this._dataConnection.on('close', function () {
@@ -91,7 +92,7 @@ class ChatWindow {
                 let dataView = new Uint8Array(data);
                 let dataBlob = new Blob([dataView]);
                 let url = window.URL.createObjectURL(dataBlob);
-                chatbox.append('<div><span class="file">' + user.name + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+                Utils.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a <img  src="' + url + '">file</img>.</span></div>');
             }
         });
     }

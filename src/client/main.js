@@ -1,9 +1,9 @@
 'use strict';
 
 import Chat from "./chat";
+import Utils from "./util";
 
-
-$(document).ready(function () {
+$(function () {
 
     let chat = new Chat();
     chat.start();
@@ -19,7 +19,7 @@ $(document).ready(function () {
         chat.eachActiveConnection(function (connection, activeChat) {
             if (connection.label === 'file') {
                 connection.send(file);
-                activeChat.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
+                Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file.</span></div>');
             }
         });
     });
@@ -89,8 +89,7 @@ $(document).ready(function () {
             chat.eachActiveConnection(function (connection, activeChat) {
                 if (connection.label === 'chat') {
                     connection.send(msg);
-                    activeChat.append('<div><span class="you">You: </span>' + msg + '</div>');
-                    activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
+                    Utils.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
                 }
             });
         }

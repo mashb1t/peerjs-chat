@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,7 +73,7 @@
 var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
-var BinaryPack = __webpack_require__(4);
+var BinaryPack = __webpack_require__(5);
 var RTCPeerConnection = __webpack_require__(2).RTCPeerConnection;
 
 var util = {
@@ -642,28 +642,61 @@ module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Utils = function () {
+    function Utils() {
+        _classCallCheck(this, Utils);
+    }
+
+    _createClass(Utils, null, [{
+        key: 'appendAndScrollDown',
+        value: function appendAndScrollDown(activeChat, content) {
+            activeChat.append(content);
+            activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
+        }
+    }]);
+
+    return Utils;
+}();
+
+exports.default = Utils;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _user = __webpack_require__(11);
+var _user = __webpack_require__(12);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _chatwindow = __webpack_require__(12);
+var _chatwindow = __webpack_require__(13);
 
 var _chatwindow2 = _interopRequireDefault(_chatwindow);
 
-var _channelmanager = __webpack_require__(10);
+var _channelmanager = __webpack_require__(11);
 
 var _channelmanager2 = _interopRequireDefault(_channelmanager);
 
-var _config = __webpack_require__(9);
+var _config = __webpack_require__(10);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _peerjs = __webpack_require__(7);
+var _peerjs = __webpack_require__(8);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
@@ -731,11 +764,11 @@ var Factory = function () {
 exports.default = Factory;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BufferBuilder = __webpack_require__(5).BufferBuilder;
-var binaryFeatures = __webpack_require__(5).binaryFeatures;
+var BufferBuilder = __webpack_require__(6).BufferBuilder;
+var binaryFeatures = __webpack_require__(6).binaryFeatures;
 
 var BinaryPack = {
   unpack: function(data){
@@ -1256,7 +1289,7 @@ function utf8Length(str){
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 var binaryFeatures = {};
@@ -1326,7 +1359,7 @@ module.exports.BufferBuilder = BufferBuilder;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
@@ -1641,14 +1674,14 @@ module.exports = Negotiator;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
-var Socket = __webpack_require__(16);
-var MediaConnection = __webpack_require__(15);
-var DataConnection = __webpack_require__(14);
+var Socket = __webpack_require__(17);
+var MediaConnection = __webpack_require__(16);
+var DataConnection = __webpack_require__(15);
 
 /**
  * A peer who can initiate connections with other peers.
@@ -2144,7 +2177,7 @@ module.exports = Peer;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2156,11 +2189,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(3);
+var _factory = __webpack_require__(4);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _peerjs = __webpack_require__(7);
+var _peerjs = __webpack_require__(8);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
@@ -2457,7 +2490,7 @@ var Chat = function () {
 exports.default = Chat;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2467,7 +2500,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _gui = __webpack_require__(13);
+var _gui = __webpack_require__(14);
 
 var _gui2 = _interopRequireDefault(_gui);
 
@@ -2491,7 +2524,7 @@ var config = {
 exports.default = config;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2501,7 +2534,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _factory = __webpack_require__(3);
+var _factory = __webpack_require__(4);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2523,7 +2556,7 @@ var ChannelManager = function ChannelManager() {
 exports.default = ChannelManager;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2590,15 +2623,11 @@ var User = function () {
 exports.default = User;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-/**
- * Class for all gui elements
- */
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -2606,8 +2635,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _util = __webpack_require__(3);
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Class for all gui elements
+ */
 var ChatWindow = function () {
 
     /**
@@ -2681,8 +2719,7 @@ var ChatWindow = function () {
             $('#connections').append(this._chatbox);
 
             this._dataConnection.on('data', function (data) {
-                chatbox.append('<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
-                chatbox.animate({ scrollTop: chatbox[0].scrollHeight }, 1000);
+                _util2.default.appendAndScrollDown(chatbox, '<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
             });
 
             this._dataConnection.on('close', function () {
@@ -2709,7 +2746,7 @@ var ChatWindow = function () {
                     var dataView = new Uint8Array(data);
                     var dataBlob = new Blob([dataView]);
                     var url = window.URL.createObjectURL(dataBlob);
-                    chatbox.append('<div><span class="file">' + user.name + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+                    _util2.default.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a <img  src="' + url + '">file</img>.</span></div>');
                 }
             });
         }
@@ -2729,7 +2766,7 @@ var ChatWindow = function () {
 exports.default = ChatWindow;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2759,13 +2796,13 @@ Gui.logFunction = function () {
 exports.default = Gui;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
-var Negotiator = __webpack_require__(6);
-var Reliable = __webpack_require__(17);
+var Negotiator = __webpack_require__(7);
+var Reliable = __webpack_require__(18);
 
 /**
  * Wraps a DataChannel between two Peers.
@@ -3032,12 +3069,12 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
-var Negotiator = __webpack_require__(6);
+var Negotiator = __webpack_require__(7);
 
 /**
  * Wraps the streaming interface between two Peers.
@@ -3133,7 +3170,7 @@ module.exports = MediaConnection;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
@@ -3353,10 +3390,10 @@ module.exports = Socket;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(18);
+var util = __webpack_require__(19);
 
 /**
  * Reliable transfer for Chrome Canary DataChannel impl.
@@ -3677,10 +3714,10 @@ module.exports.Reliable = Reliable;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BinaryPack = __webpack_require__(4);
+var BinaryPack = __webpack_require__(5);
 
 var util = {
   debug: false,
@@ -3778,19 +3815,23 @@ module.exports = util;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _chat = __webpack_require__(8);
+var _chat = __webpack_require__(9);
 
 var _chat2 = _interopRequireDefault(_chat);
 
+var _util = __webpack_require__(3);
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-$(document).ready(function () {
+$(function () {
 
     var chat = new _chat2.default();
     chat.start();
@@ -3806,7 +3847,7 @@ $(document).ready(function () {
         chat.eachActiveConnection(function (connection, activeChat) {
             if (connection.label === 'file') {
                 connection.send(file);
-                activeChat.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
+                _util2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file.</span></div>');
             }
         });
     });
@@ -3875,9 +3916,7 @@ $(document).ready(function () {
             chat.eachActiveConnection(function (connection, activeChat) {
                 if (connection.label === 'chat') {
                     connection.send(msg);
-                    console.log(activeChat);
-                    activeChat.append('<div><span class="you">You: </span>' + msg + '</div>');
-                    activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
+                    _util2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
                 }
             });
         }

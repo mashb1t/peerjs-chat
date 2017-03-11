@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 161);
+/******/ 	return __webpack_require__(__webpack_require__.s = 162);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,8 +81,8 @@
 
 
 
-var base64 = __webpack_require__(86)
-var ieee754 = __webpack_require__(128)
+var base64 = __webpack_require__(87)
+var ieee754 = __webpack_require__(129)
 var isArray = __webpack_require__(56)
 
 exports.Buffer = Buffer
@@ -5324,7 +5324,7 @@ if (typeof Object.create === 'function') {
   };
 })(typeof module === 'undefined' || module, this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(158)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(159)(module)))
 
 /***/ }),
 /* 3 */
@@ -5335,15 +5335,15 @@ if (typeof Object.create === 'function') {
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(121).version;
-elliptic.utils = __webpack_require__(120);
+elliptic.version = __webpack_require__(122).version;
+elliptic.utils = __webpack_require__(121);
 elliptic.rand = __webpack_require__(43);
 elliptic.curve = __webpack_require__(22);
-elliptic.curves = __webpack_require__(112);
+elliptic.curves = __webpack_require__(113);
 
 // Protocols
-elliptic.ec = __webpack_require__(113);
-elliptic.eddsa = __webpack_require__(116);
+elliptic.ec = __webpack_require__(114);
+elliptic.eddsa = __webpack_require__(117);
 
 
 /***/ }),
@@ -5352,11 +5352,11 @@ elliptic.eddsa = __webpack_require__(116);
 
 var hash = exports;
 
-hash.utils = __webpack_require__(126);
-hash.common = __webpack_require__(122);
-hash.sha = __webpack_require__(125);
-hash.ripemd = __webpack_require__(124);
-hash.hmac = __webpack_require__(123);
+hash.utils = __webpack_require__(127);
+hash.common = __webpack_require__(123);
+hash.sha = __webpack_require__(126);
+hash.ripemd = __webpack_require__(125);
+hash.hmac = __webpack_require__(124);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -5756,8 +5756,8 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 var inherits = __webpack_require__(1)
 var md5 = __webpack_require__(54)
-var rmd160 = __webpack_require__(148)
-var sha = __webpack_require__(150)
+var rmd160 = __webpack_require__(149)
+var sha = __webpack_require__(151)
 
 var Base = __webpack_require__(8)
 
@@ -5915,11 +5915,11 @@ var EE = __webpack_require__(24).EventEmitter;
 var inherits = __webpack_require__(1);
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__(143);
-Stream.Writable = __webpack_require__(145);
-Stream.Duplex = __webpack_require__(140);
-Stream.Transform = __webpack_require__(144);
-Stream.PassThrough = __webpack_require__(142);
+Stream.Readable = __webpack_require__(144);
+Stream.Writable = __webpack_require__(146);
+Stream.Duplex = __webpack_require__(141);
+Stream.Transform = __webpack_require__(145);
+Stream.PassThrough = __webpack_require__(143);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -6023,10 +6023,10 @@ Stream.prototype.pipe = function(dest, options) {
 
 var base = exports;
 
-base.Reporter = __webpack_require__(80).Reporter;
+base.Reporter = __webpack_require__(81).Reporter;
 base.DecoderBuffer = __webpack_require__(39).DecoderBuffer;
 base.EncoderBuffer = __webpack_require__(39).EncoderBuffer;
-base.Node = __webpack_require__(79);
+base.Node = __webpack_require__(80);
 
 
 /***/ }),
@@ -6559,11 +6559,11 @@ var asn1 = exports;
 
 asn1.bignum = __webpack_require__(2);
 
-asn1.define = __webpack_require__(78).define;
+asn1.define = __webpack_require__(79).define;
 asn1.base = __webpack_require__(12);
 asn1.constants = __webpack_require__(40);
-asn1.decoders = __webpack_require__(82);
-asn1.encoders = __webpack_require__(84);
+asn1.decoders = __webpack_require__(83);
+asn1.encoders = __webpack_require__(85);
 
 
 /***/ }),
@@ -6974,10 +6974,10 @@ exports.encrypt = function (self, chunk) {
 
 var curve = exports;
 
-curve.base = __webpack_require__(108);
-curve.short = __webpack_require__(111);
-curve.mont = __webpack_require__(110);
-curve.edwards = __webpack_require__(109);
+curve.base = __webpack_require__(109);
+curve.short = __webpack_require__(112);
+curve.mont = __webpack_require__(111);
+curve.edwards = __webpack_require__(110);
 
 
 /***/ }),
@@ -7603,9 +7603,9 @@ function EVP_BytesToKey (password, salt, keyLen, ivLen) {
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(131)
-var aesid = __webpack_require__(130)
-var fixProc = __webpack_require__(132)
+/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(132)
+var aesid = __webpack_require__(131)
+var fixProc = __webpack_require__(133)
 var ciphers = __webpack_require__(28)
 var compat = __webpack_require__(61)
 module.exports = parseKeys
@@ -7723,10 +7723,10 @@ module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ciphers = __webpack_require__(88)
+var ciphers = __webpack_require__(89)
 exports.createCipher = exports.Cipher = ciphers.createCipher
 exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
-var deciphers = __webpack_require__(87)
+var deciphers = __webpack_require__(88)
 exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 var modes = __webpack_require__(20)
@@ -7982,11 +7982,11 @@ module.exports = function createHmac(alg, key) {
 "use strict";
 
 
-exports.utils = __webpack_require__(104);
-exports.Cipher = __webpack_require__(101);
-exports.DES = __webpack_require__(102);
-exports.CBC = __webpack_require__(100);
-exports.EDE = __webpack_require__(103);
+exports.utils = __webpack_require__(105);
+exports.Cipher = __webpack_require__(102);
+exports.DES = __webpack_require__(103);
+exports.CBC = __webpack_require__(101);
+exports.EDE = __webpack_require__(104);
 
 
 /***/ }),
@@ -8262,7 +8262,7 @@ util.inherits = __webpack_require__(1);
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(156)
+  deprecate: __webpack_require__(157)
 };
 /*</replacement>*/
 
@@ -8787,7 +8787,7 @@ function CorkedRequest(state) {
     }
   };
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(155).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(156).setImmediate))
 
 /***/ }),
 /* 36 */
@@ -9027,7 +9027,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _gui = __webpack_require__(74);
+var _gui = __webpack_require__(75);
 
 var _gui2 = _interopRequireDefault(_gui);
 
@@ -9066,6 +9066,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _user = __webpack_require__(73);
 
 var _user2 = _interopRequireDefault(_user);
+
+var _chatwindow = __webpack_require__(74);
+
+var _chatwindow2 = _interopRequireDefault(_chatwindow);
 
 var _channelmanager = __webpack_require__(72);
 
@@ -9106,15 +9110,13 @@ var Factory = function () {
      * Create a new user
      *
      * @param name
-     * @param image
-     * @param pubkey
      * @returns {User}
      */
 
   }, {
     key: "createUser",
-    value: function createUser(name, image, pubkey) {
-      return new _user2.default(name, image, pubkey);
+    value: function createUser(name) {
+      return new _user2.default(name);
     }
 
     /**
@@ -9125,6 +9127,17 @@ var Factory = function () {
     key: "createChannelManager",
     value: function createChannelManager() {
       return new _channelmanager2.default();
+    }
+
+    /**
+     * @param user
+     * @returns {ChatWindow}
+     */
+
+  }, {
+    key: "createChatWindow",
+    value: function createChatWindow(user) {
+      return new _chatwindow2.default(user);
     }
   }]);
 
@@ -9277,7 +9290,7 @@ constants._reverse = function reverse(map) {
   return res;
 };
 
-constants.der = __webpack_require__(81);
+constants.der = __webpack_require__(82);
 
 
 /***/ }),
@@ -9970,7 +9983,7 @@ if (typeof self === 'object') {
 } else {
   // Node.js or Web worker with no crypto support
   try {
-    var crypto = __webpack_require__(159);
+    var crypto = __webpack_require__(160);
     if (typeof crypto.randomBytes !== 'function')
       throw new Error('Not supported');
 
@@ -9989,7 +10002,7 @@ if (typeof self === 'object') {
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(19)
 var Transform = __webpack_require__(8)
 var inherits = __webpack_require__(1)
-var GHASH = __webpack_require__(89)
+var GHASH = __webpack_require__(90)
 var xor = __webpack_require__(13)
 inherits(StreamCipher, Transform)
 module.exports = StreamCipher
@@ -10391,7 +10404,7 @@ exports['1.3.132.0.35'] = 'p521'
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-var helpers = __webpack_require__(97);
+var helpers = __webpack_require__(98);
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -11444,7 +11457,7 @@ utils.encode = function encode(arr, enc) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, Buffer) {var createHmac = __webpack_require__(31)
-var checkParameters = __webpack_require__(133)
+var checkParameters = __webpack_require__(134)
 
 exports.pbkdf2 = function (password, salt, iterations, keylen, digest, callback) {
   if (typeof digest === 'function') {
@@ -11835,9 +11848,9 @@ module.exports = Negotiator;
 
 var util = __webpack_require__(15);
 var EventEmitter = __webpack_require__(23);
-var Socket = __webpack_require__(136);
-var MediaConnection = __webpack_require__(135);
-var DataConnection = __webpack_require__(134);
+var Socket = __webpack_require__(137);
+var MediaConnection = __webpack_require__(136);
+var DataConnection = __webpack_require__(135);
 
 /**
  * A peer who can initiate connections with other peers.
@@ -12468,7 +12481,7 @@ util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(160);
+var debugUtil = __webpack_require__(161);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -12477,7 +12490,7 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(141);
+var BufferList = __webpack_require__(142);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -13787,7 +13800,7 @@ var _factory = __webpack_require__(38);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _keygenerator = __webpack_require__(76);
+var _keygenerator = __webpack_require__(77);
 
 var _keygenerator2 = _interopRequireDefault(_keygenerator);
 
@@ -13807,20 +13820,14 @@ var Chat = function () {
     /**
      * Constructor
      */
-
-
-    /**
-     * @type {Peer}
-     * @private
-     */
     function Chat() {
         _classCallCheck(this, Chat);
 
-        this._userList = {};
         this._peer = null;
-        this._connectedPeers = {};
+        this._userList = {};
+        this._chatWindowList = {};
 
-        this.connect = function (c) {
+        this.connect = function (connection) {
 
             // fix for peer call of this in closure connect
             var chat = this;
@@ -13828,50 +13835,14 @@ var Chat = function () {
                 chat = this.chat;
             }
 
-            // Handle a chat connection.
-            if (c.label === 'chat') {
-                var chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
-                var header = $('<h3></h3>').html('<strong>' + c.peer + '</strong>');
-                var messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
-                chatbox.append(header);
-                chatbox.append(messages);
-
-                // Select connection handler.
-                chatbox.on('click', function () {
-                    if ($(this).attr('class').indexOf('active') === -1) {
-                        $(this).addClass('active');
-                    } else {
-                        $(this).removeClass('active');
-                    }
-                });
-                $('.filler').hide();
-                $('#connections').append(chatbox);
-
-                c.on('data', function (data) {
-                    messages.append('<div><span class="peer">' + c.peer + '</span>: ' + data + '</div>');
-                });
-                c.on('close', function () {
-                    alert(c.peer + ' has left the chat.');
-                    chatbox.remove();
-                    if ($('.connection').length === 0) {
-                        $('.filler').show();
-                    }
-                    // todo somehow replace with class reference.
-                    chat.deleteConnectedPeer(c.peer);
-                });
-            } else if (c.label === 'file') {
-                c.on('data', function (data) {
-                    // If we're getting a file, create a URL for it.
-                    if (data.constructor === ArrayBuffer) {
-                        var dataView = new Uint8Array(data);
-                        var dataBlob = new Blob([dataView]);
-                        var url = window.URL.createObjectURL(dataBlob);
-                        $('#' + c.peer).find('.messages').append('<div><span class="file">' + c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
-                    }
-                });
+            switch (connection.label) {
+                case 'chat':
+                    chat.initChatConnection(connection);
+                    break;
+                case 'file':
+                    chat.initFileConnection(connection);
+                    break;
             }
-            // todo somehow replace with class reference
-            chat.addConnectedPeer(c.peer);
         };
 
         this._peer = _factory2.default.createPeerConnection();
@@ -13886,40 +13857,89 @@ var Chat = function () {
      */
 
 
+    /**
+     * @type {Peer}
+     * @private
+     */
+
+
     _createClass(Chat, [{
-        key: "addConnectedPeer",
-        value: function addConnectedPeer(peerId) {
-            this._connectedPeers[peerId] = 1;
-        }
-    }, {
-        key: "deleteConnectedPeer",
-        value: function deleteConnectedPeer(peerId) {
-            delete this._connectedPeers[peerId];
+        key: "getUserFromList",
+
+
+        // /**
+        //  * @returns {{}}
+        //  */
+        // get userList() {
+        //     return this._userList;
+        // }
+
+        /**
+         * @param username
+         */
+        value: function getUserFromList(username) {
+            return this._userList[username];
         }
 
         /**
-         * Registers user and public key
-         *
-         * @param name
-         * @param image
-         * @param pubkey
+         * @param user
          */
 
     }, {
-        key: "registerNewUser",
-        value: function registerNewUser(name, image, pubkey) {
-            this._userList[name] = _factory2.default.createUser(name, image, pubkey);
+        key: "addUserToList",
+        value: function addUserToList(user) {
+            this._userList[user.name] = user;
         }
 
         /**
-         * Post public key to server and other clients
-         *
-         * @param publicKey
+         * @param user
          */
 
     }, {
-        key: "postPublicKey",
-        value: function postPublicKey(publicKey) {}
+        key: "deleteUserFromList",
+        value: function deleteUserFromList(user) {
+            delete this._userList[user.name];
+        }
+
+        /**
+         * @param user
+         */
+
+    }, {
+        key: "getChatWindowFromList",
+        value: function getChatWindowFromList(user) {
+            return this._chatWindowList[user.name];
+        }
+
+        /**
+         * @param user
+         * @param chatWindow
+         */
+
+    }, {
+        key: "addChatWindowToList",
+        value: function addChatWindowToList(user, chatWindow) {
+            this._chatWindowList[user.name] = chatWindow;
+        }
+
+        /**
+         * @param user
+         */
+
+    }, {
+        key: "deleteChatWindowFromList",
+        value: function deleteChatWindowFromList(user) {
+            delete this._chatWindowList[user.name];
+        }
+        //
+        // /**
+        //  * Post public key to server and other clients
+        //  *
+        //  * @param publicKey
+        //  */
+        // postPublicKey(publicKey) {
+        //
+        // }
 
         /**
          * Start the chat client
@@ -13928,10 +13948,10 @@ var Chat = function () {
     }, {
         key: "start",
         value: function start() {
-            var keyPair = _keygenerator2.default.generateKeyPair();
-            var publicKey = keyPair.publicKey;
-
-            this.postPublicKey(publicKey);
+            // let keyPair = KeyGenerator.generateKeyPair();
+            // let publicKey = keyPair.publicKey;
+            //
+            // this.postPublicKey(publicKey);
 
             // Show this peer's ID.
             this._peer.on('open', function (id) {
@@ -13946,6 +13966,101 @@ var Chat = function () {
             });
         }
     }, {
+        key: "initChatConnection",
+
+
+        /**
+         * @param dataConnection
+         */
+        value: function initChatConnection(dataConnection) {
+            var username = dataConnection.peer;
+
+            // fix for peer call of this in closure connect
+            var chat = this;
+            if (this instanceof _peerjs2.default) {
+                chat = this.chat;
+            }
+
+            var user = chat.getOrCreateUser(username);
+            var chatWindow = chat.getOrCreateChatWindow(user);
+
+            chatWindow.initChat(dataConnection);
+
+            $('.filler').hide();
+
+            dataConnection.on('close', function () {
+                if ($('.connection').length === 0) {
+                    $('.filler').show();
+                }
+                chat.deleteUserFromList(user);
+                chat.deleteChatWindowFromList(user);
+            });
+        }
+
+        /**
+         * @param fileConnection
+         */
+
+    }, {
+        key: "initFileConnection",
+        value: function initFileConnection(fileConnection) {
+            var username = fileConnection.peer;
+
+            // fix for peer call of this in closure connect
+            var chat = this;
+            if (this instanceof _peerjs2.default) {
+                chat = this.chat;
+            }
+
+            var user = chat.getOrCreateUser(username);
+            var chatWindow = chat.getOrCreateChatWindow(user);
+
+            chatWindow.initFileChat(fileConnection);
+        }
+
+        /**
+         * @param username
+         * @returns {User}
+         */
+
+    }, {
+        key: "getOrCreateUser",
+        value: function getOrCreateUser(username) {
+            var user = this.getUserFromList(username);
+
+            if (!user) {
+                user = _factory2.default.createUser(username);
+                this.addUserToList(user);
+            }
+
+            return user;
+        }
+
+        /**
+         * @param user
+         * @returns {User}
+         */
+
+    }, {
+        key: "getOrCreateChatWindow",
+        value: function getOrCreateChatWindow(user) {
+            var chatWindow = this.getChatWindowFromList(user);
+
+            if (!chatWindow) {
+                chatWindow = _factory2.default.createChatWindow(user);
+                this.addChatWindowToList(user, chatWindow);
+            }
+
+            return chatWindow;
+        }
+
+        /**
+         * Executes a given function for each active connection
+         *
+         * @param fn
+         */
+
+    }, {
         key: "eachActiveConnection",
         value: function eachActiveConnection(fn) {
             var actives = $('.connection.active');
@@ -13954,17 +14069,18 @@ var Chat = function () {
             var chat = this;
 
             actives.each(function () {
-                var peerId = $(this).attr('id');
+                // todo swap with reference to connection
+                var username = $(this).attr('id');
 
-                if (!checkedIds[peerId]) {
-                    var conns = chat._peer.connections[peerId];
-                    for (var i = 0, ii = conns.length; i < ii; i += 1) {
-                        var conn = conns[i];
-                        fn(conn, $(this));
+                if (!checkedIds[username]) {
+                    var connections = chat._peer.connections[username];
+                    for (var i = 0, ii = connections.length; i < ii; i += 1) {
+                        var connection = connections[i];
+                        fn(connection, $(this));
                     }
                 }
 
-                checkedIds[peerId] = 1;
+                checkedIds[username] = 1;
             });
         }
     }, {
@@ -13972,19 +14088,12 @@ var Chat = function () {
         get: function get() {
             return this._peer;
         }
-    }, {
-        key: "connectedPeers",
-        get: function get() {
-            return this._connectedPeers;
-        }
     }]);
 
     return Chat;
 }();
 
 exports.default = Chat;
-
-// Make sure things clean up properly.
 
 /***/ }),
 /* 72 */
@@ -14030,7 +14139,7 @@ exports.default = ChannelManager;
  */
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -14039,64 +14148,192 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var User = function () {
 
-  /**
-   * Constructor
-   *
-   * @param name
-   * @param image
-   * @param pubkey
-   */
-  function User(name, image, pubkey) {
-    _classCallCheck(this, User);
-
-    this._name = null;
-    this._image = null;
-    this._pubkey = null;
-
-    this._name = name;
-    this._image = image;
-    this._pubkey = pubkey;
-  }
-
-  /**
-   * @returns {String}
-   */
-
-
-  _createClass(User, [{
-    key: 'name',
-    get: function get() {
-      return this._name;
-    }
-
     /**
-     * @returns {*}
+     * Constructor
+     *
+     * @param name
      */
+    function User(name) {
+        _classCallCheck(this, User);
 
-  }, {
-    key: 'image',
-    get: function get() {
-      return this._image;
+        this._name = null;
+        this._image = null;
+        this._pubkey = null;
+
+        this._name = name;
     }
 
-    /**
-     * @returns {*}
-     */
+    _createClass(User, [{
+        key: 'image',
+        get: function get() {
+            return this._image;
+        },
+        set: function set(value) {
+            this._image = value;
+        }
+    }, {
+        key: 'pubkey',
+        get: function get() {
+            return this._pubkey;
+        },
+        set: function set(value) {
+            this._pubkey = value;
+        }
+    }, {
+        key: 'name',
+        get: function get() {
+            return this._name;
+        },
+        set: function set(value) {
+            this._name = value;
+        }
+    }]);
 
-  }, {
-    key: 'pubkey',
-    get: function get() {
-      return this._pubkey;
-    }
-  }]);
-
-  return User;
+    return User;
 }();
 
 exports.default = User;
 
 /***/ }),
 /* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Class for all gui elements
+ */
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ChatWindow = function () {
+
+    /**
+     * @param user
+     */
+
+
+    /**
+     * @type {Object}
+     * @private
+     */
+
+
+    /**
+     * @type {DataConnection}
+     * @private
+     */
+    function ChatWindow(user) {
+        _classCallCheck(this, ChatWindow);
+
+        this._user = null;
+        this._dataConnection = null;
+        this._fileConnection = null;
+        this._chatbox = null;
+        this._messages = null;
+
+        this._user = user;
+
+        this._chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', this._user.name);
+        var header = $('<h3></h3>').html('<strong>' + this._user.name + '</strong>');
+        this._messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
+        this._chatbox.append(header);
+        this._chatbox.append(this._messages);
+
+        this._chatbox.on('click', function () {
+            if ($(this).attr('class').indexOf('active') === -1) {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        });
+    }
+
+    /**
+     * @param dataConnection
+     */
+
+
+    // todo maybe remove, not used yet
+
+
+    /**
+     * @type {MediaConnection}
+     * @private
+     */
+
+
+    /**
+     * @type {User}
+     * @private
+     */
+
+
+    _createClass(ChatWindow, [{
+        key: 'initChat',
+        value: function initChat(dataConnection) {
+            this._dataConnection = dataConnection;
+            var chatbox = this._chatbox;
+            var user = this._user;
+
+            $('#connections').append(this._chatbox);
+
+            this._dataConnection.on('data', function (data) {
+                chatbox.append('<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
+            });
+
+            this._dataConnection.on('close', function () {
+                console.log(user.name + ' has left the chat.');
+                chatbox.remove();
+            });
+        }
+
+        /**
+         * @type {MediaConnection}
+         * @param fileConnection
+         */
+
+    }, {
+        key: 'initFileChat',
+        value: function initFileChat(fileConnection) {
+            this._fileConnection = fileConnection;
+            var chatbox = this._chatbox;
+            var user = this._user;
+
+            this._fileConnection.on('data', function (data) {
+                // If we're getting a file, create a URL for it.
+                if (data.constructor === ArrayBuffer) {
+                    var dataView = new Uint8Array(data);
+                    var dataBlob = new Blob([dataView]);
+                    var url = window.URL.createObjectURL(dataBlob);
+                    chatbox.append('<div><span class="file">' + user.name + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+                }
+            });
+        }
+    }], [{
+        key: 'current',
+        get: function get() {
+            return this._current;
+        },
+        set: function set(value) {
+            this._current = value;
+        }
+    }]);
+
+    return ChatWindow;
+}();
+
+exports.default = ChatWindow;
+
+/***/ }),
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14126,7 +14363,7 @@ Gui.logFunction = function () {
 exports.default = Gui;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14190,7 +14427,7 @@ var KeyPair = function () {
 exports.default = KeyPair;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14202,11 +14439,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _keypair = __webpack_require__(75);
+var _keypair = __webpack_require__(76);
 
 var _keypair2 = _interopRequireDefault(_keypair);
 
-var _rsalibwrapper = __webpack_require__(77);
+var _rsalibwrapper = __webpack_require__(78);
 
 var _rsalibwrapper2 = _interopRequireDefault(_rsalibwrapper);
 
@@ -14252,7 +14489,7 @@ var KeyGenerator = function () {
 exports.default = KeyGenerator;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14268,7 +14505,7 @@ var _config = __webpack_require__(37);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _cryptico = __webpack_require__(98);
+var _cryptico = __webpack_require__(99);
 
 var _cryptico2 = _interopRequireDefault(_cryptico);
 
@@ -14322,7 +14559,7 @@ var RSALibWrapper = function () {
 exports.default = RSALibWrapper;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(18);
@@ -14345,7 +14582,7 @@ function Entity(name, body) {
 Entity.prototype._createNamed = function createNamed(base) {
   var named;
   try {
-    named = __webpack_require__(157).runInThisContext(
+    named = __webpack_require__(158).runInThisContext(
       '(function ' + this.name + '(entity) {\n' +
       '  this._initNamed(entity);\n' +
       '})'
@@ -14389,7 +14626,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Reporter = __webpack_require__(12).Reporter;
@@ -15029,7 +15266,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -15156,7 +15393,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = __webpack_require__(40);
@@ -15204,17 +15441,17 @@ exports.tagByName = constants._reverse(exports.tag);
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var decoders = exports;
 
 decoders.der = __webpack_require__(41);
-decoders.pem = __webpack_require__(83);
+decoders.pem = __webpack_require__(84);
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -15269,17 +15506,17 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var encoders = exports;
 
 encoders.der = __webpack_require__(42);
-encoders.pem = __webpack_require__(85);
+encoders.pem = __webpack_require__(86);
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -15306,7 +15543,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15427,7 +15664,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(19)
@@ -15571,7 +15808,7 @@ exports.createDecipheriv = createDecipheriv
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(19)
@@ -15700,7 +15937,7 @@ exports.createCipher = createCipher
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var zeros = new Buffer(16)
@@ -15805,13 +16042,13 @@ function xor (a, b) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ebtk = __webpack_require__(25)
 var aes = __webpack_require__(28)
-var DES = __webpack_require__(91)
-var desModes = __webpack_require__(92)
+var DES = __webpack_require__(92)
+var desModes = __webpack_require__(93)
 var aesModes = __webpack_require__(20)
 function createCipher (suite, password) {
   var keyLen, ivLen
@@ -15884,7 +16121,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var CipherBase = __webpack_require__(8)
@@ -15934,7 +16171,7 @@ DES.prototype._final = function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports) {
 
 exports['des-ecb'] = {
@@ -15964,15 +16201,15 @@ exports['des-ede'] = {
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var _algos = __webpack_require__(52)
 var createHash = __webpack_require__(9)
 var inherits = __webpack_require__(1)
-var sign = __webpack_require__(94)
+var sign = __webpack_require__(95)
 var stream = __webpack_require__(11)
-var verify = __webpack_require__(95)
+var verify = __webpack_require__(96)
 
 var algos = {}
 Object.keys(_algos).forEach(function (key) {
@@ -16074,7 +16311,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -16266,7 +16503,7 @@ module.exports.makeKey = makeKey
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -16376,7 +16613,7 @@ module.exports = verify
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(3);
@@ -16505,7 +16742,7 @@ function formatReturnValue(bn, enc, len) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16546,7 +16783,7 @@ exports.hash = hash;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright (c) 2005  Tom Wu
@@ -18509,7 +18746,7 @@ SecureRandom.prototype.nextBytes = rng_get_bytes;/**
 *
 **/
 
-var crypto = __webpack_require__(99);
+var crypto = __webpack_require__(100);
  
 function SHA256(s){
 	return crypto.createHash('sha256').update(s, 'utf8').digest('hex');
@@ -19544,7 +19781,7 @@ var aes = (function () {
 module.exports.RSAKey = RSAKey;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19563,7 +19800,7 @@ var p = __webpack_require__(61)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
-var aes = __webpack_require__(90)
+var aes = __webpack_require__(91)
 ;[
   'Cipher',
   'createCipher',
@@ -19579,7 +19816,7 @@ var aes = __webpack_require__(90)
   exports[key] = aes[key]
 })
 
-var dh = __webpack_require__(105)
+var dh = __webpack_require__(106)
 ;[
   'DiffieHellmanGroup',
   'createDiffieHellmanGroup',
@@ -19590,7 +19827,7 @@ var dh = __webpack_require__(105)
   exports[key] = dh[key]
 })
 
-var sign = __webpack_require__(93)
+var sign = __webpack_require__(94)
 ;[
   'createSign',
   'Sign',
@@ -19600,9 +19837,9 @@ var sign = __webpack_require__(93)
   exports[key] = sign[key]
 })
 
-exports.createECDH = __webpack_require__(96)
+exports.createECDH = __webpack_require__(97)
 
-var publicEncrypt = __webpack_require__(137)
+var publicEncrypt = __webpack_require__(138)
 
 ;[
   'publicEncrypt',
@@ -19628,7 +19865,7 @@ var publicEncrypt = __webpack_require__(137)
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19700,7 +19937,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19848,7 +20085,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19998,7 +20235,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20060,7 +20297,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20323,13 +20560,13 @@ exports.padSplit = function padSplit(num, size, group) {
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(55)
-var primes = __webpack_require__(107)
+var primes = __webpack_require__(108)
 
-var DH = __webpack_require__(106)
+var DH = __webpack_require__(107)
 
 function getDiffieHellman (mod) {
   var prime = new Buffer(primes[mod].prime, 'hex')
@@ -20372,7 +20609,7 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(2);
@@ -20543,7 +20780,7 @@ function formatReturnValue(bn, enc) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -20582,7 +20819,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20964,7 +21201,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21404,7 +21641,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21591,7 +21828,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22536,7 +22773,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22709,7 +22946,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(119);
+  pre = __webpack_require__(120);
 } catch (e) {
   pre = undefined;
 }
@@ -22748,20 +22985,20 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var BN = __webpack_require__(2);
-var HmacDRBG = __webpack_require__(127);
+var HmacDRBG = __webpack_require__(128);
 var elliptic = __webpack_require__(3);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(114);
-var Signature = __webpack_require__(115);
+var KeyPair = __webpack_require__(115);
+var Signature = __webpack_require__(116);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -22995,7 +23232,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23121,7 +23358,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23263,7 +23500,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23274,8 +23511,8 @@ var elliptic = __webpack_require__(3);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(117);
-var Signature = __webpack_require__(118);
+var KeyPair = __webpack_require__(118);
+var Signature = __webpack_require__(119);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -23388,7 +23625,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23491,7 +23728,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23564,7 +23801,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -24350,7 +24587,7 @@ module.exports = {
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24477,7 +24714,7 @@ utils.intFromLE = intFromLE;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -24604,7 +24841,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(4);
@@ -24701,7 +24938,7 @@ BlockHash.prototype._pad = function pad() {
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hmac = exports;
@@ -24755,7 +24992,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(4);
@@ -24905,7 +25142,7 @@ var sh = [
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(4);
@@ -25475,7 +25712,7 @@ function g1_512_lo(xh, xl) {
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var utils = exports;
@@ -25738,7 +25975,7 @@ exports.shr64_lo = shr64_lo;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25858,7 +26095,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -25948,7 +26185,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports) {
 
 
@@ -25963,7 +26200,7 @@ module.exports = function(arr, obj){
 };
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -25982,7 +26219,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
@@ -26105,7 +26342,7 @@ exports.signature = asn1.define('signature', function () {
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// adapted from https://github.com/apatil/pemstrip
@@ -26142,7 +26379,7 @@ module.exports = function (okey, password) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports) {
 
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -26166,13 +26403,13 @@ module.exports = function (iterations, keylen) {
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(15);
 var EventEmitter = __webpack_require__(23);
 var Negotiator = __webpack_require__(62);
-var Reliable = __webpack_require__(146);
+var Reliable = __webpack_require__(147);
 
 /**
  * Wraps a DataChannel between two Peers.
@@ -26439,7 +26676,7 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(15);
@@ -26540,7 +26777,7 @@ module.exports = MediaConnection;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(15);
@@ -26760,11 +26997,11 @@ module.exports = Socket;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.publicEncrypt = __webpack_require__(139);
-exports.privateDecrypt = __webpack_require__(138);
+exports.publicEncrypt = __webpack_require__(140);
+exports.privateDecrypt = __webpack_require__(139);
 
 exports.privateEncrypt = function privateEncrypt(key, buf) {
   return exports.publicEncrypt(key, buf, true);
@@ -26775,7 +27012,7 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 };
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(26);
@@ -26889,7 +27126,7 @@ function compare(a, b){
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(26);
@@ -26990,14 +27227,14 @@ function nonZero(len, crypto) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(7)
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27067,14 +27304,14 @@ BufferList.prototype.concat = function (n) {
 };
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(67)
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var Stream = (function (){
@@ -27097,24 +27334,24 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(34)
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(35)
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(147);
+var util = __webpack_require__(148);
 
 /**
  * Reliable transfer for Chrome Canary DataChannel impl.
@@ -27435,7 +27672,7 @@ module.exports.Reliable = Reliable;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BinaryPack = __webpack_require__(57);
@@ -27536,7 +27773,7 @@ module.exports = util;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -27753,7 +27990,7 @@ module.exports = ripemd160
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -27946,7 +28183,7 @@ module.exports = ripemd160
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(6)))
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var exports = module.exports = function SHA (algorithm) {
@@ -27958,16 +28195,16 @@ var exports = module.exports = function SHA (algorithm) {
   return new Algorithm()
 }
 
-exports.sha = __webpack_require__(151)
-exports.sha1 = __webpack_require__(152)
-exports.sha224 = __webpack_require__(153)
+exports.sha = __webpack_require__(152)
+exports.sha1 = __webpack_require__(153)
+exports.sha224 = __webpack_require__(154)
 exports.sha256 = __webpack_require__(69)
-exports.sha384 = __webpack_require__(154)
+exports.sha384 = __webpack_require__(155)
 exports.sha512 = __webpack_require__(70)
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -28067,7 +28304,7 @@ module.exports = Sha
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -28172,7 +28409,7 @@ module.exports = Sha1
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -28231,7 +28468,7 @@ module.exports = Sha224
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(1)
@@ -28294,7 +28531,7 @@ module.exports = Sha384
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -28347,13 +28584,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(149);
+__webpack_require__(150);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -28427,10 +28664,10 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var indexOf = __webpack_require__(129);
+var indexOf = __webpack_require__(130);
 
 var Object_keys = function (obj) {
     if (Object.keys) return Object.keys(obj)
@@ -28571,7 +28808,7 @@ exports.createContext = Script.createContext = function (context) {
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -28599,12 +28836,6 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 159 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
 /* 160 */
 /***/ (function(module, exports) {
 
@@ -28612,6 +28843,12 @@ module.exports = function(module) {
 
 /***/ }),
 /* 161 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28635,49 +28872,63 @@ $(document).ready(function () {
     box.on('drop', function (e) {
         e.originalEvent.preventDefault();
         var file = e.originalEvent.dataTransfer.files[0];
-        chat.eachActiveConnection(function (c, $c) {
-            if (c.label === 'file') {
-                c.send(file);
-                $c.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
+
+        chat.eachActiveConnection(function (connection, activeChat) {
+            if (connection.label === 'file') {
+                connection.send(file);
+                activeChat.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
             }
         });
     });
+
+    /**
+     * @param e
+     */
     function doNothing(e) {
         e.preventDefault();
         e.stopPropagation();
     }
 
-    // Connect to a peer
+    /**
+     * Connect to a peer
+     */
     $('#connect').click(function () {
-        var requestedPeer = $('#rid').val();
-        if (!chat.connectedPeers[requestedPeer]) {
+        var username = $('#rid').val();
+        if (!chat.getUserFromList(username)) {
+
             // Create 2 connections, one labelled chat and another labelled file.
-            var c = chat.peer.connect(requestedPeer, {
+            var dataConnection = chat.peer.connect(username, {
                 label: 'chat',
                 serialization: 'none',
                 metadata: { message: 'hi i want to chat with you!' }
             });
-            c.on('open', function () {
-                chat.connect(c);
+            dataConnection.on('open', function () {
+                chat.connect(dataConnection);
             });
-            c.on('error', function (err) {
+            dataConnection.on('error', function (err) {
                 alert(err);
             });
-            var f = chat.peer.connect(requestedPeer, { label: 'file', reliable: true });
-            f.on('open', function () {
-                chat.connect(f);
+
+            var fileConnection = chat.peer.connect(username, {
+                label: 'file', reliable: true
             });
-            f.on('error', function (err) {
+
+            fileConnection.on('open', function () {
+                chat.connect(fileConnection);
+            });
+
+            fileConnection.on('error', function (err) {
                 alert(err);
             });
         }
-        chat.connectedPeers[requestedPeer] = 1;
+
+        chat.addUserToList(username);
     });
 
     // Close a connection.
     $('#close').click(function () {
-        chat.eachActiveConnection(function (c) {
-            c.close();
+        chat.eachActiveConnection(function (connection) {
+            connection.close();
         });
     });
 
@@ -28686,10 +28937,10 @@ $(document).ready(function () {
         e.preventDefault();
         // For each active connection, send the message.
         var msg = $('#text').val();
-        chat.eachActiveConnection(function (c, $c) {
-            if (c.label === 'chat') {
-                c.send(msg);
-                $c.find('.messages').append('<div><span class="you">You: </span>' + msg + '</div>');
+        chat.eachActiveConnection(function (connection, activeChat) {
+            if (connection.label === 'chat') {
+                connection.send(msg);
+                activeChat.find('.messages').append('<div><span class="you">You: </span>' + msg + '</div>');
             }
         });
         $('#text').val('');

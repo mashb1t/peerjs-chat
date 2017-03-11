@@ -13,34 +13,33 @@ class User {
      * Constructor
      *
      * @param name
-     * @param image
-     * @param pubkey
      */
-    constructor(name, image, pubkey) {
+    constructor(name) {
         this._name = name;
-        this._image = image;
-        this._pubkey = pubkey;
     }
 
-    /**
-     * @returns {String}
-     */
-    get name() {
-        return this._name;
-    }
-
-    /**
-     * @returns {*}
-     */
     get image() {
         return this._image;
     }
 
-    /**
-     * @returns {*}
-     */
+    set image(value) {
+        this._image = value;
+    }
+
     get pubkey() {
         return this._pubkey;
+    }
+
+    set pubkey(value) {
+        this._pubkey = value;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    set name(value) {
+        this._name = value;
     }
 }
 

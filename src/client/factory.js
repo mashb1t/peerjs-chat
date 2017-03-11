@@ -1,6 +1,7 @@
 'use strict';
 
 import User from "./domain/data/user";
+import ChatWindow from "./gui/chatwindow"
 import ChannelManager from "./domain/channelmanager";
 import config from "./config";
 import Peer from "peerjs";
@@ -21,12 +22,10 @@ class Factory {
      * Create a new user
      *
      * @param name
-     * @param image
-     * @param pubkey
      * @returns {User}
      */
-    static createUser(name, image, pubkey) {
-        return new User(name, image, pubkey);
+    static createUser(name) {
+        return new User(name);
     }
 
     /**
@@ -34,6 +33,14 @@ class Factory {
      */
     static createChannelManager() {
         return new ChannelManager();
+    }
+
+    /**
+     * @param user
+     * @returns {ChatWindow}
+     */
+    static createChatWindow(user) {
+        return new ChatWindow(user);
     }
 }
 

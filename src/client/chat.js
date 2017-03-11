@@ -9,15 +9,15 @@ import Peer from "peerjs";
  */
 class Chat {
 
-    _userList = {};
-
     /**
      * @type {Peer}
      * @private
      */
     _peer = null;
 
-    _connectedPeers = {};
+    _userList = {};
+
+    _chatWindowList = {};
 
     /**
      * Constructor
@@ -37,47 +37,73 @@ class Chat {
         return this._peer;
     }
 
-    get connectedPeers() {
-        return this._connectedPeers;
-    }
-
-    addConnectedPeer(peerId) {
-        this._connectedPeers[peerId] = 1;
-    }
-
-    deleteConnectedPeer(peerId) {
-        delete this._connectedPeers[peerId];
-    }
-
+    // /**
+    //  * @returns {{}}
+    //  */
+    // get userList() {
+    //     return this._userList;
+    // }
 
     /**
-     * Registers user and public key
-     *
-     * @param name
-     * @param image
-     * @param pubkey
+     * @param username
      */
-    registerNewUser(name, image, pubkey) {
-        this._userList[name] = Factory.createUser(name, image, pubkey);
+    getUserFromList(username) {
+        return this._userList[username];
     }
 
     /**
-     * Post public key to server and other clients
-     *
-     * @param publicKey
+     * @param user
      */
-    postPublicKey(publicKey) {
-
+    addUserToList(user) {
+        this._userList[user.name] = user;
     }
+
+    /**
+     * @param user
+     */
+    deleteUserFromList(user) {
+        delete this._userList[user.name];
+    }
+
+    /**
+     * @param user
+     */
+    getChatWindowFromList(user) {
+        return this._chatWindowList[user.name];
+    }
+
+    /**
+     * @param user
+     * @param chatWindow
+     */
+    addChatWindowToList(user, chatWindow) {
+        this._chatWindowList[user.name] = chatWindow;
+    }
+
+    /**
+     * @param user
+     */
+    deleteChatWindowFromList(user) {
+        delete this._chatWindowList[user.name];
+    }
+    //
+    // /**
+    //  * Post public key to server and other clients
+    //  *
+    //  * @param publicKey
+    //  */
+    // postPublicKey(publicKey) {
+    //
+    // }
 
     /**
      * Start the chat client
      */
     start() {
-        let keyPair = KeyGenerator.generateKeyPair();
-        let publicKey = keyPair.publicKey;
-
-        this.postPublicKey(publicKey);
+        // let keyPair = KeyGenerator.generateKeyPair();
+        // let publicKey = keyPair.publicKey;
+        //
+        // this.postPublicKey(publicKey);
 
         // Show this peer's ID.
         this._peer.on('open', function (id) {
@@ -92,7 +118,7 @@ class Chat {
         })
     }
 
-    connect = function (c) {
+    connect = function (connection) {
 
         // fix for peer call of this in closure connect
         let chat = this;
@@ -100,54 +126,97 @@ class Chat {
             chat = this.chat;
         }
 
-        // Handle a chat connection.
-        if (c.label === 'chat') {
-            let chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
-            let header = $('<h3></h3>').html('<strong>' + c.peer + '</strong>');
-            let messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
-            chatbox.append(header);
-            chatbox.append(messages);
-
-            // Select connection handler.
-            chatbox.on('click', function () {
-                if ($(this).attr('class').indexOf('active') === -1) {
-                    $(this).addClass('active');
-                } else {
-                    $(this).removeClass('active');
-                }
-            });
-            $('.filler').hide();
-            $('#connections').append(chatbox);
-
-            c.on('data', function (data) {
-                messages.append('<div><span class="peer">' + c.peer + '</span>: ' + data +
-                    '</div>');
-            });
-            c.on('close', function () {
-                alert(c.peer + ' has left the chat.');
-                chatbox.remove();
-                if ($('.connection').length === 0) {
-                    $('.filler').show();
-                }
-                // todo somehow replace with class reference.
-                chat.deleteConnectedPeer(c.peer);
-            });
-        } else if (c.label === 'file') {
-            c.on('data', function (data) {
-                // If we're getting a file, create a URL for it.
-                if (data.constructor === ArrayBuffer) {
-                    let dataView = new Uint8Array(data);
-                    let dataBlob = new Blob([dataView]);
-                    let url = window.URL.createObjectURL(dataBlob);
-                    $('#' + c.peer).find('.messages').append('<div><span class="file">' +
-                        c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
-                }
-            });
+        switch (connection.label) {
+            case 'chat':
+                chat.initChatConnection(connection);
+                break;
+            case 'file':
+                chat.initFileConnection(connection);
+                break;
         }
-        // todo somehow replace with class reference
-        chat.addConnectedPeer(c.peer);
     };
 
+    /**
+     * @param dataConnection
+     */
+    initChatConnection(dataConnection) {
+        let username = dataConnection.peer;
+
+        // fix for peer call of this in closure connect
+        let chat = this;
+        if (this instanceof Peer) {
+            chat = this.chat;
+        }
+
+        let user = chat.getOrCreateUser(username);
+        let chatWindow = chat.getOrCreateChatWindow(user);
+
+        chatWindow.initChat(dataConnection);
+
+        $('.filler').hide();
+
+        dataConnection.on('close', function () {
+            if ($('.connection').length === 0) {
+                $('.filler').show();
+            }
+            chat.deleteUserFromList(user);
+            chat.deleteChatWindowFromList(user);
+        });
+    }
+
+    /**
+     * @param fileConnection
+     */
+    initFileConnection(fileConnection) {
+        let username = fileConnection.peer;
+
+        // fix for peer call of this in closure connect
+        let chat = this;
+        if (this instanceof Peer) {
+            chat = this.chat;
+        }
+
+        let user = chat.getOrCreateUser(username);
+        let chatWindow = chat.getOrCreateChatWindow(user);
+
+        chatWindow.initFileChat(fileConnection);
+    }
+
+    /**
+     * @param username
+     * @returns {User}
+     */
+    getOrCreateUser(username) {
+        let user = this.getUserFromList(username);
+
+        if (!user) {
+            user = Factory.createUser(username);
+            this.addUserToList(user)
+        }
+
+        return user;
+    }
+
+    /**
+     * @param user
+     * @returns {User}
+     */
+    getOrCreateChatWindow(user) {
+        let chatWindow = this.getChatWindowFromList(user);
+
+        if (!chatWindow) {
+            chatWindow = Factory.createChatWindow(user);
+            this.addChatWindowToList(user, chatWindow);
+        }
+
+        return chatWindow;
+    }
+
+    /**
+     * Executes a given function for each active connection
+     *
+     * @param fn
+     */
     eachActiveConnection(fn) {
         let actives = $('.connection.active');
         let checkedIds = {};
@@ -155,22 +224,20 @@ class Chat {
         let chat = this;
 
         actives.each(function () {
-            let peerId = $(this).attr('id');
+            // todo swap with reference to connection
+            let username = $(this).attr('id');
 
-            if (!checkedIds[peerId]) {
-                let conns = chat._peer.connections[peerId];
-                for (let i = 0, ii = conns.length; i < ii; i += 1) {
-                    let conn = conns[i];
-                    fn(conn, $(this));
+            if (!checkedIds[username]) {
+                let connections = chat._peer.connections[username];
+                for (let i = 0, ii = connections.length; i < ii; i += 1) {
+                    let connection = connections[i];
+                    fn(connection, $(this));
                 }
             }
 
-            checkedIds[peerId] = 1;
+            checkedIds[username] = 1;
         });
     }
 }
 
 export default Chat;
-
-// Make sure things clean up properly.
-

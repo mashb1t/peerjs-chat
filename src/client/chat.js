@@ -1,7 +1,6 @@
 'use strict';
 
 import Factory from "./factory";
-import KeyGenerator from "./rsa/keygenerator";
 import Peer from "peerjs";
 
 /**
@@ -86,6 +85,7 @@ class Chat {
     deleteChatWindowFromList(user) {
         delete this._chatWindowList[user.name];
     }
+
     //
     // /**
     //  * Post public key to server and other clients
@@ -231,7 +231,11 @@ class Chat {
                 let connections = chat._peer.connections[username];
                 for (let i = 0, ii = connections.length; i < ii; i += 1) {
                     let connection = connections[i];
-                    fn(connection, $(this));
+
+                    // todo workaround for closed peers which are still in the array
+                    if (connection.open) {
+                        fn(connection, $(this));
+                    }
                 }
             }
 

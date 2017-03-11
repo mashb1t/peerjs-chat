@@ -84,13 +84,16 @@ $(document).ready(function () {
         e.preventDefault();
         // For each active connection, send the message.
         let msg = $('#text').val();
-        chat.eachActiveConnection(function (connection, activeChat) {
-            if (connection.label === 'chat') {
-                connection.send(msg);
-                activeChat.append('<div><span class="you">You: </span>' + msg
-                    + '</div>');
-            }
-        });
+
+        if (msg) {
+            chat.eachActiveConnection(function (connection, activeChat) {
+                if (connection.label === 'chat') {
+                    connection.send(msg);
+                    activeChat.append('<div><span class="you">You: </span>' + msg
+                        + '</div>');
+                }
+            });
+        }
         $('#text').val('');
         $('#text').focus();
     });

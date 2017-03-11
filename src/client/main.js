@@ -1,7 +1,7 @@
 'use strict';
 
 import Chat from "./chat";
-import Utils from "./util";
+import Utils from "./utils";
 
 $(function () {
 
@@ -18,8 +18,18 @@ $(function () {
 
         chat.eachActiveConnection(function (connection, activeChat) {
             if (connection.label === 'file') {
-                connection.send(file);
-                Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file.</span></div>');
+                let fileWithMetaData = {
+                    filename: file.name,
+                    type: file.type,
+                    file: file
+                };
+                connection.send(fileWithMetaData);
+
+                let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
+
+                if (htmlString) {
+                    Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+                }
             }
         });
     });

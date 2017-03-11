@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -656,14 +656,130 @@ var Utils = function () {
 
     _createClass(Utils, null, [{
         key: 'appendAndScrollDown',
+
+
+        /**
+         * Appends a string to an element and scrolls to the bottom
+         *
+         * @param activeChat
+         * @param content
+         */
         value: function appendAndScrollDown(activeChat, content) {
             activeChat.append(content);
             activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
+        }
+
+        /**
+         * Function for logging to logfield
+         */
+
+    }, {
+        key: 'beginsWith',
+        value: function beginsWith(needle, haystack) {
+            return haystack.substr(0, needle.length) == needle;
+        }
+
+        /**
+         * Creates a blub, hopefully compatible with all relevant browsers
+         *
+         * @param data
+         * @param type
+         * @returns {Blob}
+         */
+
+    }, {
+        key: 'createBlob',
+        value: function createBlob(data, type) {
+            try {
+                return new Blob([data], { type: type });
+            } catch (e) {
+                try {
+                    var BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
+                    if (e.name == 'TypeError' && window.BlobBuilder) {
+                        var bb = new BlobBuilder();
+                        bb.append([data]);
+                        return bb.getBlob(type);
+                    } else if (e.name == 'InvalidStateError') {
+                        return new Blob([data], { type: type });
+                    }
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        /**
+         * Creates an html element with data as source
+         *
+         * @param file
+         * @param type
+         * @param filename
+         * @returns {String}
+         */
+
+    }, {
+        key: 'createBlobHtmlView',
+        value: function createBlobHtmlView(file, type, filename) {
+            var url = null;
+            var htmlString = null;
+
+            if (file.constructor === ArrayBuffer) {
+                var dataView = new Uint8Array(file);
+                var blob = Utils.createBlob(dataView, type);
+                url = window.URL.createObjectURL(blob);
+            } else if (file.constructor === File) {
+                url = window.URL.createObjectURL(file);
+            }
+
+            if (url) {
+                htmlString = Utils._getHtmlStringByType(url, type, filename);
+            }
+
+            return htmlString;
+        }
+
+        /**
+         * Create html element depending on type
+         *
+         * @param url
+         * @param type
+         * @param filename
+         * @returns {String}
+         * @private
+         */
+
+    }, {
+        key: '_getHtmlStringByType',
+        value: function _getHtmlStringByType(url, type, filename) {
+            var htmlString = null;
+            var firstPartOfType = type.substr(0, type.indexOf('/'));
+
+            switch (firstPartOfType) {
+                case 'image':
+                    htmlString = '<img src="' + url + '" alt="' + filename + '">';
+                    break;
+                case 'audio':
+                    htmlString = '<audio controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 audio elements.' + '</audio>';
+                    break;
+                case 'video':
+                    htmlString = '<video controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 video elements.' + '</video>';
+                    break;
+                default:
+                    htmlString = '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+            }
+
+            return htmlString;
         }
     }]);
 
     return Utils;
 }();
+
+Utils.logField = $('.log');
+
+Utils.logFunction = function () {
+    var copy = Array.prototype.slice.call(arguments).join(' ');
+    Utils.logField.append(copy + '<br>');
+};
 
 exports.default = Utils;
 
@@ -1679,9 +1795,9 @@ module.exports = Negotiator;
 
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
-var Socket = __webpack_require__(17);
-var MediaConnection = __webpack_require__(16);
-var DataConnection = __webpack_require__(15);
+var Socket = __webpack_require__(16);
+var MediaConnection = __webpack_require__(15);
+var DataConnection = __webpack_require__(14);
 
 /**
  * A peer who can initiate connections with other peers.
@@ -2500,9 +2616,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _gui = __webpack_require__(14);
+var _utils = __webpack_require__(3);
 
-var _gui2 = _interopRequireDefault(_gui);
+var _utils2 = _interopRequireDefault(_utils);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2513,7 +2629,7 @@ var config = {
             "port": 9000,
             "path": "/",
             "debug": 3,
-            "logFunction": _gui2.default.logFunction
+            "logFunction": _utils2.default.logFunction
         }
     },
     "encryption": {
@@ -2635,9 +2751,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(3);
+var _utils = __webpack_require__(3);
 
-var _util2 = _interopRequireDefault(_util);
+var _utils2 = _interopRequireDefault(_utils);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2719,7 +2835,7 @@ var ChatWindow = function () {
             $('#connections').append(this._chatbox);
 
             this._dataConnection.on('data', function (data) {
-                _util2.default.appendAndScrollDown(chatbox, '<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
+                _utils2.default.appendAndScrollDown(chatbox, '<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
             });
 
             this._dataConnection.on('close', function () {
@@ -2741,12 +2857,14 @@ var ChatWindow = function () {
             var user = this._user;
 
             this._fileConnection.on('data', function (data) {
-                // If we're getting a file, create a URL for it.
-                if (data.constructor === ArrayBuffer) {
-                    var dataView = new Uint8Array(data);
-                    var dataBlob = new Blob([dataView]);
-                    var url = window.URL.createObjectURL(dataBlob);
-                    _util2.default.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a <img  src="' + url + '">file</img>.</span></div>');
+                var type = data.type;
+                var filename = data.filename;
+                var file = data.file;
+
+                var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
+
+                if (htmlString) {
+                    _utils2.default.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
                 }
             });
         }
@@ -2769,40 +2887,10 @@ exports.default = ChatWindow;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-/**
- * Class for all gui elements
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Gui = function Gui() {
-  _classCallCheck(this, Gui);
-};
-
-Gui.logField = $('.log');
-
-Gui.logFunction = function () {
-  var copy = Array.prototype.slice.call(arguments).join(' ');
-  Gui.logField.append(copy + '<br>');
-};
-
-exports.default = Gui;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var util = __webpack_require__(0);
 var EventEmitter = __webpack_require__(1);
 var Negotiator = __webpack_require__(7);
-var Reliable = __webpack_require__(18);
+var Reliable = __webpack_require__(17);
 
 /**
  * Wraps a DataChannel between two Peers.
@@ -3069,7 +3157,7 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
@@ -3170,7 +3258,7 @@ module.exports = MediaConnection;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
@@ -3390,10 +3478,10 @@ module.exports = Socket;
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(19);
+var util = __webpack_require__(18);
 
 /**
  * Reliable transfer for Chrome Canary DataChannel impl.
@@ -3714,7 +3802,7 @@ module.exports.Reliable = Reliable;
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BinaryPack = __webpack_require__(5);
@@ -3815,7 +3903,7 @@ module.exports = util;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3825,9 +3913,9 @@ var _chat = __webpack_require__(9);
 
 var _chat2 = _interopRequireDefault(_chat);
 
-var _util = __webpack_require__(3);
+var _utils = __webpack_require__(3);
 
-var _util2 = _interopRequireDefault(_util);
+var _utils2 = _interopRequireDefault(_utils);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3846,8 +3934,18 @@ $(function () {
 
         chat.eachActiveConnection(function (connection, activeChat) {
             if (connection.label === 'file') {
-                connection.send(file);
-                _util2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file.</span></div>');
+                var fileWithMetaData = {
+                    filename: file.name,
+                    type: file.type,
+                    file: file
+                };
+                connection.send(fileWithMetaData);
+
+                var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
+
+                if (htmlString) {
+                    _utils2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+                }
             }
         });
     });
@@ -3916,7 +4014,7 @@ $(function () {
             chat.eachActiveConnection(function (connection, activeChat) {
                 if (connection.label === 'chat') {
                     connection.send(msg);
-                    _util2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
+                    _utils2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
                 }
             });
         }

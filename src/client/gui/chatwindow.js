@@ -1,6 +1,6 @@
 'use strict';
 
-import Utils from "../util";
+import Utils from "../utils";
 
 /**
  * Class for all gui elements
@@ -87,12 +87,14 @@ class ChatWindow {
         let user = this._user;
 
         this._fileConnection.on('data', function (data) {
-            // If we're getting a file, create a URL for it.
-            if (data.constructor === ArrayBuffer) {
-                let dataView = new Uint8Array(data);
-                let dataBlob = new Blob([dataView]);
-                let url = window.URL.createObjectURL(dataBlob);
-                Utils.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a <img  src="' + url + '">file</img>.</span></div>');
+            let type = data.type;
+            let filename = data.filename;
+            let file = data.file;
+
+            let htmlString = Utils.createBlobHtmlView(file, type, filename);
+
+            if (htmlString) {
+                Utils.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
             }
         });
     }

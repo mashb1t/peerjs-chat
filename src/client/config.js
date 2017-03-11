@@ -1,4 +1,4 @@
-import Gui from "./gui/gui";
+import Utils from "./utils";
 
 let config = {
     "peerjs": {
@@ -7,7 +7,7 @@ let config = {
             "port": 9000,
             "path": "/",
             "debug": 3,
-            "logFunction": Gui.logFunction
+            "logFunction": Utils.logFunction
         }
     },
     "encryption": {

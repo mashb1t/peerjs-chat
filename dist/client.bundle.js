@@ -2682,6 +2682,7 @@ var ChatWindow = function () {
 
             this._dataConnection.on('data', function (data) {
                 chatbox.append('<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
+                chatbox.animate({ scrollTop: chatbox[0].scrollHeight }, 1000);
             });
 
             this._dataConnection.on('close', function () {
@@ -3874,7 +3875,9 @@ $(document).ready(function () {
             chat.eachActiveConnection(function (connection, activeChat) {
                 if (connection.label === 'chat') {
                     connection.send(msg);
+                    console.log(activeChat);
                     activeChat.append('<div><span class="you">You: </span>' + msg + '</div>');
+                    activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
                 }
             });
         }

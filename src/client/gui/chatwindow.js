@@ -67,6 +67,7 @@ class ChatWindow {
 
         this._dataConnection.on('data', function (data) {
             chatbox.append('<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
+            chatbox.animate({scrollTop: chatbox[0].scrollHeight}, 1000);
         });
 
         this._dataConnection.on('close', function () {

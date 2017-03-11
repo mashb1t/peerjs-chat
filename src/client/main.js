@@ -89,8 +89,8 @@ $(document).ready(function () {
             chat.eachActiveConnection(function (connection, activeChat) {
                 if (connection.label === 'chat') {
                     connection.send(msg);
-                    activeChat.append('<div><span class="you">You: </span>' + msg
-                        + '</div>');
+                    activeChat.append('<div><span class="you">You: </span>' + msg + '</div>');
+                    activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
                 }
             });
         }

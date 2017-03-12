@@ -2,7 +2,6 @@
 
 import User from "./domain/data/user";
 import ChatWindow from "./gui/chatwindow"
-import ChannelManager from "./domain/channelmanager";
 import config from "./config";
 import Peer from "peerjs";
 
@@ -27,13 +26,6 @@ class Factory {
      */
     static createUser(name) {
         return new User(name);
-    }
-
-    /**
-     * @returns {ChannelManager}
-     */
-    static createChannelManager() {
-        return new ChannelManager();
     }
 
     /**

@@ -20,9 +20,10 @@ let config = {
     peerjs: {
         username: $('#username').text(),
         options: {
-            host: window.location.hostname,
+            host: 'mash1t.de',
             port: 9000,
             path: "/",
+            secure: true,
             debug: 3,
             logFunction: function () {
                 let copy = Array.prototype.slice.call(arguments).join(' ');

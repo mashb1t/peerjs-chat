@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,15 +55,15 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74,7 +74,7 @@ var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
 var BinaryPack = __webpack_require__(7);
-var RTCPeerConnection = __webpack_require__(5).RTCPeerConnection;
+var RTCPeerConnection = __webpack_require__(4).RTCPeerConnection;
 
 var util = {
   noop: function() {},
@@ -423,9 +423,10 @@ var config = {
     peerjs: {
         username: $('#username').text(),
         options: {
-            host: window.location.hostname,
+            host: 'mash1t.de',
             port: 9000,
             path: "/",
+            secure: true,
             debug: 3,
             logFunction: function logFunction() {
                 var copy = Array.prototype.slice.call(arguments).join(' ');
@@ -465,7 +466,7 @@ var _chatwindowlist = __webpack_require__(6);
 
 var _chatwindowlist2 = _interopRequireDefault(_chatwindowlist);
 
-var _push = __webpack_require__(19);
+var _push = __webpack_require__(18);
 
 var _push2 = _interopRequireDefault(_push);
 
@@ -688,10 +689,10 @@ var Utils = function () {
         value: function pushNotification(user, data) {
             _push2.default.create(user.name, {
                 body: data,
-                icon: {
-                    x16: user.icon,
-                    x32: user.icon
-                },
+                // icon: {
+                //     x16: user.icon,
+                //     x32: user.icon
+                // },
                 timeout: 5000
             });
         }
@@ -704,103 +705,6 @@ exports.default = Utils;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _user = __webpack_require__(13);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _chatwindow = __webpack_require__(15);
-
-var _chatwindow2 = _interopRequireDefault(_chatwindow);
-
-var _channelmanager = __webpack_require__(12);
-
-var _channelmanager2 = _interopRequireDefault(_channelmanager);
-
-var _config = __webpack_require__(1);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _peerjs = __webpack_require__(10);
-
-var _peerjs2 = _interopRequireDefault(_peerjs);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Factory class for multiple instances
- */
-var Factory = function () {
-  function Factory() {
-    _classCallCheck(this, Factory);
-  }
-
-  _createClass(Factory, null, [{
-    key: "createPeerConnection",
-
-
-    /**
-     * @returns {Peer}
-     */
-    value: function createPeerConnection() {
-      // return new Peer(config.peerjs.username, config.peerjs.options);
-      return new _peerjs2.default(_config2.default.peerjs.options);
-    }
-
-    /**
-     * Create a new user
-     *
-     * @param name
-     * @returns {User}
-     */
-
-  }, {
-    key: "createUser",
-    value: function createUser(name) {
-      return new _user2.default(name);
-    }
-
-    /**
-     * @returns {ChannelManager}
-     */
-
-  }, {
-    key: "createChannelManager",
-    value: function createChannelManager() {
-      return new _channelmanager2.default();
-    }
-
-    /**
-     * @param user
-     * @returns {ChatWindow}
-     */
-
-  }, {
-    key: "createChatWindow",
-    value: function createChatWindow(user) {
-      return new _chatwindow2.default(user);
-    }
-  }]);
-
-  return Factory;
-}();
-
-exports.default = Factory;
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1036,7 +940,7 @@ module.exports = EventEmitter;
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports.RTCSessionDescription = window.RTCSessionDescription ||
@@ -1046,6 +950,89 @@ module.exports.RTCPeerConnection = window.RTCPeerConnection ||
 module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 	window.mozRTCIceCandidate;
 
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _user = __webpack_require__(12);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _chatwindow = __webpack_require__(14);
+
+var _chatwindow2 = _interopRequireDefault(_chatwindow);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _peerjs = __webpack_require__(10);
+
+var _peerjs2 = _interopRequireDefault(_peerjs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Factory class for multiple instances
+ */
+var Factory = function () {
+  function Factory() {
+    _classCallCheck(this, Factory);
+  }
+
+  _createClass(Factory, null, [{
+    key: "createPeerConnection",
+
+
+    /**
+     * @returns {Peer}
+     */
+    value: function createPeerConnection() {
+      // return new Peer(config.peerjs.username, config.peerjs.options);
+      return new _peerjs2.default(_config2.default.peerjs.options);
+    }
+
+    /**
+     * Create a new user
+     *
+     * @param name
+     * @returns {User}
+     */
+
+  }, {
+    key: "createUser",
+    value: function createUser(name) {
+      return new _user2.default(name);
+    }
+
+    /**
+     * @param user
+     * @returns {ChatWindow}
+     */
+
+  }, {
+    key: "createChatWindow",
+    value: function createChatWindow(user) {
+      return new _chatwindow2.default(user);
+    }
+  }]);
+
+  return Factory;
+}();
+
+exports.default = Factory;
 
 /***/ }),
 /* 6 */
@@ -1060,7 +1047,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(3);
+var _factory = __webpack_require__(5);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -1776,9 +1763,9 @@ module.exports.BufferBuilder = BufferBuilder;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var RTCPeerConnection = __webpack_require__(5).RTCPeerConnection;
-var RTCSessionDescription = __webpack_require__(5).RTCSessionDescription;
-var RTCIceCandidate = __webpack_require__(5).RTCIceCandidate;
+var RTCPeerConnection = __webpack_require__(4).RTCPeerConnection;
+var RTCSessionDescription = __webpack_require__(4).RTCSessionDescription;
+var RTCIceCandidate = __webpack_require__(4).RTCIceCandidate;
 
 /**
  * Manages all negotiations between Peers.
@@ -2091,10 +2078,10 @@ module.exports = Negotiator;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(4);
-var Socket = __webpack_require__(18);
-var MediaConnection = __webpack_require__(17);
-var DataConnection = __webpack_require__(16);
+var EventEmitter = __webpack_require__(3);
+var Socket = __webpack_require__(17);
+var MediaConnection = __webpack_require__(16);
+var DataConnection = __webpack_require__(15);
 
 /**
  * A peer who can initiate connections with other peers.
@@ -2602,7 +2589,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(3);
+var _factory = __webpack_require__(5);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2614,7 +2601,7 @@ var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _userlist = __webpack_require__(14);
+var _userlist = __webpack_require__(13);
 
 var _userlist2 = _interopRequireDefault(_userlist);
 
@@ -2914,38 +2901,6 @@ exports.default = Chat;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _factory = __webpack_require__(3);
-
-var _factory2 = _interopRequireDefault(_factory);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Manager for event binding and channel subscriptions
- *
- * todo maybe switch channel list with pusher channel list
- */
-var ChannelManager = function ChannelManager() {
-  _classCallCheck(this, ChannelManager);
-
-  this._channelList = {};
-};
-
-exports.default = ChannelManager;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 /**
  * Domain object for chat user
  */
@@ -3018,7 +2973,7 @@ var User = function () {
 exports.default = User;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3030,7 +2985,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(3);
+var _factory = __webpack_require__(5);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -3225,7 +3180,7 @@ UserList._currentUser = null;
 exports.default = UserList;
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3415,13 +3370,13 @@ var ChatWindow = function () {
 exports.default = ChatWindow;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(4);
+var EventEmitter = __webpack_require__(3);
 var Negotiator = __webpack_require__(9);
-var Reliable = __webpack_require__(20);
+var Reliable = __webpack_require__(19);
 
 /**
  * Wraps a DataChannel between two Peers.
@@ -3688,11 +3643,11 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(4);
+var EventEmitter = __webpack_require__(3);
 var Negotiator = __webpack_require__(9);
 
 /**
@@ -3789,11 +3744,11 @@ module.exports = MediaConnection;
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(4);
+var EventEmitter = __webpack_require__(3);
 
 /**
  * An abstraction on top of WebSockets and XHR streaming to provide fastest
@@ -4009,7 +3964,7 @@ module.exports = Socket;
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -4602,10 +4557,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(21);
+var util = __webpack_require__(20);
 
 /**
  * Reliable transfer for Chrome Canary DataChannel impl.
@@ -4926,7 +4881,7 @@ module.exports.Reliable = Reliable;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BinaryPack = __webpack_require__(7);
@@ -5027,7 +4982,7 @@ module.exports = util;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -2565,7 +2565,7 @@ var Chat = function () {
 
                         var user = chat.getOrCreateUser(username);
 
-                        var userListEntry = $('<li class="user" id="' + user.name + '">' + '<img class="gravatar" src="' + user.image + '">' + '<span class="name">' + user.name + '</span>' + '</li>');
+                        var userListEntry = $('<li class="user disconnected" id="' + user.name + '">' + '<img class="gravatar" src="' + user.image + '">' + '<span class="name">' + user.name + '</span>' + '</li>');
 
                         userListEntry.on('click', function () {
 
@@ -2608,7 +2608,6 @@ var Chat = function () {
                                     alert(err);
                                 });
 
-                                user.connected = true;
                                 chat.addUserToList(user);
                             }
 
@@ -2654,9 +2653,17 @@ var Chat = function () {
                 if ($('.connection').length === 0) {
                     $('.filler').show();
                 }
+
+                var userListEntry = _config2.default.gui.userlist.find('#' + user.name);
+                $(userListEntry).removeClass('connected').addClass('disconnected');
+
+                user.connected = false;
                 chat.deleteUserFromList(user);
                 chat.deleteChatWindowFromList(user);
             });
+
+            var userListEntry = _config2.default.gui.userlist.find('#' + user.name);
+            $(userListEntry).removeClass('disconnected').addClass('connected');
 
             user.connected = true;
         }
@@ -2953,21 +2960,22 @@ var ChatWindow = function () {
             this._dataConnection = dataConnection;
             var messages = this._messages;
             var user = this._user;
+            var chatWindow = this;
 
             $('#connections').append(this._messages);
 
             this._dataConnection.on('data', function (data) {
 
-                var message = this.createMessage(data, 'foreign');
-
-                // todo replace with message list item
+                var message = chatWindow.createMessage(data, 'foreign');
                 _utils2.default.appendAndScrollDown(messages, message);
             });
 
             this._dataConnection.on('close', function () {
-                //todo write to chat
-                console.log(user.name + ' has left the chat.');
-                // messages.remove();
+
+                var data = user.name + ' has left the chat.';
+
+                var message = chatWindow.createMessage(data, 'foreign');
+                _utils2.default.appendAndScrollDown(messages, message);
             });
         }
 
@@ -2991,6 +2999,7 @@ var ChatWindow = function () {
                 var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
 
                 if (htmlString) {
+                    // todo adjust output
                     _utils2.default.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
                 }
             });

@@ -50,21 +50,22 @@ class ChatWindow {
         this._dataConnection = dataConnection;
         let messages = this._messages;
         let user = this._user;
+        let chatWindow = this;
 
         $('#connections').append(this._messages);
 
         this._dataConnection.on('data', function (data) {
 
-            let message = this.createMessage(data, 'foreign');
-
-            // todo replace with message list item
+            let message = chatWindow.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
         });
 
         this._dataConnection.on('close', function () {
-            //todo write to chat
-            console.log(user.name + ' has left the chat.');
-            // messages.remove();
+
+            let data = user.name + ' has left the chat.';
+
+            let message = chatWindow.createMessage(data, 'foreign');
+            Utils.appendAndScrollDown(messages, message);
         });
     }
 
@@ -85,6 +86,7 @@ class ChatWindow {
             let htmlString = Utils.createBlobHtmlView(file, type, filename);
 
             if (htmlString) {
+                // todo adjust output
                 Utils.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
             }
         });

@@ -124,7 +124,7 @@ class Chat {
 
                     let user = chat.getOrCreateUser(username);
 
-                    let userListEntry = $('<li class="user" id="' + user.name + '">' +
+                    let userListEntry = $('<li class="user disconnected" id="' + user.name + '">' +
                         '<img class="gravatar" src="' + user.image + '">' +
                         '<span class="name">' + user.name + '</span>' +
                         '</li>');
@@ -171,7 +171,6 @@ class Chat {
                                 alert(err);
                             });
 
-                            user.connected = true;
                             chat.addUserToList(user);
                         }
 
@@ -232,9 +231,17 @@ class Chat {
             if ($('.connection').length === 0) {
                 $('.filler').show();
             }
+
+            let userListEntry = config.gui.userlist.find('#' + user.name);
+            $(userListEntry).removeClass('connected').addClass('disconnected');
+
+            user.connected = false;
             chat.deleteUserFromList(user);
             chat.deleteChatWindowFromList(user);
         });
+
+        let userListEntry = config.gui.userlist.find('#' + user.name);
+        $(userListEntry).removeClass('disconnected').addClass('connected');
 
         user.connected = true;
     }

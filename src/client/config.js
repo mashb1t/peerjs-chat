@@ -15,6 +15,7 @@ let config = {
         fileUploadField: $('#fileupload'), //inactive
         emojiButton: $('#emoji'), //inactive
         logField: $('.log'),
+        lightbox: function() {},
     },
     peerjs: {
         username: $('#username').text(),

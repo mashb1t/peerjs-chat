@@ -417,7 +417,8 @@ var config = {
         sendFileButton: $('#send-file'), //inactive
         fileUploadField: $('#fileupload'), //inactive
         emojiButton: $('#emoji'), //inactive
-        logField: $('.log')
+        logField: $('.log'),
+        lightbox: function lightbox() {}
     },
     peerjs: {
         username: $('#username').text(),
@@ -486,6 +487,7 @@ var Utils = function () {
         value: function appendAndScrollDown(activeChat, content) {
             activeChat.append(content);
             Utils.scrollDown(activeChat);
+            Utils.refreshLightBox();
         }
     }, {
         key: "scrollDown",
@@ -569,7 +571,7 @@ var Utils = function () {
 
             switch (firstPartOfType) {
                 case 'image':
-                    htmlString = '<img src="' + url + '" alt="' + filename + '"><br>';
+                    htmlString = '<img src="' + url + '" rel="lightbox" alt="' + filename + '"><br>';
                     break;
                 case 'audio':
                     htmlString = '<audio controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 audio elements.' + '</audio><br>';
@@ -662,6 +664,15 @@ var Utils = function () {
             _config2.default.gui.sendMessageButton.prop('disabled', true);
             _config2.default.gui.sendFileButton.prop('disabled', true);
             _config2.default.gui.videoChatButton.prop('disabled', true);
+        }
+    }, {
+        key: "refreshLightBox",
+        value: function refreshLightBox() {
+            try {
+                _config2.default.gui.lightbox();
+            } catch (e) {
+                // todo handle error due to no images
+            }
         }
     }]);
 

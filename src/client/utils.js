@@ -15,6 +15,7 @@ class Utils {
     static appendAndScrollDown(activeChat, content) {
         activeChat.append(content);
         Utils.scrollDown(activeChat);
+        Utils.refreshLightBox();
     }
 
     static scrollDown(element) {
@@ -91,7 +92,7 @@ class Utils {
 
         switch (firstPartOfType) {
             case 'image':
-                htmlString = '<img src="' + url + '" alt="' + filename + '"><br>';
+                htmlString = '<img src="' + url + '" rel="lightbox" alt="' + filename + '"><br>';
                 break;
             case 'audio':
                 htmlString = '<audio controls>' +
@@ -177,7 +178,14 @@ class Utils {
         config.gui.sendMessageButton.prop('disabled', true);
         config.gui.sendFileButton.prop('disabled', true);
         config.gui.videoChatButton.prop('disabled', true);
+    }
 
+    static refreshLightBox() {
+        try {
+            config.gui.lightbox();
+        } catch (e) {
+            // todo handle error due to no images
+        }
     }
 }
 

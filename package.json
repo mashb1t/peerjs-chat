@@ -22,7 +22,8 @@
   "dependencies": {
     "cryptico": "^1.0.2",
     "peer": "^0.2.8",
-    "peerjs": "^0.3.14"
+    "peerjs": "^0.3.14",
+    "push.js": "0.0.12"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",

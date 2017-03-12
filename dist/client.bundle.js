@@ -914,7 +914,8 @@ var Factory = function () {
      * @returns {Peer}
      */
     value: function createPeerConnection() {
-      return new _peerjs2.default(_config2.default.peerjs.username, _config2.default.peerjs.options);
+      // return new Peer(config.peerjs.username, config.peerjs.options);
+      return new _peerjs2.default(_config2.default.peerjs.options);
     }
 
     /**
@@ -928,16 +929,6 @@ var Factory = function () {
     key: "createUser",
     value: function createUser(name) {
       return new _user2.default(name);
-    }
-
-    /**
-     * @returns {ChannelManager}
-     */
-
-  }, {
-    key: "createChannelManager",
-    value: function createChannelManager() {
-      return new _channelmanager2.default();
     }
 
     /**
@@ -2541,6 +2532,11 @@ var Chat = function () {
             //
             // this.postPublicKey(publicKey);
 
+            // Show this peer's ID.
+            this._peer.on('open', function (id) {
+                $('#pid').text(id);
+            });
+
             // Await connections from others
             this._peer.on('connection', this.connect);
 
@@ -2652,7 +2648,7 @@ var Chat = function () {
             var chat = this;
 
             actives.each(function () {
-                // todo swap with reference to connection
+                // todo swap with reference to connection/user
                 var username = $(this).attr('id');
 
                 if (!checkedIds[username]) {
@@ -4004,13 +4000,17 @@ $(function () {
          */
         $('#connect').click(function () {
             var username = $('#rid').val();
-            if (!chat.getUserFromList(username) && username !== _config2.default.peerjs.username) {
-
+            if (!username) {
+                alert('Please enter a username to connect to');
+            } else if (username == _config2.default.peerjs.username) {
+                alert('You can\'t connect to yourself!');
+            } else if (chat.getUserFromList(username)) {
+                alert('You are already connected to ' + username);
+            } else {
                 // Create 2 connections, one labelled chat and another labelled file.
                 var dataConnection = chat.peer.connect(username, {
                     label: 'chat',
-                    serialization: 'none',
-                    metadata: { message: 'hi i want to chat with you!' }
+                    serialization: 'none'
                 });
                 dataConnection.on('open', function () {
                     chat.connect(dataConnection);
@@ -4033,12 +4033,6 @@ $(function () {
 
                 var user = chat.getOrCreateUser();
                 chat.addUserToList(username);
-            } else {
-                if (username == _config2.default.peerjs.username) {
-                    alert('You can\'t connect to yourself!');
-                } else {
-                    alert('You are already connected to ' + username);
-                }
             }
         });
 

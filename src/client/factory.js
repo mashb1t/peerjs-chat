@@ -15,7 +15,8 @@ class Factory {
      * @returns {Peer}
      */
     static createPeerConnection() {
-        return new Peer(config.peerjs.username, config.peerjs.options);
+        // return new Peer(config.peerjs.username, config.peerjs.options);
+        return new Peer(config.peerjs.options);
     }
 
     /**
@@ -26,13 +27,6 @@ class Factory {
      */
     static createUser(name) {
         return new User(name);
-    }
-
-    /**
-     * @returns {ChannelManager}
-     */
-    static createChannelManager() {
-        return new ChannelManager();
     }
 
     /**

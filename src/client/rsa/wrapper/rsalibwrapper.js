@@ -1,7 +1,7 @@
 'use strict';
 
 import config from "../../config";
-import cryptico from "cryptico";
+import crypto from "crypto";
 
 /**
  * Wrapper for rsa library
@@ -19,7 +19,7 @@ class RSALibWrapper {
      * @param passphrase
      */
     static createPrivateKey(passphrase) {
-        return cryptico.generateRSAKey(passphrase, config.encryption.bits)
+        return crypto.publicDecrypt
     }
 
     /**

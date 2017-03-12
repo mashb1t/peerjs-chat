@@ -106,6 +106,11 @@ class Chat {
         //
         // this.postPublicKey(publicKey);
 
+        // Show this peer's ID.
+        this._peer.on('open', function (id) {
+            $('#pid').text(id);
+        });
+
         // Await connections from others
         this._peer.on('connection', this.connect);
 
@@ -123,6 +128,9 @@ class Chat {
         }
 
         switch (connection.label) {
+            case 'auth':
+                chat.initAuthConnection(connection);
+                break;
             case 'chat':
                 chat.initChatConnection(connection);
                 break;
@@ -131,6 +139,33 @@ class Chat {
                 break;
         }
     };
+
+    /**
+     * @param authConnection
+     */
+    initAuthConnection(authConnection) {
+        let username = authConnection.peer;
+
+        // fix for peer call of this in closure connect
+        let chat = this;
+        if (this instanceof Peer) {
+            chat = this.chat;
+        }
+
+        let user = chat.getOrCreateUser(username);
+        let chatWindow = chat.getOrCreateChatWindow(user);
+
+
+        $('.filler').hide();
+
+        authConnection.on('close', function () {
+            if ($('.connection').length === 0) {
+                $('.filler').show();
+            }
+            chat.deleteUserFromList(user);
+            chat.deleteChatWindowFromList(user);
+        });
+    }
 
     /**
      * @param dataConnection
@@ -195,7 +230,7 @@ class Chat {
 
     /**
      * @param user
-     * @returns {User}
+     * @returns {ChatWindow}
      */
     getOrCreateChatWindow(user) {
         let chatWindow = this.getChatWindowFromList(user);
@@ -220,7 +255,7 @@ class Chat {
         let chat = this;
 
         actives.each(function () {
-            // todo swap with reference to connection
+            // todo swap with reference to connection/user
             let username = $(this).attr('id');
 
             if (!checkedIds[username]) {

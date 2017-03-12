@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "cryptico": "^1.0.2",
+    "crypto": "0.0.3",
     "peer": "^0.2.8",
     "peerjs": "^0.3.14"
   },

@@ -2466,13 +2466,16 @@ var Chat = function () {
             }
 
             // create chat window if necessary
-            var chatwindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
 
             // set headline
             _config2.default.gui.activeChatHeadline.html(user.name);
 
             // set chat messages
-            _config2.default.gui.messagesList.html(chatwindow.messages);
+            _config2.default.gui.messagesList.html(chatWindow.messages);
+
+            _userlist2.default.currentUser = user;
+            _chatwindowlist2.default.currentChatWindow = chatWindow;
         };
 
         this.connect = function (connection) {
@@ -2723,6 +2726,13 @@ var ChatWindowList = function () {
     /**
      * @param user
      */
+
+
+    /**
+     *
+     * @type {{ChatWindow}}
+     * @private
+     */
     value: function getChatWindow(user) {
       return this.chatWindowList[user.name];
     }
@@ -2733,11 +2743,8 @@ var ChatWindowList = function () {
      */
 
 
-    // static _currentChatWindow;
-
     /**
-     *
-     * @type {{ChatWindow}}
+     * @type {ChatWindow}
      * @private
      */
 
@@ -2785,21 +2792,31 @@ var ChatWindowList = function () {
       return this._chatWindowList;
     }
 
-    //
-    // static get current() {
-    //     return this._currentChatWindow;
-    // }
-    //
-    // static set current(value) {
-    //     this._currentChatWindow = value;
-    // }
+    /**
+     * @returns {ChatWindow}
+     */
 
+  }, {
+    key: "currentChatWindow",
+    get: function get() {
+      return this._currentChatWindow;
+    }
+
+    /**
+     * @type {ChatWindow}
+     * @param value
+     */
+    ,
+    set: function set(value) {
+      this._currentChatWindow = value;
+    }
   }]);
 
   return ChatWindowList;
 }();
 
 ChatWindowList._chatWindowList = {};
+ChatWindowList._currentChatWindow = null;
 exports.default = ChatWindowList;
 
 /***/ }),
@@ -2920,6 +2937,12 @@ var UserList = function () {
         /**
          * @param username
          */
+
+
+        /**
+         * @type {{User}}
+         * @private
+         */
         value: function getUser(username) {
             return UserList.userList[username];
         }
@@ -2931,7 +2954,7 @@ var UserList = function () {
 
 
         /**
-         * @type {{User}}
+         * @type {User}
          * @private
          */
 
@@ -3017,10 +3040,29 @@ var UserList = function () {
                 $(element).addClass('active');
             });
         }
+
+        /**
+         * @returns {User}
+         */
+
     }, {
         key: "userList",
         get: function get() {
             return this._userList;
+        }
+    }, {
+        key: "currentUser",
+        get: function get() {
+            return this._currentUser;
+        }
+
+        /**
+         * @type {User}
+         * @param value
+         */
+        ,
+        set: function set(value) {
+            this._currentUser = value;
         }
     }]);
 
@@ -3028,6 +3070,7 @@ var UserList = function () {
 }();
 
 UserList._userList = {};
+UserList._currentUser = null;
 exports.default = UserList;
 
 /***/ }),

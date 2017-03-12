@@ -118,13 +118,16 @@ class Chat {
         }
 
         // create chat window if necessary
-        let chatwindow = ChatWindowList.getOrCreateChatWindow(user);
+        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
 
         // set headline
         config.gui.activeChatHeadline.html(user.name);
 
         // set chat messages
-        config.gui.messagesList.html(chatwindow.messages);
+        config.gui.messagesList.html(chatWindow.messages);
+
+        UserList.currentUser = user;
+        ChatWindowList.currentChatWindow = chatWindow;
     };
 
     connect = function (connection) {

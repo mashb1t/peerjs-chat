@@ -15,6 +15,12 @@ class UserList {
     static _userList = {};
 
     /**
+     * @type {User}
+     * @private
+     */
+    static _currentUser = null;
+
+    /**
      * @param username
      */
     static getUser(username) {
@@ -96,6 +102,21 @@ class UserList {
         userListEntries.each(function (index, element) {
             $(element).addClass('active');
         });
+    }
+
+    /**
+     * @returns {User}
+     */
+    static get currentUser() {
+        return this._currentUser;
+    }
+
+    /**
+     * @type {User}
+     * @param value
+     */
+    static set currentUser(value) {
+        this._currentUser = value;
     }
 }
 

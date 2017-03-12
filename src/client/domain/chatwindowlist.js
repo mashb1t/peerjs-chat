@@ -7,14 +7,18 @@ import Factory from "../factory";
  */
 class ChatWindowList {
 
-    // static _currentChatWindow;
-
     /**
      *
      * @type {{ChatWindow}}
      * @private
      */
     static _chatWindowList = {};
+
+    /**
+     * @type {ChatWindow}
+     * @private
+     */
+    static _currentChatWindow = null;
 
     /**
      * @param user
@@ -60,14 +64,20 @@ class ChatWindowList {
         return this._chatWindowList;
     }
 
-    //
-    // static get current() {
-    //     return this._currentChatWindow;
-    // }
-    //
-    // static set current(value) {
-    //     this._currentChatWindow = value;
-    // }
+    /**
+     * @returns {ChatWindow}
+     */
+    static get currentChatWindow() {
+        return this._currentChatWindow;
+    }
+
+    /**
+     * @type {ChatWindow}
+     * @param value
+     */
+    static set currentChatWindow(value) {
+        this._currentChatWindow = value;
+    }
 }
 
 export default ChatWindowList;

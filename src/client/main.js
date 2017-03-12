@@ -42,8 +42,14 @@ $(function () {
          */
         $('#connect').click(function () {
             let username = $('#rid').val();
-            if (!chat.getUserFromList(username) && username !== config.peerjs.username) {
 
+            if (!username) {
+                alert('Please enter a username to connect to');
+            } else if (username == config.peerjs.username) {
+                alert('You can\'t connect to yourself!');
+            } else if (chat.getUserFromList(username)) {
+                alert('You are already connected to ' + username);
+            } else {
                 // Create 2 connections, one labelled chat and another labelled file.
                 let dataConnection = chat.peer.connect(username, {
                     label: 'chat',
@@ -72,12 +78,6 @@ $(function () {
 
                 let user = chat.getOrCreateUser();
                 chat.addUserToList(username);
-            } else {
-                if (username == config.peerjs.username) {
-                    alert('You can\'t connect to yourself!');
-                } else {
-                    alert('You are already connected to ' + username);
-                }
             }
         });
 

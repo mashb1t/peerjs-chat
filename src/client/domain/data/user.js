@@ -8,6 +8,7 @@ class User {
     _name = null;
     _image = null;
     _pubkey = null;
+    _connected = null;
 
     /**
      * Constructor
@@ -16,6 +17,8 @@ class User {
      */
     constructor(name) {
         this._name = name;
+        this.image = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y';
+        this._connected = false;
     }
 
     get image() {
@@ -40,6 +43,14 @@ class User {
 
     set name(value) {
         this._name = value;
+    }
+
+    get connected() {
+        return this._connected;
+    }
+
+    set connected(value) {
+        this._connected = value;
     }
 }
 

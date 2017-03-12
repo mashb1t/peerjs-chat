@@ -7,8 +7,6 @@ import Utils from "../utils";
  */
 class ChatWindow {
 
-    static _current;
-
     /**
      * @type {User}
      * @private
@@ -31,9 +29,6 @@ class ChatWindow {
      * @type {Object}
      * @private
      */
-    _chatbox = null;
-
-    // todo maybe remove, not used yet
     _messages = null;
 
     /**
@@ -42,19 +37,7 @@ class ChatWindow {
     constructor(user) {
         this._user = user;
 
-        this._chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', this._user.name);
-        let header = $('<h3></h3>').html('<strong>' + this._user.name + '</strong>');
-        this._messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
-        this._chatbox.append(header);
-        this._chatbox.append(this._messages);
-
-        this._chatbox.on('click', function () {
-            if ($(this).attr('class').indexOf('active') === -1) {
-                $(this).addClass('active');
-            } else {
-                $(this).removeClass('active');
-            }
-        });
+        this._messages = $('<ul></ul>').addClass('messages');
     }
 
     /**
@@ -62,19 +45,24 @@ class ChatWindow {
      */
     initChat(dataConnection) {
         this._dataConnection = dataConnection;
-        let chatbox = this._chatbox;
+        let messages = this._messages;
         let user = this._user;
-
-        $('#connections').append(this._chatbox);
+        let chatWindow = this;
 
         this._dataConnection.on('data', function (data) {
-            Utils.appendAndScrollDown(chatbox, '<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
+            let message = chatWindow.createMessage(data, 'foreign');
+            Utils.appendAndScrollDown(messages, message);
+            Utils.pushNotification(user, data);
         });
 
         this._dataConnection.on('close', function () {
-            console.log(user.name + ' has left the chat.');
-            chatbox.remove();
+            let data = user.name + ' has left the chat.';
+            let message = chatWindow.createMessage(data, 'foreign');
+            Utils.appendAndScrollDown(messages, message);
         });
+
+        let message = chatWindow.createMessage('Connected', 'foreign');
+        Utils.appendAndScrollDown(chatWindow.messages, message);
     }
 
     /**
@@ -83,8 +71,9 @@ class ChatWindow {
      */
     initFileChat(fileConnection) {
         this._fileConnection = fileConnection;
-        let chatbox = this._chatbox;
+        let messages = this._messages;
         let user = this._user;
+        let chatWindow = this;
 
         this._fileConnection.on('data', function (data) {
             let type = data.type;
@@ -94,17 +83,57 @@ class ChatWindow {
             let htmlString = Utils.createBlobHtmlView(file, type, filename);
 
             if (htmlString) {
-                Utils.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
+                let message = chatWindow.createMessage(htmlString, 'foreign file');
+                Utils.appendAndScrollDown(messages, message);
+                Utils.pushNotification(user, 'File ' + data.filename);
             }
         });
     }
 
-    static get current() {
-        return this._current;
+    /**
+     * Creates a message
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
+     */
+    createMessage(message, origin) {
+        let messageObject = $('<li></li>').addClass('message-wrapper');
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+        messageObject.append(content);
+
+        return messageObject;
     }
 
-    static set current(value) {
-        this._current = value;
+    /**
+     * Sends a chat message
+     *
+     * @param message
+     */
+    sendMessage(message) {
+        this._dataConnection.send(message);
+    }
+
+    /**
+     * Sends a file message
+     *
+     * @param fileWithMetaData
+     */
+    sendFile(fileWithMetaData) {
+        this._fileConnection.send(fileWithMetaData);
+    }
+
+    /**
+     * @returns {Object}
+     */
+    get messages() {
+        return this._messages;
+    }
+
+    /**
+     * @returns {User}
+     */
+    get user() {
+        return this._user;
     }
 }
 

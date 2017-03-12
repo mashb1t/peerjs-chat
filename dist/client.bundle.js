@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,8 +73,8 @@
 var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
-var BinaryPack = __webpack_require__(6);
-var RTCPeerConnection = __webpack_require__(2).RTCPeerConnection;
+var BinaryPack = __webpack_require__(7);
+var RTCPeerConnection = __webpack_require__(5).RTCPeerConnection;
 
 var util = {
   noop: function() {},
@@ -393,6 +393,419 @@ module.exports = util;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _utils = __webpack_require__(2);
+
+var _utils2 = _interopRequireDefault(_utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var config = {
+    gui: {
+        errorField: $('.chat-errors'),
+        userlist: $('.userlist'),
+        activeChatHeadline: $('.active-chat-headline'),
+        messageList: $('.message-container'),
+        messageField: $('#message-field'),
+        sendMessageButton: $('#send-message'),
+        refreshUsersButton: $('#refresh'), //inactive
+        closeConnectionButton: $('#close-connection'), //inactive
+        videoChatButton: $('#video-chat'), //inactive
+        sendFileButton: $('#send-file'),
+        fileUploadField: $('#fileupload'), //inactive
+        emojiButton: $('#emoji'), //inactive
+        logField: $('.log'),
+        lightbox: function lightbox() {}
+    },
+    peerjs: {
+        username: $('#username').text(),
+        options: {
+            host: window.location.hostname,
+            port: 9000,
+            path: "/",
+            debug: 3,
+            logFunction: function logFunction() {
+                var copy = Array.prototype.slice.call(arguments).join(' ');
+                config.gui.logField.append(copy + '<br>');
+            }
+        }
+    },
+    encryption: {
+        bits: 1024
+    }
+};
+
+exports.default = config;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _chatwindowlist = __webpack_require__(6);
+
+var _chatwindowlist2 = _interopRequireDefault(_chatwindowlist);
+
+var _push = __webpack_require__(19);
+
+var _push2 = _interopRequireDefault(_push);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Utils = function () {
+    function Utils() {
+        _classCallCheck(this, Utils);
+    }
+
+    _createClass(Utils, null, [{
+        key: "appendAndScrollDown",
+
+
+        /**
+         * Appends a string to an element and scrolls to the bottom
+         *
+         * @param activeChat
+         * @param content
+         */
+        value: function appendAndScrollDown(activeChat, content) {
+            activeChat.append(content);
+            Utils.scrollDown(activeChat);
+            Utils.refreshLightBox();
+        }
+    }, {
+        key: "scrollDown",
+        value: function scrollDown(element) {
+            element.animate({ scrollTop: element[0].scrollHeight }, 1000);
+        }
+
+        /**
+         * Creates a blub, hopefully compatible with all relevant browsers
+         *
+         * @param data
+         * @param type
+         * @returns {Blob}
+         */
+
+    }, {
+        key: "createBlob",
+        value: function createBlob(data, type) {
+            try {
+                return new Blob([data], { type: type });
+            } catch (e) {
+                try {
+                    var BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
+                    if (e.name == 'TypeError' && window.BlobBuilder) {
+                        var bb = new BlobBuilder();
+                        bb.append([data]);
+                        return bb.getBlob(type);
+                    } else if (e.name == 'InvalidStateError') {
+                        return new Blob([data], { type: type });
+                    }
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        /**
+         * Creates an html element with data as source
+         *
+         * @param file
+         * @param type
+         * @param filename
+         * @returns {String}
+         */
+
+    }, {
+        key: "createBlobHtmlView",
+        value: function createBlobHtmlView(file, type, filename) {
+            var url = null;
+            var htmlString = null;
+
+            if (file.constructor === ArrayBuffer) {
+                var dataView = new Uint8Array(file);
+                var blob = Utils.createBlob(dataView, type);
+                url = window.URL.createObjectURL(blob);
+            } else if (file.constructor === File) {
+                url = window.URL.createObjectURL(file);
+            }
+
+            if (url) {
+                htmlString = Utils._getHtmlStringByType(url, type, filename);
+            }
+
+            return htmlString;
+        }
+
+        /**
+         * Create html element depending on type
+         *
+         * @param url
+         * @param type
+         * @param filename
+         * @returns {String}
+         * @private
+         */
+
+    }, {
+        key: "_getHtmlStringByType",
+        value: function _getHtmlStringByType(url, type, filename) {
+            var htmlString = '';
+            var firstPartOfType = type.substr(0, type.indexOf('/'));
+
+            switch (firstPartOfType) {
+                case 'image':
+                    htmlString = '<img src="' + url + '" rel="lightbox" alt="' + filename + '"><br>';
+                    break;
+                case 'audio':
+                    htmlString = '<audio controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 audio elements.' + '</audio><br>';
+                    break;
+                case 'video':
+                    htmlString = '<video controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 video elements.' + '</video><br>';
+                    break;
+            }
+
+            htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+
+            return htmlString;
+        }
+
+        /**
+         * @param e
+         */
+
+    }, {
+        key: "doNothing",
+        value: function doNothing(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Did nothing');
+        }
+    }, {
+        key: "checkCompatibility",
+        value: function checkCompatibility() {
+            var supportedFeatures = _util2.default.supports;
+            var chatDiv = $('#chat');
+            var errorHtml = $('<div class="errors"></div>');
+
+            for (var property in supportedFeatures) {
+                if (supportedFeatures.hasOwnProperty(property)) {
+                    errorHtml.append('<div class="error">' + property + ': ' + supportedFeatures[property] + '</div>');
+                }
+            }
+
+            if (!supportedFeatures.data) {
+                chatDiv.append('<div class="error">Your browser does not support WebRTC Data Channels, sry!</div>');
+                chatDiv.append(errorHtml);
+                return false;
+            }
+
+            chatDiv.find('.content').show();
+            return true;
+        }
+
+        /**
+         * Enable chat fields
+         * If param is given, check if chatWindow is currently active
+         *
+         * @param chatWindow
+         */
+
+    }, {
+        key: "enableChatFields",
+        value: function enableChatFields() {
+            var chatWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+                return;
+            }
+
+            _config2.default.gui.messageField.prop('disabled', false);
+            _config2.default.gui.sendMessageButton.prop('disabled', false);
+            _config2.default.gui.sendFileButton.prop('disabled', false);
+
+            // todo still disabled for now, enable after implementing video feature
+            _config2.default.gui.videoChatButton.prop('disabled', true);
+        }
+
+        /**
+         * Disable chat fields
+         * If param is given, check if chatWindow is currently active
+         *
+         * @param chatWindow
+         */
+
+    }, {
+        key: "disableChatFields",
+        value: function disableChatFields() {
+            var chatWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+                return;
+            }
+
+            _config2.default.gui.messageField.prop('disabled', true);
+            _config2.default.gui.sendMessageButton.prop('disabled', true);
+            _config2.default.gui.sendFileButton.prop('disabled', true);
+            _config2.default.gui.videoChatButton.prop('disabled', true);
+        }
+
+        /**
+         * Triggers refresh on lightboxes
+         */
+
+    }, {
+        key: "refreshLightBox",
+        value: function refreshLightBox() {
+            try {
+                _config2.default.gui.lightbox();
+            } catch (e) {
+                // todo handle error due to no images
+            }
+        }
+    }, {
+        key: "pushNotification",
+        value: function pushNotification(user, data) {
+            _push2.default.create(user.name, {
+                body: data,
+                icon: {
+                    x16: user.icon,
+                    x32: user.icon
+                },
+                timeout: 5000
+            });
+        }
+    }]);
+
+    return Utils;
+}();
+
+exports.default = Utils;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _user = __webpack_require__(13);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _chatwindow = __webpack_require__(15);
+
+var _chatwindow2 = _interopRequireDefault(_chatwindow);
+
+var _channelmanager = __webpack_require__(12);
+
+var _channelmanager2 = _interopRequireDefault(_channelmanager);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _peerjs = __webpack_require__(10);
+
+var _peerjs2 = _interopRequireDefault(_peerjs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Factory class for multiple instances
+ */
+var Factory = function () {
+  function Factory() {
+    _classCallCheck(this, Factory);
+  }
+
+  _createClass(Factory, null, [{
+    key: "createPeerConnection",
+
+
+    /**
+     * @returns {Peer}
+     */
+    value: function createPeerConnection() {
+      // return new Peer(config.peerjs.username, config.peerjs.options);
+      return new _peerjs2.default(_config2.default.peerjs.options);
+    }
+
+    /**
+     * Create a new user
+     *
+     * @param name
+     * @returns {User}
+     */
+
+  }, {
+    key: "createUser",
+    value: function createUser(name) {
+      return new _user2.default(name);
+    }
+
+    /**
+     * @returns {ChannelManager}
+     */
+
+  }, {
+    key: "createChannelManager",
+    value: function createChannelManager() {
+      return new _channelmanager2.default();
+    }
+
+    /**
+     * @param user
+     * @returns {ChatWindow}
+     */
+
+  }, {
+    key: "createChatWindow",
+    value: function createChatWindow(user) {
+      return new _chatwindow2.default(user);
+    }
+  }]);
+
+  return Factory;
+}();
+
+exports.default = Factory;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /**
  * Representation of a single EventEmitter function.
  *
@@ -623,7 +1036,7 @@ module.exports = EventEmitter;
 
 
 /***/ }),
-/* 2 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports.RTCSessionDescription = window.RTCSessionDescription ||
@@ -635,234 +1048,7 @@ module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _utils = __webpack_require__(4);
-
-var _utils2 = _interopRequireDefault(_utils);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var config = {
-    peerjs: {
-        username: $('#username').text(),
-        options: {
-            host: window.location.hostname,
-            port: 9000,
-            path: "/",
-            debug: 3,
-            logFunction: _utils2.default.logFunction
-        }
-    },
-    encryption: {
-        bits: 1024
-    }
-};
-
-exports.default = config;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-var _util2 = _interopRequireDefault(_util);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Utils = function () {
-    function Utils() {
-        _classCallCheck(this, Utils);
-    }
-
-    _createClass(Utils, null, [{
-        key: 'appendAndScrollDown',
-
-
-        /**
-         * Appends a string to an element and scrolls to the bottom
-         *
-         * @param activeChat
-         * @param content
-         */
-        value: function appendAndScrollDown(activeChat, content) {
-            activeChat.append(content);
-            activeChat.animate({ scrollTop: activeChat[0].scrollHeight }, 1000);
-        }
-
-        /**
-         * Function for logging to logfield
-         */
-
-    }, {
-        key: 'beginsWith',
-        value: function beginsWith(needle, haystack) {
-            return haystack.substr(0, needle.length) == needle;
-        }
-
-        /**
-         * Creates a blub, hopefully compatible with all relevant browsers
-         *
-         * @param data
-         * @param type
-         * @returns {Blob}
-         */
-
-    }, {
-        key: 'createBlob',
-        value: function createBlob(data, type) {
-            try {
-                return new Blob([data], { type: type });
-            } catch (e) {
-                try {
-                    var BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
-                    if (e.name == 'TypeError' && window.BlobBuilder) {
-                        var bb = new BlobBuilder();
-                        bb.append([data]);
-                        return bb.getBlob(type);
-                    } else if (e.name == 'InvalidStateError') {
-                        return new Blob([data], { type: type });
-                    }
-                } catch (e) {}
-            }
-            return null;
-        }
-
-        /**
-         * Creates an html element with data as source
-         *
-         * @param file
-         * @param type
-         * @param filename
-         * @returns {String}
-         */
-
-    }, {
-        key: 'createBlobHtmlView',
-        value: function createBlobHtmlView(file, type, filename) {
-            var url = null;
-            var htmlString = null;
-
-            if (file.constructor === ArrayBuffer) {
-                var dataView = new Uint8Array(file);
-                var blob = Utils.createBlob(dataView, type);
-                url = window.URL.createObjectURL(blob);
-            } else if (file.constructor === File) {
-                url = window.URL.createObjectURL(file);
-            }
-
-            if (url) {
-                htmlString = Utils._getHtmlStringByType(url, type, filename);
-            }
-
-            return htmlString;
-        }
-
-        /**
-         * Create html element depending on type
-         *
-         * @param url
-         * @param type
-         * @param filename
-         * @returns {String}
-         * @private
-         */
-
-    }, {
-        key: '_getHtmlStringByType',
-        value: function _getHtmlStringByType(url, type, filename) {
-            var htmlString = null;
-            var firstPartOfType = type.substr(0, type.indexOf('/'));
-
-            switch (firstPartOfType) {
-                case 'image':
-                    htmlString = '<img src="' + url + '" alt="' + filename + '">';
-                    htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
-                    break;
-                case 'audio':
-                    htmlString = '<audio controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 audio elements.' + '</audio>';
-                    htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
-                    break;
-                case 'video':
-                    htmlString = '<video controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 video elements.' + '</video>';
-                    htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
-                    break;
-                default:
-                    htmlString = '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
-            }
-
-            return htmlString;
-        }
-
-        /**
-         * @param e
-         */
-
-    }, {
-        key: 'doNothing',
-        value: function doNothing(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Did nothing');
-        }
-    }, {
-        key: 'checkCompatibility',
-        value: function checkCompatibility() {
-            var supportedFeatures = _util2.default.supports;
-            var chatDiv = $('#chat');
-            var errorHtml = $('<div class="errors"></div>');
-
-            for (var property in supportedFeatures) {
-                if (supportedFeatures.hasOwnProperty(property)) {
-                    errorHtml.append('<div class="error">' + property + ': ' + supportedFeatures[property] + '</div>');
-                }
-            }
-
-            if (!supportedFeatures.data) {
-                chatDiv.append('<div class="error">Your browser does not support WebRTC Data Channels, sry!</div>');
-                chatDiv.append(errorHtml);
-                return false;
-            }
-
-            chatDiv.find('.content').show();
-            return true;
-        }
-    }]);
-
-    return Utils;
-}();
-
-Utils.logField = $('.log');
-
-Utils.logFunction = function () {
-    var copy = Array.prototype.slice.call(arguments).join(' ');
-    Utils.logField.append(copy + '<br>');
-};
-
-exports.default = Utils;
-
-/***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -874,95 +1060,128 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _user = __webpack_require__(12);
+var _factory = __webpack_require__(3);
 
-var _user2 = _interopRequireDefault(_user);
-
-var _chatwindow = __webpack_require__(13);
-
-var _chatwindow2 = _interopRequireDefault(_chatwindow);
-
-var _channelmanager = __webpack_require__(11);
-
-var _channelmanager2 = _interopRequireDefault(_channelmanager);
-
-var _config = __webpack_require__(3);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _peerjs = __webpack_require__(9);
-
-var _peerjs2 = _interopRequireDefault(_peerjs);
+var _factory2 = _interopRequireDefault(_factory);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Factory class for multiple instances
+ * Domain object for chat windows
  */
-var Factory = function () {
-  function Factory() {
-    _classCallCheck(this, Factory);
+var ChatWindowList = function () {
+  function ChatWindowList() {
+    _classCallCheck(this, ChatWindowList);
   }
 
-  _createClass(Factory, null, [{
-    key: "createPeerConnection",
+  _createClass(ChatWindowList, null, [{
+    key: "getChatWindow",
 
 
     /**
-     * @returns {Peer}
+     * @param user
      */
-    value: function createPeerConnection() {
-      return new _peerjs2.default(_config2.default.peerjs.username, _config2.default.peerjs.options);
-    }
+
 
     /**
-     * Create a new user
      *
-     * @param name
-     * @returns {User}
+     * @type {{ChatWindow}}
+     * @private
      */
-
-  }, {
-    key: "createUser",
-    value: function createUser(name) {
-      return new _user2.default(name);
-    }
-
-    /**
-     * @returns {ChannelManager}
-     */
-
-  }, {
-    key: "createChannelManager",
-    value: function createChannelManager() {
-      return new _channelmanager2.default();
+    value: function getChatWindow(user) {
+      return this.chatWindowList[user.name];
     }
 
     /**
      * @param user
+     * @returns ChatWindow
+     */
+
+
+    /**
+     * @type {ChatWindow}
+     * @private
+     */
+
+  }, {
+    key: "getOrCreateChatWindow",
+    value: function getOrCreateChatWindow(user) {
+      var chatWindow = this.getChatWindow(user);
+
+      if (!chatWindow) {
+        chatWindow = _factory2.default.createChatWindow(user);
+        this.addChatWindow(user, chatWindow);
+      }
+
+      return chatWindow;
+    }
+
+    /**
+     * @param user
+     * @param chatWindow
+     */
+
+  }, {
+    key: "addChatWindow",
+    value: function addChatWindow(user, chatWindow) {
+      this.chatWindowList[user.name] = chatWindow;
+    }
+
+    /**
+     * @param user
+     */
+
+  }, {
+    key: "deleteChatWindow",
+    value: function deleteChatWindow(user) {
+      delete this.chatWindowList[user.name];
+    }
+
+    /**
+     * @returns {{ChatWindow}}
+     */
+
+  }, {
+    key: "chatWindowList",
+    get: function get() {
+      return this._chatWindowList;
+    }
+
+    /**
      * @returns {ChatWindow}
      */
 
   }, {
-    key: "createChatWindow",
-    value: function createChatWindow(user) {
-      return new _chatwindow2.default(user);
+    key: "currentChatWindow",
+    get: function get() {
+      return this._currentChatWindow;
+    }
+
+    /**
+     * @type {ChatWindow}
+     * @param value
+     */
+    ,
+    set: function set(value) {
+      this._currentChatWindow = value;
     }
   }]);
 
-  return Factory;
+  return ChatWindowList;
 }();
 
-exports.default = Factory;
+ChatWindowList._chatWindowList = {};
+ChatWindowList._currentChatWindow = null;
+exports.default = ChatWindowList;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BufferBuilder = __webpack_require__(7).BufferBuilder;
-var binaryFeatures = __webpack_require__(7).binaryFeatures;
+var BufferBuilder = __webpack_require__(8).BufferBuilder;
+var binaryFeatures = __webpack_require__(8).binaryFeatures;
 
 var BinaryPack = {
   unpack: function(data){
@@ -1483,7 +1702,7 @@ function utf8Length(str){
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 var binaryFeatures = {};
@@ -1553,13 +1772,13 @@ module.exports.BufferBuilder = BufferBuilder;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var RTCPeerConnection = __webpack_require__(2).RTCPeerConnection;
-var RTCSessionDescription = __webpack_require__(2).RTCSessionDescription;
-var RTCIceCandidate = __webpack_require__(2).RTCIceCandidate;
+var RTCPeerConnection = __webpack_require__(5).RTCPeerConnection;
+var RTCSessionDescription = __webpack_require__(5).RTCSessionDescription;
+var RTCIceCandidate = __webpack_require__(5).RTCIceCandidate;
 
 /**
  * Manages all negotiations between Peers.
@@ -1868,14 +2087,14 @@ module.exports = Negotiator;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
-var Socket = __webpack_require__(16);
-var MediaConnection = __webpack_require__(15);
-var DataConnection = __webpack_require__(14);
+var EventEmitter = __webpack_require__(4);
+var Socket = __webpack_require__(18);
+var MediaConnection = __webpack_require__(17);
+var DataConnection = __webpack_require__(16);
 
 /**
  * A peer who can initiate connections with other peers.
@@ -2371,7 +2590,7 @@ module.exports = Peer;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2383,17 +2602,29 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(5);
+var _factory = __webpack_require__(3);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _peerjs = __webpack_require__(9);
+var _peerjs = __webpack_require__(10);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
-var _config = __webpack_require__(3);
+var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
+
+var _userlist = __webpack_require__(14);
+
+var _userlist2 = _interopRequireDefault(_userlist);
+
+var _chatwindowlist = __webpack_require__(6);
+
+var _chatwindowlist2 = _interopRequireDefault(_chatwindowlist);
+
+var _utils = __webpack_require__(2);
+
+var _utils2 = _interopRequireDefault(_utils);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2411,8 +2642,61 @@ var Chat = function () {
         _classCallCheck(this, Chat);
 
         this._peer = null;
-        this._userList = {};
-        this._chatWindowList = {};
+
+        this.userListItemClick = function (user) {
+
+            var chat = this;
+
+            _userlist2.default.currentUser = user;
+            _userlist2.default.markUserActive(user);
+
+            // create chat window if necessary
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
+            _chatwindowlist2.default.currentChatWindow = chatWindow;
+
+            // remove unread messages hint
+
+            // connect if not already connected
+
+            if (!user.connected) {
+                _utils2.default.disableChatFields(chatWindow);
+
+                // connect
+                // Create 2 connections, one labelled chat and another labelled file.
+                var dataConnection = chat.peer.connect(user.name, {
+                    label: 'chat',
+                    serialization: 'none',
+                    metadata: { message: 'hi i want to chat with you!' }
+                });
+                dataConnection.on('open', function () {
+                    chat.connect(dataConnection);
+                });
+                dataConnection.on('error', function (err) {
+                    alert(err);
+                });
+
+                var fileConnection = chat.peer.connect(user.name, {
+                    label: 'file', reliable: true
+                });
+
+                fileConnection.on('open', function () {
+                    chat.connect(fileConnection);
+                });
+
+                fileConnection.on('error', function (err) {
+                    alert(err);
+                });
+            } else {
+                _utils2.default.enableChatFields();
+            }
+
+            // todo move to utils class
+            // set headline
+            _config2.default.gui.activeChatHeadline.html(user.name);
+
+            // set chat messages
+            _config2.default.gui.messageList.html(chatWindow.messages);
+        };
 
         this.connect = function (connection) {
 
@@ -2451,73 +2735,8 @@ var Chat = function () {
 
 
     _createClass(Chat, [{
-        key: "getUserFromList",
+        key: "start",
 
-
-        // /**
-        //  * @returns {{}}
-        //  */
-        // get userList() {
-        //     return this._userList;
-        // }
-
-        /**
-         * @param username
-         */
-        value: function getUserFromList(username) {
-            return this._userList[username];
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "addUserToList",
-        value: function addUserToList(user) {
-            this._userList[user.name] = user;
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "deleteUserFromList",
-        value: function deleteUserFromList(user) {
-            delete this._userList[user.name];
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "getChatWindowFromList",
-        value: function getChatWindowFromList(user) {
-            return this._chatWindowList[user.name];
-        }
-
-        /**
-         * @param user
-         * @param chatWindow
-         */
-
-    }, {
-        key: "addChatWindowToList",
-        value: function addChatWindowToList(user, chatWindow) {
-            this._chatWindowList[user.name] = chatWindow;
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "deleteChatWindowFromList",
-        value: function deleteChatWindowFromList(user) {
-            delete this._chatWindowList[user.name];
-        }
 
         //
         // /**
@@ -2532,9 +2751,6 @@ var Chat = function () {
         /**
          * Start the chat client
          */
-
-    }, {
-        key: "start",
         value: function start() {
             // let keyPair = KeyGenerator.generateKeyPair();
             // let publicKey = keyPair.publicKey;
@@ -2542,11 +2758,40 @@ var Chat = function () {
             // this.postPublicKey(publicKey);
 
             // Await connections from others
-            this._peer.on('connection', this.connect);
+            this._peer.on('connection', this.connect, this);
 
             this._peer.on('error', function (err) {
-                console.log(err);
+                var chatWindow = _chatwindowlist2.default.currentChatWindow;
+
+                if (!chatWindow) {
+                    chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(_factory2.default.createUser('ERROR'));
+                    _chatwindowlist2.default.currentChatWindow = chatWindow;
+                    _config2.default.gui.messageList.html(chatWindow.messages);
+                }
+
+                var message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+
+                _utils2.default.appendAndScrollDown(chatWindow.messages, message);
+                _utils2.default.disableChatFields();
             });
+
+            var chat = this;
+
+            this.peer.listAllPeers(function (peerList) {
+                peerList.forEach(function (username) {
+
+                    // just for safety reasons, server already manages not to listing of own user
+                    if (username !== _config2.default.peerjs.username) {
+
+                        var user = _userlist2.default.getOrCreateUser(username);
+                        _userlist2.default.addUserToGui(user, function () {
+                            chat.userListItemClick(user);
+                        });
+                    }
+                });
+            });
+
+            _utils2.default.disableChatFields();
         }
     }, {
         key: "initChatConnection",
@@ -2556,28 +2801,39 @@ var Chat = function () {
          * @param dataConnection
          */
         value: function initChatConnection(dataConnection) {
-            var username = dataConnection.peer;
-
-            // fix for peer call of this in closure connect
             var chat = this;
-            if (this instanceof _peerjs2.default) {
-                chat = this.chat;
-            }
 
-            var user = chat.getOrCreateUser(username);
-            var chatWindow = chat.getOrCreateChatWindow(user);
+            var username = dataConnection.peer;
+            var user = _userlist2.default.getOrCreateUser(username);
+
+            _userlist2.default.addUserToGui(user, function () {
+                chat.userListItemClick(user, this);
+            });
+
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
 
             chatWindow.initChat(dataConnection);
 
-            $('.filler').hide();
+            // // todo check if needed any longer
+            // $('.filler').hide();
 
             dataConnection.on('close', function () {
-                if ($('.connection').length === 0) {
-                    $('.filler').show();
-                }
-                chat.deleteUserFromList(user);
-                chat.deleteChatWindowFromList(user);
+                // if ($('.connection').length === 0) {
+                //     $('.filler').show();
+                // }
+
+                _userlist2.default.markUserDisonnected(user);
+
+                user.connected = false;
+                _userlist2.default.deleteUser(user);
+                _chatwindowlist2.default.deleteChatWindow(user);
+
+                _utils2.default.disableChatFields(chatWindow);
             });
+
+            user.connected = true;
+            _userlist2.default.markUserConnected(user);
+            _utils2.default.enableChatFields(chatWindow);
         }
 
         /**
@@ -2589,86 +2845,55 @@ var Chat = function () {
         value: function initFileConnection(fileConnection) {
             var username = fileConnection.peer;
 
-            // fix for peer call of this in closure connect
-            var chat = this;
-            if (this instanceof _peerjs2.default) {
-                chat = this.chat;
-            }
-
-            var user = chat.getOrCreateUser(username);
-            var chatWindow = chat.getOrCreateChatWindow(user);
+            var user = _userlist2.default.getOrCreateUser(username);
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
 
             chatWindow.initFileChat(fileConnection);
         }
 
         /**
-         * @param username
-         * @returns {User}
+         * Handle message sending
          */
 
     }, {
-        key: "getOrCreateUser",
-        value: function getOrCreateUser(username) {
-            var user = this.getUserFromList(username);
+        key: "handleSendMessage",
+        value: function handleSendMessage() {
+            var message = _config2.default.gui.messageField.val();
+            var chatWindow = _chatwindowlist2.default.currentChatWindow;
 
-            if (!user) {
-                user = _factory2.default.createUser(username);
-                this.addUserToList(user);
+            if (message && chatWindow && chatWindow.user.connected) {
+                chatWindow.sendMessage(message);
+
+                var messageObject = chatWindow.createMessage(message, 'mine');
+                _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
+
+                _config2.default.gui.messageField.val('');
+                _config2.default.gui.messageField.focus();
             }
-
-            return user;
         }
-
-        /**
-         * @param user
-         * @returns {User}
-         */
-
     }, {
-        key: "getOrCreateChatWindow",
-        value: function getOrCreateChatWindow(user) {
-            var chatWindow = this.getChatWindowFromList(user);
+        key: "handleSendFile",
+        value: function handleSendFile(e) {
+            var file = e.target.files[0];
+            var chatWindow = _chatwindowlist2.default.currentChatWindow;
 
-            if (!chatWindow) {
-                chatWindow = _factory2.default.createChatWindow(user);
-                this.addChatWindowToList(user, chatWindow);
-            }
+            if (file && chatWindow && chatWindow.user.connected) {
 
-            return chatWindow;
-        }
+                var fileWithMetaData = {
+                    filename: file.name,
+                    type: file.type,
+                    file: file
+                };
 
-        /**
-         * Executes a given function for each active connection
-         *
-         * @param fn
-         */
+                chatWindow.sendFile(fileWithMetaData);
 
-    }, {
-        key: "eachActiveConnection",
-        value: function eachActiveConnection(fn) {
-            var actives = $('.connection.active');
-            var checkedIds = {};
+                var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
 
-            var chat = this;
-
-            actives.each(function () {
-                // todo swap with reference to connection
-                var username = $(this).attr('id');
-
-                if (!checkedIds[username]) {
-                    var connections = chat._peer.connections[username];
-                    for (var i = 0, ii = connections.length; i < ii; i += 1) {
-                        var connection = connections[i];
-
-                        // todo workaround for closed peers which are still in the array
-                        if (connection.open) {
-                            fn(connection, $(this));
-                        }
-                    }
+                if (htmlString) {
+                    var messageObject = chatWindow.createMessage(htmlString, 'mine');
+                    _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
                 }
-
-                checkedIds[username] = 1;
-            });
+            }
         }
     }, {
         key: "peer",
@@ -2683,7 +2908,7 @@ var Chat = function () {
 exports.default = Chat;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2693,7 +2918,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _factory = __webpack_require__(5);
+var _factory = __webpack_require__(3);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2715,7 +2940,7 @@ var ChannelManager = function ChannelManager() {
 exports.default = ChannelManager;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2746,8 +2971,11 @@ var User = function () {
         this._name = null;
         this._image = null;
         this._pubkey = null;
+        this._connected = null;
 
         this._name = name;
+        this.image = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y';
+        this._connected = false;
     }
 
     _createClass(User, [{
@@ -2774,6 +3002,14 @@ var User = function () {
         set: function set(value) {
             this._name = value;
         }
+    }, {
+        key: 'connected',
+        get: function get() {
+            return this._connected;
+        },
+        set: function set(value) {
+            this._connected = value;
+        }
     }]);
 
     return User;
@@ -2782,7 +3018,7 @@ var User = function () {
 exports.default = User;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2794,7 +3030,214 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(4);
+var _factory = __webpack_require__(3);
+
+var _factory2 = _interopRequireDefault(_factory);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Domain object for chat users
+ */
+var UserList = function () {
+    function UserList() {
+        _classCallCheck(this, UserList);
+    }
+
+    _createClass(UserList, null, [{
+        key: "getUser",
+
+
+        /**
+         * @param username
+         */
+
+
+        /**
+         * @type {{User}}
+         * @private
+         */
+        value: function getUser(username) {
+            return UserList.userList[username];
+        }
+
+        /**
+         * @param username
+         * @returns {User}
+         */
+
+
+        /**
+         * @type {User}
+         * @private
+         */
+
+    }, {
+        key: "getOrCreateUser",
+        value: function getOrCreateUser(username) {
+            var user = UserList.getUser(username);
+
+            if (!user) {
+                user = _factory2.default.createUser(username);
+                UserList.addUser(user);
+            }
+
+            return user;
+        }
+
+        /**
+         * @param user
+         */
+
+    }, {
+        key: "addUser",
+        value: function addUser(user) {
+            UserList.userList[user.name] = user;
+        }
+
+        /**
+         * Add user to userlist in gui
+         *
+         * @param user
+         * @param clickFunctionCallback
+         */
+
+    }, {
+        key: "addUserToGui",
+        value: function addUserToGui(user, clickFunctionCallback) {
+            if (!UserList.getGuiUserListEntry(user)) {
+                var userListEntry = $('<li class="user disconnected" id="' + user.name + '">' + '<img class="gravatar" src="' + user.image + '">' + '<span class="name">' + user.name + '</span>' + '</li>');
+
+                if (clickFunctionCallback) {
+                    userListEntry.click(clickFunctionCallback);
+                }
+
+                _config2.default.gui.userlist.append(userListEntry);
+            }
+        }
+    }, {
+        key: "getGuiUserListEntry",
+        value: function getGuiUserListEntry(user) {
+            return _config2.default.gui.userlist.find('#' + user.name)[0];
+        }
+
+        /**
+         * @param user
+         */
+
+    }, {
+        key: "deleteUser",
+        value: function deleteUser(user) {
+            delete UserList.userList[user.name];
+        }
+
+        /**
+         * @returns {{User}}
+         */
+
+    }, {
+        key: "markUserActive",
+
+
+        /**
+         * Marks user as active in gui userlist
+         *
+         * @param user
+         */
+        value: function markUserActive(user) {
+            // inactivate all users in userlist
+            _config2.default.gui.userlist.find('.user').each(function (index, element) {
+                $(element).removeClass('active');
+            });
+
+            // activate user list entry of given user
+            var userListEntries = _config2.default.gui.userlist.find('#' + user.name);
+            userListEntries.each(function (index, element) {
+                $(element).addClass('active');
+            });
+        }
+
+        /**
+         * Marks user as connected in gui userlist
+         *
+         * @param user
+         */
+
+    }, {
+        key: "markUserConnected",
+        value: function markUserConnected(user) {
+            // inactivate all users in userlist
+            var userListEntry = UserList.getGuiUserListEntry(user);
+            $(userListEntry).removeClass('disconnected').addClass('connected');
+        }
+
+        /**
+         * Marks user as disconnected in gui userlist
+         *
+         * @param user
+         */
+
+    }, {
+        key: "markUserDisonnected",
+        value: function markUserDisonnected(user) {
+            // inactivate all users in userlist
+            _config2.default.gui.userlist.find('.user').each(function (index, element) {
+                $(element).removeClass('connected').addClass('disconnected');
+            });
+        }
+
+        /**
+         * @returns {User}
+         */
+
+    }, {
+        key: "userList",
+        get: function get() {
+            return this._userList;
+        }
+    }, {
+        key: "currentUser",
+        get: function get() {
+            return this._currentUser;
+        }
+
+        /**
+         * @type {User}
+         * @param value
+         */
+        ,
+        set: function set(value) {
+            this._currentUser = value;
+        }
+    }]);
+
+    return UserList;
+}();
+
+UserList._userList = {};
+UserList._currentUser = null;
+exports.default = UserList;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
@@ -2807,133 +3250,178 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ChatWindow = function () {
 
-    /**
-     * @param user
-     */
+  /**
+   * @param user
+   */
 
 
-    /**
-     * @type {Object}
-     * @private
-     */
+  /**
+   * @type {MediaConnection}
+   * @private
+   */
 
 
-    /**
-     * @type {DataConnection}
-     * @private
-     */
-    function ChatWindow(user) {
-        _classCallCheck(this, ChatWindow);
+  /**
+   * @type {User}
+   * @private
+   */
+  function ChatWindow(user) {
+    _classCallCheck(this, ChatWindow);
 
-        this._user = null;
-        this._dataConnection = null;
-        this._fileConnection = null;
-        this._chatbox = null;
-        this._messages = null;
+    this._user = null;
+    this._dataConnection = null;
+    this._fileConnection = null;
+    this._messages = null;
 
-        this._user = user;
+    this._user = user;
 
-        this._chatbox = $('<div></div>').addClass('connection').addClass('active').attr('id', this._user.name);
-        var header = $('<h3></h3>').html('<strong>' + this._user.name + '</strong>');
-        this._messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
-        this._chatbox.append(header);
-        this._chatbox.append(this._messages);
+    this._messages = $('<ul></ul>').addClass('messages');
+  }
 
-        this._chatbox.on('click', function () {
-            if ($(this).attr('class').indexOf('active') === -1) {
-                $(this).addClass('active');
-            } else {
-                $(this).removeClass('active');
-            }
-        });
+  /**
+   * @param dataConnection
+   */
+
+
+  /**
+   * @type {Object}
+   * @private
+   */
+
+
+  /**
+   * @type {DataConnection}
+   * @private
+   */
+
+
+  _createClass(ChatWindow, [{
+    key: 'initChat',
+    value: function initChat(dataConnection) {
+      this._dataConnection = dataConnection;
+      var messages = this._messages;
+      var user = this._user;
+      var chatWindow = this;
+
+      this._dataConnection.on('data', function (data) {
+        var message = chatWindow.createMessage(data, 'foreign');
+        _utils2.default.appendAndScrollDown(messages, message);
+        _utils2.default.pushNotification(user, data);
+      });
+
+      this._dataConnection.on('close', function () {
+        var data = user.name + ' has left the chat.';
+        var message = chatWindow.createMessage(data, 'foreign');
+        _utils2.default.appendAndScrollDown(messages, message);
+      });
+
+      var message = chatWindow.createMessage('Connected', 'foreign');
+      _utils2.default.appendAndScrollDown(chatWindow.messages, message);
     }
 
     /**
-     * @param dataConnection
-     */
-
-
-    // todo maybe remove, not used yet
-
-
-    /**
      * @type {MediaConnection}
-     * @private
+     * @param fileConnection
      */
 
+  }, {
+    key: 'initFileChat',
+    value: function initFileChat(fileConnection) {
+      this._fileConnection = fileConnection;
+      var messages = this._messages;
+      var user = this._user;
+      var chatWindow = this;
+
+      this._fileConnection.on('data', function (data) {
+        var type = data.type;
+        var filename = data.filename;
+        var file = data.file;
+
+        var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
+
+        if (htmlString) {
+          var message = chatWindow.createMessage(htmlString, 'foreign file');
+          _utils2.default.appendAndScrollDown(messages, message);
+          _utils2.default.pushNotification(user, 'File ' + data.filename);
+        }
+      });
+    }
 
     /**
-     * @type {User}
-     * @private
+     * Creates a message
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
      */
 
+  }, {
+    key: 'createMessage',
+    value: function createMessage(message, origin) {
+      var messageObject = $('<li></li>').addClass('message-wrapper');
+      var content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+      messageObject.append(content);
 
-    _createClass(ChatWindow, [{
-        key: 'initChat',
-        value: function initChat(dataConnection) {
-            this._dataConnection = dataConnection;
-            var chatbox = this._chatbox;
-            var user = this._user;
+      return messageObject;
+    }
 
-            $('#connections').append(this._chatbox);
+    /**
+     * Sends a chat message
+     *
+     * @param message
+     */
 
-            this._dataConnection.on('data', function (data) {
-                _utils2.default.appendAndScrollDown(chatbox, '<div><span class="peer">' + user.name + '</span>: ' + data + '</div>');
-            });
+  }, {
+    key: 'sendMessage',
+    value: function sendMessage(message) {
+      this._dataConnection.send(message);
+    }
 
-            this._dataConnection.on('close', function () {
-                console.log(user.name + ' has left the chat.');
-                chatbox.remove();
-            });
-        }
+    /**
+     * Sends a file message
+     *
+     * @param fileWithMetaData
+     */
 
-        /**
-         * @type {MediaConnection}
-         * @param fileConnection
-         */
+  }, {
+    key: 'sendFile',
+    value: function sendFile(fileWithMetaData) {
+      this._fileConnection.send(fileWithMetaData);
+    }
 
-    }, {
-        key: 'initFileChat',
-        value: function initFileChat(fileConnection) {
-            this._fileConnection = fileConnection;
-            var chatbox = this._chatbox;
-            var user = this._user;
+    /**
+     * @returns {Object}
+     */
 
-            this._fileConnection.on('data', function (data) {
-                var type = data.type;
-                var filename = data.filename;
-                var file = data.file;
+  }, {
+    key: 'messages',
+    get: function get() {
+      return this._messages;
+    }
 
-                var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
+    /**
+     * @returns {User}
+     */
 
-                if (htmlString) {
-                    _utils2.default.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
-                }
-            });
-        }
-    }], [{
-        key: 'current',
-        get: function get() {
-            return this._current;
-        },
-        set: function set(value) {
-            this._current = value;
-        }
-    }]);
+  }, {
+    key: 'user',
+    get: function get() {
+      return this._user;
+    }
+  }]);
 
-    return ChatWindow;
+  return ChatWindow;
 }();
 
 exports.default = ChatWindow;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
-var Negotiator = __webpack_require__(8);
-var Reliable = __webpack_require__(17);
+var EventEmitter = __webpack_require__(4);
+var Negotiator = __webpack_require__(9);
+var Reliable = __webpack_require__(20);
 
 /**
  * Wraps a DataChannel between two Peers.
@@ -3200,12 +3688,12 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
-var Negotiator = __webpack_require__(8);
+var EventEmitter = __webpack_require__(4);
+var Negotiator = __webpack_require__(9);
 
 /**
  * Wraps the streaming interface between two Peers.
@@ -3301,11 +3789,11 @@ module.exports = MediaConnection;
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
+var EventEmitter = __webpack_require__(4);
 
 /**
  * An abstraction on top of WebSockets and XHR streaming to provide fastest
@@ -3521,10 +4009,603 @@ module.exports = Socket;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(18);
+var __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * Push
+ * =======
+ * A compact, cross-browser solution for the JavaScript Notifications API
+ *
+ * Credits
+ * -------
+ * Tsvetan Tsvetkov (ttsvetko)
+ * Alex Gibson (alexgibson)
+ *
+ * License
+ * -------
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015-2017 Tyler Nickerson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @preserve
+ */
+
+(function (global, factory) {
+
+    'use strict';
+
+    /* Use AMD */
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+            return new (factory(global, global.document))();
+        }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    }
+    /* Use CommonJS */
+    else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = new (factory(global, global.document))();
+    }
+    /* Use Browser */
+    else {
+        global.Push = new (factory(global, global.document))();
+    }
+
+})(typeof window !== 'undefined' ? window : this, function (w, d) {
+
+    var Push = function () {
+
+        /**********************
+            Local Variables
+        /**********************/
+
+        var
+        self = this,
+        isUndefined   = function (obj) { return obj === undefined; },
+        isString   = function (obj) { return String(obj) === obj },
+        isFunction = function (obj) { return obj && {}.toString.call(obj) === '[object Function]'; },
+
+        /* ID to use for new notifications */
+        currentId = 0,
+
+        /* Message to show if there is no suport to Push Notifications */
+        incompatibilityErrorMessage = 'PushError: push.js is incompatible with browser.',
+
+        /* Whether Push has permission to notify */
+        hasPermission = false,
+
+        /* Map of open notifications */
+        notifications = {},
+
+        /* Testing variable for the last service worker path used */
+        lastWorkerPath = null,
+
+        /**********************
+            Helper Functions
+        /**********************/
+
+        /**
+         * Closes a notification
+         * @param {Notification} notification
+         * @return {Boolean} boolean denoting whether the operation was successful
+         */
+        closeNotification = function (id) {
+            var errored = false,
+                notification = notifications[id];
+
+            if (typeof notification !== 'undefined') {
+                /* Safari 6+, Chrome 23+ */
+                if (notification.close) {
+                    notification.close();
+                /* Legacy webkit browsers */
+                } else if (notification.cancel) {
+                    notification.cancel();
+                /* IE9+ */
+                } else if (w.external && w.external.msIsSiteMode) {
+                    w.external.msSiteModeClearIconOverlay();
+                } else {
+                    errored = true;
+                    throw new Error('Unable to close notification: unknown interface');
+                }
+
+                if (!errored) {
+                    return removeNotification(id);
+                }
+            }
+
+            return false;
+        },
+
+        /**
+         * Adds a notification to the global dictionary of notifications
+         * @param {Notification} notification
+         * @return {Integer} Dictionary key of the notification
+         */
+        addNotification = function (notification) {
+            var id = currentId;
+            notifications[id] = notification;
+            currentId++;
+            return id;
+        },
+
+        /**
+         * Removes a notification with the given ID
+         * @param  {Integer} id - Dictionary key/ID of the notification to remove
+         * @return {Boolean} boolean denoting success
+         */
+        removeNotification = function (id) {
+            var dict = {},
+                success = false,
+                key;
+
+            for (key in notifications) {
+                if (notifications.hasOwnProperty(key)) {
+                    if (key != id) {
+                        dict[key] = notifications[key];
+                    } else {
+                        // We're successful if we omit the given ID from the new array
+                        success = true;
+                    }
+                }
+            }
+            // Overwrite the current notifications dictionary with the filtered one
+            notifications = dict;
+            return success;
+        },
+
+        prepareNotification = function (id, options) {
+            var wrapper;
+
+            /* Wrapper used to get/close notification later on */
+            wrapper = {
+                get: function () {
+                    return notifications[id];
+                },
+
+                close: function () {
+                    closeNotification(id);
+                }
+            };
+
+            /* Autoclose timeout */
+            if (options.timeout) {
+                setTimeout(function () {
+                    wrapper.close();
+                }, options.timeout);
+            }
+
+            return wrapper;
+        },
+
+        /**
+         * Callback function for the 'create' method
+         * @return {void}
+         */
+        createCallback = function (title, options, resolve) {
+            var notification,
+                onClose;
+
+            /* Set empty settings if none are specified */
+            options = options || {};
+
+            /* Set the last service worker path for testing */
+            self.lastWorkerPath = options.serviceWorker || 'serviceWorker.js';
+
+            /* onClose event handler */
+            onClose = function (id) {
+                /* A bit redundant, but covers the cases when close() isn't explicitly called */
+                removeNotification(id);
+                if (isFunction(options.onClose)) {
+                    options.onClose.call(this, notification);
+                }
+            };
+
+            /* Safari 6+, Firefox 22+, Chrome 22+, Opera 25+ */
+            if (w.Notification) {
+                try {
+                    notification =  new w.Notification(
+                        title,
+                        {
+                            icon: (isString(options.icon) || isUndefined(options.icon)) ? options.icon : options.icon.x32,
+                            body: options.body,
+                            tag: options.tag,
+                            requireInteraction: options.requireInteraction
+                        }
+                    );
+                } catch (e) {
+                    if (w.navigator) {
+                        /* Register ServiceWorker using lastWorkerPath */
+                        w.navigator.serviceWorker.register(self.lastWorkerPath);
+                        w.navigator.serviceWorker.ready.then(function(registration) {
+                            var localData = {
+                                id: currentId,
+                                link: options.link,
+                                origin: document.location.href,
+                                onClick: (isFunction(options.onClick)) ? options.onClick.toString() : '',
+                                onClose: (isFunction(options.onClose)) ? options.onClose.toString() : ''
+                            };
+
+                            if (typeof options.data !== 'undefined' && options.data !== null)
+                                localData = Object.assign(localData, options.data);
+
+                            /* Show the notification */
+                            registration.showNotification(
+                                title,
+                                {
+                                    icon: options.icon,
+                                    body: options.body,
+                                    vibrate: options.vibrate,
+                                    tag: options.tag,
+                                    data: localData,
+                                    requireInteraction: options.requireInteraction
+                                }
+                            ).then(function() {
+                                var id;
+
+                                /* Find the most recent notification and add it to the global array */
+                                registration.getNotifications().then(function(notifications) {
+                                    id = addNotification(notifications[notifications.length - 1]);
+
+                                    /* Send an empty message so the ServiceWorker knows who the client is */
+                                    registration.active.postMessage('');
+
+                                    /* Listen for close requests from the ServiceWorker */
+                                    navigator.serviceWorker.addEventListener('message', function (event) {
+                                        var data = JSON.parse(event.data);
+
+                                        if (data.action === 'close' && Number.isInteger(data.id))
+                                            removeNotification(data.id);
+                                    });
+
+                                    resolve(prepareNotification(id, options));
+                                });
+                            });
+                        });
+                    }
+                }
+
+            /* Legacy webkit browsers */
+            } else if (w.webkitNotifications) {
+
+                notification = w.webkitNotifications.createNotification(
+                    options.icon,
+                    title,
+                    options.body
+                );
+
+                notification.show();
+
+            /* Firefox Mobile */
+            } else if (navigator.mozNotification) {
+
+                notification = navigator.mozNotification.createNotification(
+                    title,
+                    options.body,
+                    options.icon
+                );
+
+                notification.show();
+
+            /* IE9+ */
+            } else if (w.external && w.external.msIsSiteMode()) {
+
+                //Clear any previous notifications
+                w.external.msSiteModeClearIconOverlay();
+                w.external.msSiteModeSetIconOverlay(
+                    ((isString(options.icon) || isUndefined(options.icon))
+                    ? options.icon
+                    : options.icon.x16), title
+                );
+                w.external.msSiteModeActivate();
+
+                notification = {};
+            } else {
+                throw new Error('Unable to create notification: unknown interface');
+            }
+
+            if (typeof(notification) !== 'undefined') {
+                var id = addNotification(notification),
+                    wrapper = prepareNotification(id, options);
+
+                /* Notification callbacks */
+                if (isFunction(options.onShow))
+                    notification.addEventListener('show', options.onShow);
+
+                if (isFunction(options.onError))
+                    notification.addEventListener('error', options.onError);
+
+                if (isFunction(options.onClick))
+                    notification.addEventListener('click', options.onClick);
+
+                notification.addEventListener('close', function() {
+                    onClose(id);
+                });
+
+                notification.addEventListener('cancel', function() {
+                    onClose(id);
+                });
+
+                /* Return the wrapper so the user can call close() */
+                resolve(wrapper);
+            }
+
+            resolve({}); // By default, pass an empty wrapper
+        },
+
+        /**
+         * Permission types
+         * @enum {String}
+         */
+        Permission = {
+            DEFAULT: 'default',
+            GRANTED: 'granted',
+            DENIED: 'denied'
+        },
+
+        Permissions = [Permission.GRANTED, Permission.DEFAULT, Permission.DENIED];
+
+        /* Allow enums to be accessible from Push object */
+        self.Permission = Permission;
+
+        /*****************
+            Permissions
+        /*****************/
+
+        /**
+         * Requests permission for desktop notifications
+         * @param {Function} callback - Function to execute once permission is granted
+         * @return {void}
+         */
+        self.Permission.request = function (onGranted, onDenied) {
+            var existing = self.Permission.get();
+
+            /* Return if Push not supported */
+            if (!self.isSupported) {
+                throw new Error(incompatibilityErrorMessage);
+            }
+
+            /* Default callback */
+            callback = function (result) {
+
+                switch (result) {
+
+                    case self.Permission.GRANTED:
+                        hasPermission = true;
+                        if (onGranted) onGranted();
+                        break;
+
+                    case self.Permission.DENIED:
+                        hasPermission = false;
+                        if (onDenied) onDenied();
+                        break;
+
+                }
+
+            };
+
+            /* Permissions already set */
+            if (existing !== self.Permission.DEFAULT) {
+                callback(existing);
+            }
+            /* Safari 6+, Chrome 23+ */
+            else if (w.Notification && w.Notification.requestPermission) {
+                Notification.requestPermission(callback);
+            }
+            /* Legacy webkit browsers */
+            else if (w.webkitNotifications && w.webkitNotifications.checkPermission) {
+                w.webkitNotifications.requestPermission(callback);
+            } else {
+                throw new Error(incompatibilityErrorMessage);
+            }
+        };
+
+        /**
+         * Returns whether Push has been granted permission to run
+         * @return {Boolean}
+         */
+        self.Permission.has = function () {
+            return hasPermission;
+        };
+
+        /**
+         * Gets the permission level
+         * @return {Permission} The permission level
+         */
+        self.Permission.get = function () {
+
+            var permission;
+
+            /* Return if Push not supported */
+            if (!self.isSupported) { throw new Error(incompatibilityErrorMessage); }
+
+            /* Safari 6+, Chrome 23+ */
+            if (w.Notification && w.Notification.permissionLevel) {
+                permission = w.Notification.permissionLevel;
+
+            /* Legacy webkit browsers */
+            } else if (w.webkitNotifications && w.webkitNotifications.checkPermission) {
+                permission = Permissions[w.webkitNotifications.checkPermission()];
+
+            /* Firefox 23+ */
+            } else if (w.Notification && w.Notification.permission) {
+                permission = w.Notification.permission;
+
+            /* Firefox Mobile */
+            } else if (navigator.mozNotification) {
+                permission = Permission.GRANTED;
+
+            /* IE9+ */
+            } else if (w.external && w.external.msIsSiteMode() !== undefined) {
+                permission = w.external.msIsSiteMode() ? Permission.GRANTED : Permission.DEFAULT;
+            } else {
+                throw new Error(incompatibilityErrorMessage);
+            }
+
+            return permission;
+
+        };
+
+        /*********************
+            Other Functions
+        /*********************/
+
+        /**
+         * Detects whether the user's browser supports notifications
+         * @return {Boolean}
+         */
+        self.isSupported = (function () {
+
+             var isSupported = false;
+
+             try {
+
+                 isSupported =
+
+                     /* Safari, Chrome */
+                     !!(w.Notification ||
+
+                     /* Chrome & ff-html5notifications plugin */
+                     w.webkitNotifications ||
+
+                     /* Firefox Mobile */
+                     navigator.mozNotification ||
+
+                     /* IE9+ */
+                     (w.external && w.external.msIsSiteMode() !== undefined));
+
+             } catch (e) {}
+
+             return isSupported;
+
+         })();
+
+         /**
+          * Creates and displays a new notification
+          * @param {Array} options
+          * @return {Promise}
+          */
+        self.create = function (title, options) {
+            var promiseCallback;
+
+            /* Fail if the browser is not supported */
+            if (!self.isSupported) {
+                throw new Error(incompatibilityErrorMessage);
+            }
+
+            /* Fail if no or an invalid title is provided */
+            if (!isString(title)) {
+                throw new Error('PushError: Title of notification must be a string');
+            }
+
+            /* Request permission if it isn't granted */
+            if (!self.Permission.has()) {
+                promiseCallback = function(resolve, reject) {
+                    self.Permission.request(function() {
+                        try {
+                            createCallback(title, options, resolve);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    }, function() {
+                        reject("Permission request declined");
+                    });
+                };
+            } else {
+                promiseCallback = function(resolve, reject) {
+                    try {
+                        createCallback(title, options, resolve);
+                    } catch (e) {
+                        reject(e);
+                    }
+                };
+            }
+
+            return new Promise(promiseCallback);
+        };
+
+        /**
+         * Returns the notification count
+         * @return {Integer} The notification count
+         */
+        self.count = function () {
+            var count = 0,
+                key;
+
+            for (key in notifications)
+                count++;
+
+            return count;
+        },
+
+        /**
+         * Internal function that returns the path of the last service worker used
+         * For testing purposes only
+         * @return {String} The service worker path
+         */
+        self.__lastWorkerPath = function () {
+            return self.lastWorkerPath;
+        },
+
+        /**
+         * Closes a notification with the given tag
+         * @param {String} tag - Tag of the notification to close
+         * @return {Boolean} boolean denoting success
+         */
+        self.close = function (tag) {
+            var key;
+            for (key in notifications) {
+                notification = notifications[key];
+                /* Run only if the tags match */
+                if (notification.tag === tag) {
+                    /* Call the notification's close() method */
+                    return closeNotification(key);
+                }
+            }
+        };
+
+        /**
+         * Clears all notifications
+         * @return {void}
+         */
+        self.clear = function () {
+            var success = true;
+
+            for (key in notifications)
+                success = success && closeNotification(key);
+
+            return success;
+        };
+    };
+
+    return Push;
+
+});
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var util = __webpack_require__(21);
 
 /**
  * Reliable transfer for Chrome Canary DataChannel impl.
@@ -3845,10 +4926,10 @@ module.exports.Reliable = Reliable;
 
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BinaryPack = __webpack_require__(6);
+var BinaryPack = __webpack_require__(7);
 
 var util = {
   debug: false,
@@ -3946,21 +5027,21 @@ module.exports = util;
 
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _chat = __webpack_require__(10);
+var _chat = __webpack_require__(11);
 
 var _chat2 = _interopRequireDefault(_chat);
 
-var _utils = __webpack_require__(4);
+var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _config = __webpack_require__(3);
+var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -3973,103 +5054,80 @@ $(function () {
         var chat = new _chat2.default();
         chat.start();
 
-        // Prepare file drop box.
-        var box = $('#box');
-        box.on('dragenter', _utils2.default.doNothing);
-        box.on('dragover', _utils2.default.doNothing);
-        box.on('drop', function (e) {
-            e.originalEvent.preventDefault();
-            var file = e.originalEvent.dataTransfer.files[0];
+        // // Prepare file drop box.
+        // let box = $('#box');
+        // box.on('dragenter', Utils.doNothing);
+        // box.on('dragover', Utils.doNothing);
+        // box.on('drop', function (e) {
+        //     e.originalEvent.preventDefault();
+        //     let file = e.originalEvent.dataTransfer.files[0];
+        //
+        //     chat.eachActiveConnection(function (connection, activeChat) {
+        //         if (connection.label === 'file') {
+        //             let fileWithMetaData = {
+        //                 filename: file.name,
+        //                 type: file.type,
+        //                 file: file
+        //             };
+        //             connection.send(fileWithMetaData);
+        //
+        //             let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
+        //
+        //             if (htmlString) {
+        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+        //             }
+        //         }
+        //     });
+        // });
+        //
+        // /**
+        //  * Connect to a peer
+        //  */
+        // $('#connect').click(function () {
+        //     let username = $('#rid').val();
+        //
+        //     if (!username) {
+        //         alert('Please enter a username to connect to');
+        //     } else if (username == config.peerjs.username) {
+        //         alert('You can\'t connect to yourself!');
+        //     } else if (chat.getUserFromList(username)) {
+        //         alert('You are already connected to ' + username);
+        //     } else {
+        //         let user = chat.getOrCreateUser();
+        //         chat.addUserToList(username);
+        //     }
+        // });
 
-            chat.eachActiveConnection(function (connection, activeChat) {
-                if (connection.label === 'file') {
-                    var fileWithMetaData = {
-                        filename: file.name,
-                        type: file.type,
-                        file: file
-                    };
-                    connection.send(fileWithMetaData);
+        // // Close a connection.
+        // $('#close').click(function () {
+        //     chat.eachActiveConnection(function (connection) {
+        //         connection.close();
+        //     });
+        // });
 
-                    var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
+        _config2.default.gui.messageField.on('keydown', function handle(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
 
-                    if (htmlString) {
-                        _utils2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
-                    }
-                }
-            });
-        });
-
-        /**
-         * Connect to a peer
-         */
-        $('#connect').click(function () {
-            var username = $('#rid').val();
-
-            if (!username) {
-                alert('Please enter a username to connect to');
-            } else if (username == _config2.default.peerjs.username) {
-                alert('You can\'t connect to yourself!');
-            } else if (chat.getUserFromList(username)) {
-                alert('You are already connected to ' + username);
-            } else {
-                // Create 2 connections, one labelled chat and another labelled file.
-                var dataConnection = chat.peer.connect(username, {
-                    label: 'chat',
-                    serialization: 'none',
-                    metadata: { message: 'hi i want to chat with you!' }
-                });
-                dataConnection.on('open', function () {
-                    chat.connect(dataConnection);
-                });
-                dataConnection.on('error', function (err) {
-                    alert(err);
-                });
-
-                var fileConnection = chat.peer.connect(username, {
-                    label: 'file', reliable: true
-                });
-
-                fileConnection.on('open', function () {
-                    chat.connect(fileConnection);
-                });
-
-                fileConnection.on('error', function (err) {
-                    alert(err);
-                });
-
-                var user = chat.getOrCreateUser();
-                chat.addUserToList(username);
+                chat.handleSendMessage();
             }
         });
 
-        // Close a connection.
-        $('#close').click(function () {
-            chat.eachActiveConnection(function (connection) {
-                connection.close();
-            });
+        _config2.default.gui.sendMessageButton.click(function () {
+            chat.handleSendMessage();
         });
 
-        // Send a chat message to all active connections.
-        $('#send').submit(function (e) {
-            e.preventDefault();
-            // For each active connection, send the message.
-            var msg = $('#text').val();
+        _config2.default.gui.sendFileButton.click(function () {
+            _config2.default.gui.fileUploadField.click();
+        });
 
-            if (msg) {
-                chat.eachActiveConnection(function (connection, activeChat) {
-                    if (connection.label === 'chat') {
-                        connection.send(msg);
-                        _utils2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
-                    }
-                });
-            }
-            $('#text').val('');
-            $('#text').focus();
+        _config2.default.gui.fileUploadField.change(function (e) {
+            chat.handleSendFile(e);
         });
 
         window.onunload = window.onbeforeunload = function (e) {
             if (!!chat.peer && !chat.peer.destroyed) {
-                chat.peer.connect();
+                chat.peer.disconnect();
             }
         };
     }

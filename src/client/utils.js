@@ -1,18 +1,11 @@
 'use strict';
 
 import util from "peerjs/lib/util";
+import config from "./config";
+import ChatWindowList from "./domain/chatwindowlist";
+import Push from "push.js";
 
 class Utils {
-
-    static logField = $('.log');
-
-    /**
-     * Function for logging to logfield
-     */
-    static logFunction = function () {
-        let copy = Array.prototype.slice.call(arguments).join(' ');
-        Utils.logField.append(copy + '<br>');
-    };
 
     /**
      * Appends a string to an element and scrolls to the bottom
@@ -22,11 +15,12 @@ class Utils {
      */
     static appendAndScrollDown(activeChat, content) {
         activeChat.append(content);
-        activeChat.animate({scrollTop: activeChat[0].scrollHeight}, 1000);
+        Utils.scrollDown(activeChat);
+        Utils.refreshLightBox();
     }
 
-    static beginsWith(needle, haystack) {
-        return (haystack.substr(0, needle.length) == needle);
+    static scrollDown(element) {
+        element.animate({scrollTop: element[0].scrollHeight}, 1000);
     }
 
     /**
@@ -94,31 +88,29 @@ class Utils {
      * @private
      */
     static _getHtmlStringByType(url, type, filename) {
-        let htmlString = null;
+        let htmlString = '';
         let firstPartOfType = type.substr(0, type.indexOf('/'));
 
         switch (firstPartOfType) {
             case 'image':
-                htmlString = '<img src="' + url + '" alt="' + filename + '">';
-                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                htmlString = '<img src="' + url + '" rel="lightbox" alt="' + filename + '"><br>';
                 break;
             case 'audio':
                 htmlString = '<audio controls>' +
                     '<source src="' + url + '" type="' + type + '">' +
                     'Your browser does not support html5 audio elements.' +
-                    '</audio>';
-                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    '</audio><br>';
                 break;
             case 'video':
                 htmlString = '<video controls>' +
                     '<source src="' + url + '" type="' + type + '">' +
                     'Your browser does not support html5 video elements.' +
-                    '</video>';
-                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    '</video><br>';
                 break;
-            default:
-                htmlString = '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
         }
+
+        htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+
 
         return htmlString;
     }
@@ -143,8 +135,7 @@ class Utils {
             }
         }
 
-
-        if(!supportedFeatures.data) {
+        if (!supportedFeatures.data) {
             chatDiv.append('<div class="error">Your browser does not support WebRTC Data Channels, sry!</div>');
             chatDiv.append(errorHtml);
             return false;
@@ -152,6 +143,64 @@ class Utils {
 
         chatDiv.find('.content').show();
         return true;
+    }
+
+    /**
+     * Enable chat fields
+     * If param is given, check if chatWindow is currently active
+     *
+     * @param chatWindow
+     */
+    static enableChatFields(chatWindow = null) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        config.gui.messageField.prop('disabled', false);
+        config.gui.sendMessageButton.prop('disabled', false);
+        config.gui.sendFileButton.prop('disabled', false);
+
+        // todo still disabled for now, enable after implementing video feature
+        config.gui.videoChatButton.prop('disabled', true);
+    }
+
+    /**
+     * Disable chat fields
+     * If param is given, check if chatWindow is currently active
+     *
+     * @param chatWindow
+     */
+    static disableChatFields(chatWindow = null) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        config.gui.messageField.prop('disabled', true);
+        config.gui.sendMessageButton.prop('disabled', true);
+        config.gui.sendFileButton.prop('disabled', true);
+        config.gui.videoChatButton.prop('disabled', true);
+    }
+
+    /**
+     * Triggers refresh on lightboxes
+     */
+    static refreshLightBox() {
+        try {
+            config.gui.lightbox();
+        } catch (e) {
+            // todo handle error due to no images
+        }
+    }
+
+    static pushNotification(user, data) {
+        Push.create(user.name, {
+            body: data,
+            // icon: {
+            //     x16: user.icon,
+            //     x32: user.icon
+            // },
+            timeout: 5000
+        });
     }
 }
 

@@ -59,6 +59,9 @@ class ChatWindow {
             let message = chatWindow.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
         });
+
+        let message = chatWindow.createMessage('Connected', 'foreign');
+        Utils.appendAndScrollDown(chatWindow.messages, message);
     }
 
     /**
@@ -91,7 +94,11 @@ class ChatWindow {
      * @returns {XMLList|*|jQuery}
      */
     createMessage(message, origin) {
-        return $('<li></li>').addClass('message arrow').addClass(origin).text(message);
+        let messageObject = $('<li></li>').addClass('message-wrapper');
+        let content = $('<span></span>').addClass('message-content arrow').addClass(origin).text(message);
+        messageObject.append(content);
+
+        return messageObject;
     }
 
     /**

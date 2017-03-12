@@ -7,6 +7,7 @@ let config = {
         activeChatHeadline: $('.active-chat-headline'),
         messageList: $('.message-container'),
         messageField: $('#message-field'),//inactive
+        sendMessageButton: $('#send-message'),//inactive
         refreshUsersButton: $('#refresh'), //inactive
         closeConnectionButton: $('#close-connection'), //inactive
         videoChatButton: $('#video-chat'), //inactive

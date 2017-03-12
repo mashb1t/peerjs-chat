@@ -947,6 +947,7 @@ var config = {
         activeChatHeadline: $('.active-chat-headline'),
         messageList: $('.message-container'),
         messageField: $('#message-field'), //inactive
+        sendMessageButton: $('#send-message'), //inactive
         refreshUsersButton: $('#refresh'), //inactive
         closeConnectionButton: $('#close-connection'), //inactive
         videoChatButton: $('#video-chat'), //inactive
@@ -3129,7 +3130,7 @@ exports.default = UserList;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3147,122 +3148,129 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ChatWindow = function () {
 
-  /**
-   * @param user
-   */
+    /**
+     * @param user
+     */
 
-
-  /**
-   * @type {MediaConnection}
-   * @private
-   */
-
-
-  /**
-   * @type {User}
-   * @private
-   */
-  function ChatWindow(user) {
-    _classCallCheck(this, ChatWindow);
-
-    this._user = null;
-    this._dataConnection = null;
-    this._fileConnection = null;
-    this._messages = null;
-
-    this._user = user;
-
-    this._messages = $('<ul></ul>').addClass('messages');
-  }
-
-  /**
-   * @param dataConnection
-   */
-
-
-  /**
-   * @type {Object}
-   * @private
-   */
-
-
-  /**
-   * @type {DataConnection}
-   * @private
-   */
-
-
-  _createClass(ChatWindow, [{
-    key: 'initChat',
-    value: function initChat(dataConnection) {
-      this._dataConnection = dataConnection;
-      var messages = this._messages;
-      var user = this._user;
-      var chatWindow = this;
-
-      this._dataConnection.on('data', function (data) {
-        var message = chatWindow.createMessage(data, 'foreign');
-        _utils2.default.appendAndScrollDown(messages, message);
-      });
-
-      this._dataConnection.on('close', function () {
-        var data = user.name + ' has left the chat.';
-        var message = chatWindow.createMessage(data, 'foreign');
-        _utils2.default.appendAndScrollDown(messages, message);
-      });
-    }
 
     /**
      * @type {MediaConnection}
-     * @param fileConnection
+     * @private
      */
 
-  }, {
-    key: 'initFileChat',
-    value: function initFileChat(fileConnection) {
-      this._fileConnection = fileConnection;
-      var messages = this._messages;
-      var chatWindow = this;
 
-      this._fileConnection.on('data', function (data) {
-        var type = data.type;
-        var filename = data.filename;
-        var file = data.file;
+    /**
+     * @type {User}
+     * @private
+     */
+    function ChatWindow(user) {
+        _classCallCheck(this, ChatWindow);
 
-        var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
+        this._user = null;
+        this._dataConnection = null;
+        this._fileConnection = null;
+        this._messages = null;
 
-        if (htmlString) {
-          var message = chatWindow.createMessage(htmlString, 'foreign file');
-          _utils2.default.appendAndScrollDown(messages, message);
+        this._user = user;
+
+        this._messages = $('<ul></ul>').addClass('messages');
+    }
+
+    /**
+     * @param dataConnection
+     */
+
+
+    /**
+     * @type {Object}
+     * @private
+     */
+
+
+    /**
+     * @type {DataConnection}
+     * @private
+     */
+
+
+    _createClass(ChatWindow, [{
+        key: 'initChat',
+        value: function initChat(dataConnection) {
+            this._dataConnection = dataConnection;
+            var messages = this._messages;
+            var user = this._user;
+            var chatWindow = this;
+
+            this._dataConnection.on('data', function (data) {
+                var message = chatWindow.createMessage(data, 'foreign');
+                _utils2.default.appendAndScrollDown(messages, message);
+            });
+
+            this._dataConnection.on('close', function () {
+                var data = user.name + ' has left the chat.';
+                var message = chatWindow.createMessage(data, 'foreign');
+                _utils2.default.appendAndScrollDown(messages, message);
+            });
+
+            var message = chatWindow.createMessage('Connected', 'foreign');
+            _utils2.default.appendAndScrollDown(chatWindow.messages, message);
         }
-      });
-    }
 
-    /**
-     * Creates a message
-     * @param message
-     * @param origin
-     * @returns {XMLList|*|jQuery}
-     */
+        /**
+         * @type {MediaConnection}
+         * @param fileConnection
+         */
 
-  }, {
-    key: 'createMessage',
-    value: function createMessage(message, origin) {
-      return $('<li></li>').addClass('message arrow').addClass(origin).text(message);
-    }
+    }, {
+        key: 'initFileChat',
+        value: function initFileChat(fileConnection) {
+            this._fileConnection = fileConnection;
+            var messages = this._messages;
+            var chatWindow = this;
 
-    /**
-     * @returns {Object}
-     */
+            this._fileConnection.on('data', function (data) {
+                var type = data.type;
+                var filename = data.filename;
+                var file = data.file;
 
-  }, {
-    key: 'messages',
-    get: function get() {
-      return this._messages;
-    }
-  }]);
+                var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
 
-  return ChatWindow;
+                if (htmlString) {
+                    var message = chatWindow.createMessage(htmlString, 'foreign file');
+                    _utils2.default.appendAndScrollDown(messages, message);
+                }
+            });
+        }
+
+        /**
+         * Creates a message
+         * @param message
+         * @param origin
+         * @returns {XMLList|*|jQuery}
+         */
+
+    }, {
+        key: 'createMessage',
+        value: function createMessage(message, origin) {
+            var messageObject = $('<li></li>').addClass('message-wrapper');
+            var content = $('<span></span>').addClass('message-content arrow').addClass(origin).text(message);
+            messageObject.append(content);
+
+            return messageObject;
+        }
+
+        /**
+         * @returns {Object}
+         */
+
+    }, {
+        key: 'messages',
+        get: function get() {
+            return this._messages;
+        }
+    }]);
+
+    return ChatWindow;
 }();
 
 exports.default = ChatWindow;

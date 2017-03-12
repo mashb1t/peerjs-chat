@@ -2,7 +2,6 @@
 
 import Chat from "./chat";
 import Utils from "./utils";
-import config from "./config";
 
 $(function () {
 
@@ -11,32 +10,32 @@ $(function () {
         let chat = new Chat();
         chat.start();
 
-        // Prepare file drop box.
-        let box = $('#box');
-        box.on('dragenter', Utils.doNothing);
-        box.on('dragover', Utils.doNothing);
-        box.on('drop', function (e) {
-            e.originalEvent.preventDefault();
-            let file = e.originalEvent.dataTransfer.files[0];
-
-            chat.eachActiveConnection(function (connection, activeChat) {
-                if (connection.label === 'file') {
-                    let fileWithMetaData = {
-                        filename: file.name,
-                        type: file.type,
-                        file: file
-                    };
-                    connection.send(fileWithMetaData);
-
-                    let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
-
-                    if (htmlString) {
-                        Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
-                    }
-                }
-            });
-        });
-
+        // // Prepare file drop box.
+        // let box = $('#box');
+        // box.on('dragenter', Utils.doNothing);
+        // box.on('dragover', Utils.doNothing);
+        // box.on('drop', function (e) {
+        //     e.originalEvent.preventDefault();
+        //     let file = e.originalEvent.dataTransfer.files[0];
+        //
+        //     chat.eachActiveConnection(function (connection, activeChat) {
+        //         if (connection.label === 'file') {
+        //             let fileWithMetaData = {
+        //                 filename: file.name,
+        //                 type: file.type,
+        //                 file: file
+        //             };
+        //             connection.send(fileWithMetaData);
+        //
+        //             let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
+        //
+        //             if (htmlString) {
+        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+        //             }
+        //         }
+        //     });
+        // });
+        //
         // /**
         //  * Connect to a peer
         //  */
@@ -55,34 +54,34 @@ $(function () {
         //     }
         // });
 
-        // Close a connection.
-        $('#close').click(function () {
-            chat.eachActiveConnection(function (connection) {
-                connection.close();
-            });
-        });
+        // // Close a connection.
+        // $('#close').click(function () {
+        //     chat.eachActiveConnection(function (connection) {
+        //         connection.close();
+        //     });
+        // });
 
-        // Send a chat message to all active connections.
-        $('#send').submit(function (e) {
-            e.preventDefault();
-            // For each active connection, send the message.
-            let msg = $('#text').val();
-
-            if (msg) {
-                chat.eachActiveConnection(function (connection, activeChat) {
-                    if (connection.label === 'chat') {
-                        connection.send(msg);
-                        Utils.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
-                    }
-                });
-            }
-            $('#text').val('');
-            $('#text').focus();
-        });
+        // // Send a chat message to all active connections.
+        // $('#send').submit(function (e) {
+        //     e.preventDefault();
+        //     // For each active connection, send the message.
+        //     let msg = $('#text').val();
+        //
+        //     if (msg) {
+        //         chat.eachActiveConnection(function (connection, activeChat) {
+        //             if (connection.label === 'chat') {
+        //                 connection.send(msg);
+        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
+        //             }
+        //         });
+        //     }
+        //     $('#text').val('');
+        //     $('#text').focus();
+        // });
 
         window.onunload = window.onbeforeunload = function (e) {
             if (!!chat.peer && !chat.peer.destroyed) {
-                chat.peer.connect()
+                chat.peer.disconnect();
             }
         };
     }

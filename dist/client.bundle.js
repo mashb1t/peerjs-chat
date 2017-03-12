@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74,7 +74,7 @@ var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
 var BinaryPack = __webpack_require__(6);
-var RTCPeerConnection = __webpack_require__(2).RTCPeerConnection;
+var RTCPeerConnection = __webpack_require__(3).RTCPeerConnection;
 
 var util = {
   noop: function() {},
@@ -393,6 +393,103 @@ module.exports = util;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _user = __webpack_require__(13);
+
+var _user2 = _interopRequireDefault(_user);
+
+var _chatwindow = __webpack_require__(15);
+
+var _chatwindow2 = _interopRequireDefault(_chatwindow);
+
+var _channelmanager = __webpack_require__(11);
+
+var _channelmanager2 = _interopRequireDefault(_channelmanager);
+
+var _config = __webpack_require__(5);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _peerjs = __webpack_require__(9);
+
+var _peerjs2 = _interopRequireDefault(_peerjs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Factory class for multiple instances
+ */
+var Factory = function () {
+  function Factory() {
+    _classCallCheck(this, Factory);
+  }
+
+  _createClass(Factory, null, [{
+    key: "createPeerConnection",
+
+
+    /**
+     * @returns {Peer}
+     */
+    value: function createPeerConnection() {
+      // return new Peer(config.peerjs.username, config.peerjs.options);
+      return new _peerjs2.default(_config2.default.peerjs.options);
+    }
+
+    /**
+     * Create a new user
+     *
+     * @param name
+     * @returns {User}
+     */
+
+  }, {
+    key: "createUser",
+    value: function createUser(name) {
+      return new _user2.default(name);
+    }
+
+    /**
+     * @returns {ChannelManager}
+     */
+
+  }, {
+    key: "createChannelManager",
+    value: function createChannelManager() {
+      return new _channelmanager2.default();
+    }
+
+    /**
+     * @param user
+     * @returns {ChatWindow}
+     */
+
+  }, {
+    key: "createChatWindow",
+    value: function createChatWindow(user) {
+      return new _chatwindow2.default(user);
+    }
+  }]);
+
+  return Factory;
+}();
+
+exports.default = Factory;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /**
  * Representation of a single EventEmitter function.
  *
@@ -623,7 +720,7 @@ module.exports = EventEmitter;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports.RTCSessionDescription = window.RTCSessionDescription ||
@@ -633,47 +730,6 @@ module.exports.RTCPeerConnection = window.RTCPeerConnection ||
 module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 	window.mozRTCIceCandidate;
 
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _utils = __webpack_require__(4);
-
-var _utils2 = _interopRequireDefault(_utils);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var config = {
-    gui: {
-        errorField: $('.chat-errors'),
-        userlist: $('.userlist'),
-        messagesList: $('.message-container'),
-        activeChatHeadline: $('.active-chat-headline')
-    },
-    peerjs: {
-        username: $('#username').text(),
-        options: {
-            host: window.location.hostname,
-            port: 9000,
-            path: "/",
-            debug: 3,
-            logFunction: _utils2.default.logFunction
-        }
-    },
-    encryption: {
-        bits: 1024
-    }
-};
-
-exports.default = config;
 
 /***/ }),
 /* 4 */
@@ -875,94 +931,38 @@ exports.default = Utils;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _utils = __webpack_require__(4);
 
-var _user = __webpack_require__(12);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _chatwindow = __webpack_require__(13);
-
-var _chatwindow2 = _interopRequireDefault(_chatwindow);
-
-var _channelmanager = __webpack_require__(11);
-
-var _channelmanager2 = _interopRequireDefault(_channelmanager);
-
-var _config = __webpack_require__(3);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _peerjs = __webpack_require__(9);
-
-var _peerjs2 = _interopRequireDefault(_peerjs);
+var _utils2 = _interopRequireDefault(_utils);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Factory class for multiple instances
- */
-var Factory = function () {
-  function Factory() {
-    _classCallCheck(this, Factory);
-  }
-
-  _createClass(Factory, null, [{
-    key: "createPeerConnection",
-
-
-    /**
-     * @returns {Peer}
-     */
-    value: function createPeerConnection() {
-      // return new Peer(config.peerjs.username, config.peerjs.options);
-      return new _peerjs2.default(_config2.default.peerjs.options);
+var config = {
+    gui: {
+        errorField: $('.chat-errors'),
+        userlist: $('.userlist'),
+        messagesList: $('.message-container'),
+        activeChatHeadline: $('.active-chat-headline')
+    },
+    peerjs: {
+        username: $('#username').text(),
+        options: {
+            host: window.location.hostname,
+            port: 9000,
+            path: "/",
+            debug: 3,
+            logFunction: _utils2.default.logFunction
+        }
+    },
+    encryption: {
+        bits: 1024
     }
+};
 
-    /**
-     * Create a new user
-     *
-     * @param name
-     * @returns {User}
-     */
-
-  }, {
-    key: "createUser",
-    value: function createUser(name) {
-      return new _user2.default(name);
-    }
-
-    /**
-     * @returns {ChannelManager}
-     */
-
-  }, {
-    key: "createChannelManager",
-    value: function createChannelManager() {
-      return new _channelmanager2.default();
-    }
-
-    /**
-     * @param user
-     * @returns {ChatWindow}
-     */
-
-  }, {
-    key: "createChatWindow",
-    value: function createChatWindow(user) {
-      return new _chatwindow2.default(user);
-    }
-  }]);
-
-  return Factory;
-}();
-
-exports.default = Factory;
+exports.default = config;
 
 /***/ }),
 /* 6 */
@@ -1564,9 +1564,9 @@ module.exports.BufferBuilder = BufferBuilder;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var RTCPeerConnection = __webpack_require__(2).RTCPeerConnection;
-var RTCSessionDescription = __webpack_require__(2).RTCSessionDescription;
-var RTCIceCandidate = __webpack_require__(2).RTCIceCandidate;
+var RTCPeerConnection = __webpack_require__(3).RTCPeerConnection;
+var RTCSessionDescription = __webpack_require__(3).RTCSessionDescription;
+var RTCIceCandidate = __webpack_require__(3).RTCIceCandidate;
 
 /**
  * Manages all negotiations between Peers.
@@ -1879,10 +1879,10 @@ module.exports = Negotiator;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
-var Socket = __webpack_require__(16);
-var MediaConnection = __webpack_require__(15);
-var DataConnection = __webpack_require__(14);
+var EventEmitter = __webpack_require__(2);
+var Socket = __webpack_require__(18);
+var MediaConnection = __webpack_require__(17);
+var DataConnection = __webpack_require__(16);
 
 /**
  * A peer who can initiate connections with other peers.
@@ -2390,7 +2390,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(5);
+var _factory = __webpack_require__(1);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2398,9 +2398,17 @@ var _peerjs = __webpack_require__(9);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
-var _config = __webpack_require__(3);
+var _config = __webpack_require__(5);
 
 var _config2 = _interopRequireDefault(_config);
+
+var _userlist = __webpack_require__(14);
+
+var _userlist2 = _interopRequireDefault(_userlist);
+
+var _chatwindowlist = __webpack_require__(12);
+
+var _chatwindowlist2 = _interopRequireDefault(_chatwindowlist);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2418,8 +2426,54 @@ var Chat = function () {
         _classCallCheck(this, Chat);
 
         this._peer = null;
-        this._userList = {};
-        this._chatWindowList = {};
+
+        this.userListItemClick = function (user) {
+
+            var chat = this;
+
+            _userlist2.default.markUserActive(user);
+
+            // remove unread messages hint
+
+            // connect if not already connected
+
+            if (!user.connected) {
+                // connect
+                // Create 2 connections, one labelled chat and another labelled file.
+                var dataConnection = chat.peer.connect(user.name, {
+                    label: 'chat',
+                    serialization: 'none',
+                    metadata: { message: 'hi i want to chat with you!' }
+                });
+                dataConnection.on('open', function () {
+                    chat.connect(dataConnection);
+                });
+                dataConnection.on('error', function (err) {
+                    alert(err);
+                });
+
+                var fileConnection = chat.peer.connect(user.name, {
+                    label: 'file', reliable: true
+                });
+
+                fileConnection.on('open', function () {
+                    chat.connect(fileConnection);
+                });
+
+                fileConnection.on('error', function (err) {
+                    alert(err);
+                });
+            }
+
+            // create chat window if necessary
+            var chatwindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
+
+            // set headline
+            _config2.default.gui.activeChatHeadline.html(user.name);
+
+            // set chat messages
+            _config2.default.gui.messagesList.html(chatwindow.messages);
+        };
 
         this.connect = function (connection) {
 
@@ -2458,73 +2512,8 @@ var Chat = function () {
 
 
     _createClass(Chat, [{
-        key: "getUserFromList",
+        key: "start",
 
-
-        // /**
-        //  * @returns {{}}
-        //  */
-        // get userList() {
-        //     return this._userList;
-        // }
-
-        /**
-         * @param username
-         */
-        value: function getUserFromList(username) {
-            return this._userList[username];
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "addUserToList",
-        value: function addUserToList(user) {
-            this._userList[user.name] = user;
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "deleteUserFromList",
-        value: function deleteUserFromList(user) {
-            delete this._userList[user.name];
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "getChatWindowFromList",
-        value: function getChatWindowFromList(user) {
-            return this._chatWindowList[user.name];
-        }
-
-        /**
-         * @param user
-         * @param chatWindow
-         */
-
-    }, {
-        key: "addChatWindowToList",
-        value: function addChatWindowToList(user, chatWindow) {
-            this._chatWindowList[user.name] = chatWindow;
-        }
-
-        /**
-         * @param user
-         */
-
-    }, {
-        key: "deleteChatWindowFromList",
-        value: function deleteChatWindowFromList(user) {
-            delete this._chatWindowList[user.name];
-        }
 
         //
         // /**
@@ -2539,9 +2528,6 @@ var Chat = function () {
         /**
          * Start the chat client
          */
-
-    }, {
-        key: "start",
         value: function start() {
             // let keyPair = KeyGenerator.generateKeyPair();
             // let publicKey = keyPair.publicKey;
@@ -2549,7 +2535,7 @@ var Chat = function () {
             // this.postPublicKey(publicKey);
 
             // Await connections from others
-            this._peer.on('connection', this.connect);
+            this._peer.on('connection', this.connect, this);
 
             this._peer.on('error', function (err) {
                 _config2.default.gui.errorField.append(err + '<br>');
@@ -2563,65 +2549,10 @@ var Chat = function () {
                     // just for safety reasons, server already manages not to listing of own user
                     if (username !== _config2.default.peerjs.username) {
 
-                        var user = chat.getOrCreateUser(username);
-
-                        var userListEntry = $('<li class="user disconnected" id="' + user.name + '">' + '<img class="gravatar" src="' + user.image + '">' + '<span class="name">' + user.name + '</span>' + '</li>');
-
-                        userListEntry.on('click', function () {
-
-                            // inactivate all users in userlist
-                            _config2.default.gui.userlist.find('.user').each(function (index, element) {
-                                $(element).removeClass('active');
-                            });
-
-                            // activate this selected user list entry
-                            userListEntry.addClass('active');
-
-                            // remove unread messages hint
-
-                            // connect if not already connected
-
-                            if (!user.connected) {
-                                // connect
-                                // Create 2 connections, one labelled chat and another labelled file.
-                                var dataConnection = chat.peer.connect(username, {
-                                    label: 'chat',
-                                    serialization: 'none',
-                                    metadata: { message: 'hi i want to chat with you!' }
-                                });
-                                dataConnection.on('open', function () {
-                                    chat.connect(dataConnection);
-                                });
-                                dataConnection.on('error', function (err) {
-                                    alert(err);
-                                });
-
-                                var fileConnection = chat.peer.connect(username, {
-                                    label: 'file', reliable: true
-                                });
-
-                                fileConnection.on('open', function () {
-                                    chat.connect(fileConnection);
-                                });
-
-                                fileConnection.on('error', function (err) {
-                                    alert(err);
-                                });
-
-                                chat.addUserToList(user);
-                            }
-
-                            // create chat window if necessary
-                            var chatwindow = chat.getOrCreateChatWindow(user);
-
-                            // set headline
-                            _config2.default.gui.activeChatHeadline.html(user.name);
-
-                            // set chat messages
-                            _config2.default.gui.messagesList.html(chatwindow.messages);
+                        var user = _userlist2.default.getOrCreateUser(username);
+                        _userlist2.default.addUserToGui(user, function () {
+                            chat.userListItemClick(user, this);
                         });
-
-                        _config2.default.gui.userlist.append(userListEntry);
                     }
                 });
             });
@@ -2636,17 +2567,12 @@ var Chat = function () {
         value: function initChatConnection(dataConnection) {
             var username = dataConnection.peer;
 
-            // fix for peer call of this in closure connect
-            var chat = this;
-            if (this instanceof _peerjs2.default) {
-                chat = this.chat;
-            }
-
-            var user = chat.getOrCreateUser(username);
-            var chatWindow = chat.getOrCreateChatWindow(user);
+            var user = _userlist2.default.getOrCreateUser(username);
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
 
             chatWindow.initChat(dataConnection);
 
+            // todo check if needed any longer
             $('.filler').hide();
 
             dataConnection.on('close', function () {
@@ -2658,11 +2584,12 @@ var Chat = function () {
                 $(userListEntry).removeClass('connected').addClass('disconnected');
 
                 user.connected = false;
-                chat.deleteUserFromList(user);
-                chat.deleteChatWindowFromList(user);
+                _userlist2.default.deleteUser(user);
+                _chatwindowlist2.default.deleteChatWindow(user);
             });
 
-            var userListEntry = _config2.default.gui.userlist.find('#' + user.name);
+            var userListEntry = _userlist2.default.getGuiUserListEntry(user);
+
             $(userListEntry).removeClass('disconnected').addClass('connected');
 
             user.connected = true;
@@ -2677,52 +2604,10 @@ var Chat = function () {
         value: function initFileConnection(fileConnection) {
             var username = fileConnection.peer;
 
-            // fix for peer call of this in closure connect
-            var chat = this;
-            if (this instanceof _peerjs2.default) {
-                chat = this.chat;
-            }
-
-            var user = chat.getOrCreateUser(username);
-            var chatWindow = chat.getOrCreateChatWindow(user);
+            var user = _userlist2.default.getOrCreateUser(username);
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
 
             chatWindow.initFileChat(fileConnection);
-        }
-
-        /**
-         * @param username
-         * @returns {User}
-         */
-
-    }, {
-        key: "getOrCreateUser",
-        value: function getOrCreateUser(username) {
-            var user = this.getUserFromList(username);
-
-            if (!user) {
-                user = _factory2.default.createUser(username);
-                this.addUserToList(user);
-            }
-
-            return user;
-        }
-
-        /**
-         * @param user
-         * @returns {User}
-         */
-
-    }, {
-        key: "getOrCreateChatWindow",
-        value: function getOrCreateChatWindow(user) {
-            var chatWindow = this.getChatWindowFromList(user);
-
-            if (!chatWindow) {
-                chatWindow = _factory2.default.createChatWindow(user);
-                this.addChatWindowToList(user, chatWindow);
-            }
-
-            return chatWindow;
         }
 
         /**
@@ -2781,7 +2666,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _factory = __webpack_require__(5);
+var _factory = __webpack_require__(1);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2804,6 +2689,121 @@ exports.default = ChannelManager;
 
 /***/ }),
 /* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _factory = __webpack_require__(1);
+
+var _factory2 = _interopRequireDefault(_factory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Domain object for chat windows
+ */
+var ChatWindowList = function () {
+  function ChatWindowList() {
+    _classCallCheck(this, ChatWindowList);
+  }
+
+  _createClass(ChatWindowList, null, [{
+    key: "getChatWindow",
+
+
+    /**
+     * @param user
+     */
+    value: function getChatWindow(user) {
+      return this.chatWindowList[user.name];
+    }
+
+    /**
+     * @param user
+     * @returns ChatWindow
+     */
+
+
+    // static _currentChatWindow;
+
+    /**
+     *
+     * @type {{ChatWindow}}
+     * @private
+     */
+
+  }, {
+    key: "getOrCreateChatWindow",
+    value: function getOrCreateChatWindow(user) {
+      var chatWindow = this.getChatWindow(user);
+
+      if (!chatWindow) {
+        chatWindow = _factory2.default.createChatWindow(user);
+        this.addChatWindow(user, chatWindow);
+      }
+
+      return chatWindow;
+    }
+
+    /**
+     * @param user
+     * @param chatWindow
+     */
+
+  }, {
+    key: "addChatWindow",
+    value: function addChatWindow(user, chatWindow) {
+      this.chatWindowList[user.name] = chatWindow;
+    }
+
+    /**
+     * @param user
+     */
+
+  }, {
+    key: "deleteChatWindow",
+    value: function deleteChatWindow(user) {
+      delete this.chatWindowList[user.name];
+    }
+
+    /**
+     * @returns {{ChatWindow}}
+     */
+
+  }, {
+    key: "chatWindowList",
+    get: function get() {
+      return this._chatWindowList;
+    }
+
+    //
+    // static get current() {
+    //     return this._currentChatWindow;
+    // }
+    //
+    // static set current(value) {
+    //     this._currentChatWindow = value;
+    // }
+
+  }]);
+
+  return ChatWindowList;
+}();
+
+ChatWindowList._chatWindowList = {};
+exports.default = ChatWindowList;
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2881,7 +2881,7 @@ var User = function () {
 exports.default = User;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2889,6 +2889,156 @@ exports.default = User;
 
 Object.defineProperty(exports, "__esModule", {
     value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _factory = __webpack_require__(1);
+
+var _factory2 = _interopRequireDefault(_factory);
+
+var _config = __webpack_require__(5);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Domain object for chat users
+ */
+var UserList = function () {
+    function UserList() {
+        _classCallCheck(this, UserList);
+    }
+
+    _createClass(UserList, null, [{
+        key: "getUser",
+
+
+        /**
+         * @param username
+         */
+        value: function getUser(username) {
+            return UserList.userList[username];
+        }
+
+        /**
+         * @param username
+         * @returns {User}
+         */
+
+
+        /**
+         * @type {{User}}
+         * @private
+         */
+
+    }, {
+        key: "getOrCreateUser",
+        value: function getOrCreateUser(username) {
+            var user = UserList.getUser(username);
+
+            if (!user) {
+                user = _factory2.default.createUser(username);
+                UserList.addUser(user);
+            }
+
+            return user;
+        }
+
+        /**
+         * @param user
+         */
+
+    }, {
+        key: "addUser",
+        value: function addUser(user) {
+            UserList.userList[user.name] = user;
+        }
+
+        /**
+         * Add user to userlist in gui
+         *
+         * @param user
+         * @param clickFunctionCallback
+         */
+
+    }, {
+        key: "addUserToGui",
+        value: function addUserToGui(user, clickFunctionCallback) {
+            var userListEntry = $('<li class="user disconnected" id="' + user.name + '">' + '<img class="gravatar" src="' + user.image + '">' + '<span class="name">' + user.name + '</span>' + '</li>');
+
+            if (clickFunctionCallback) {
+                userListEntry.click(clickFunctionCallback);
+            }
+
+            _config2.default.gui.userlist.append(userListEntry);
+        }
+    }, {
+        key: "getGuiUserListEntry",
+        value: function getGuiUserListEntry(user) {
+            return _config2.default.gui.userlist.find('#' + user.name);
+        }
+
+        /**
+         * @param user
+         */
+
+    }, {
+        key: "deleteUser",
+        value: function deleteUser(user) {
+            delete UserList.userList[user.name];
+        }
+
+        /**
+         * @returns {{User}}
+         */
+
+    }, {
+        key: "markUserActive",
+
+
+        /**
+         * Marks user as active in gui userlist
+         *
+         * @param user
+         */
+        value: function markUserActive(user) {
+            // inactivate all users in userlist
+            _config2.default.gui.userlist.find('.user').each(function (index, element) {
+                $(element).removeClass('active');
+            });
+
+            // activate user list entry of given user
+            var userListEntries = _config2.default.gui.userlist.find('#' + user.name);
+            userListEntries.each(function (index, element) {
+                $(element).addClass('active');
+            });
+        }
+    }, {
+        key: "userList",
+        get: function get() {
+            return this._userList;
+        }
+    }]);
+
+    return UserList;
+}();
+
+UserList._userList = {};
+exports.default = UserList;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2906,140 +3056,134 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ChatWindow = function () {
 
-    /**
-     * @param user
-     */
+  /**
+   * @param user
+   */
 
 
-    /**
-     * @type {MediaConnection}
-     * @private
-     */
+  /**
+   * @type {MediaConnection}
+   * @private
+   */
 
 
-    // static _current;
+  /**
+   * @type {User}
+   * @private
+   */
+  function ChatWindow(user) {
+    _classCallCheck(this, ChatWindow);
 
-    /**
-     * @type {User}
-     * @private
-     */
-    function ChatWindow(user) {
-        _classCallCheck(this, ChatWindow);
+    this._user = null;
+    this._dataConnection = null;
+    this._fileConnection = null;
+    this._messages = null;
 
-        this._user = null;
-        this._dataConnection = null;
-        this._fileConnection = null;
-        this._messages = null;
+    this._user = user;
 
-        this._user = user;
+    this._messages = $('<ul></ul>').addClass('messages');
+  }
 
-        this._messages = $('<ul></ul>').addClass('messages');
-        this._messages.append().addClass('messages');
+  /**
+   * @param dataConnection
+   */
+
+
+  /**
+   * @type {Object}
+   * @private
+   */
+
+
+  /**
+   * @type {DataConnection}
+   * @private
+   */
+
+
+  _createClass(ChatWindow, [{
+    key: 'initChat',
+    value: function initChat(dataConnection) {
+      this._dataConnection = dataConnection;
+      var messages = this._messages;
+      var user = this._user;
+      var chatWindow = this;
+
+      this._dataConnection.on('data', function (data) {
+        var message = chatWindow.createMessage(data, 'foreign');
+        _utils2.default.appendAndScrollDown(messages, message);
+      });
+
+      this._dataConnection.on('close', function () {
+        var data = user.name + ' has left the chat.';
+        var message = chatWindow.createMessage(data, 'foreign');
+        _utils2.default.appendAndScrollDown(messages, message);
+      });
     }
 
     /**
-     * @param dataConnection
+     * @type {MediaConnection}
+     * @param fileConnection
      */
 
+  }, {
+    key: 'initFileChat',
+    value: function initFileChat(fileConnection) {
+      this._fileConnection = fileConnection;
+      var messages = this._messages;
+      var chatWindow = this;
+
+      this._fileConnection.on('data', function (data) {
+        var type = data.type;
+        var filename = data.filename;
+        var file = data.file;
+
+        var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
+
+        if (htmlString) {
+          var message = chatWindow.createMessage(htmlString, 'foreign file');
+          _utils2.default.appendAndScrollDown(messages, message);
+        }
+      });
+    }
 
     /**
-     * @type {Object}
-     * @private
+     * Creates a message
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
      */
 
+  }, {
+    key: 'createMessage',
+    value: function createMessage(message, origin) {
+      return $('<li></li>').addClass('message arrow').addClass(origin).text(message);
+    }
 
     /**
-     * @type {DataConnection}
-     * @private
+     * @returns {Object}
      */
 
+  }, {
+    key: 'messages',
+    get: function get() {
+      return this._messages;
+    }
+  }]);
 
-    _createClass(ChatWindow, [{
-        key: 'initChat',
-        value: function initChat(dataConnection) {
-            this._dataConnection = dataConnection;
-            var messages = this._messages;
-            var user = this._user;
-            var chatWindow = this;
-
-            $('#connections').append(this._messages);
-
-            this._dataConnection.on('data', function (data) {
-
-                var message = chatWindow.createMessage(data, 'foreign');
-                _utils2.default.appendAndScrollDown(messages, message);
-            });
-
-            this._dataConnection.on('close', function () {
-
-                var data = user.name + ' has left the chat.';
-
-                var message = chatWindow.createMessage(data, 'foreign');
-                _utils2.default.appendAndScrollDown(messages, message);
-            });
-        }
-
-        /**
-         * @type {MediaConnection}
-         * @param fileConnection
-         */
-
-    }, {
-        key: 'initFileChat',
-        value: function initFileChat(fileConnection) {
-            this._fileConnection = fileConnection;
-            var chatbox = this._messages;
-            var user = this._user;
-
-            this._fileConnection.on('data', function (data) {
-                var type = data.type;
-                var filename = data.filename;
-                var file = data.file;
-
-                var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
-
-                if (htmlString) {
-                    // todo adjust output
-                    _utils2.default.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
-                }
-            });
-        }
-    }, {
-        key: 'createMessage',
-        value: function createMessage(message, origin) {
-
-            return $('<li></li>').addClass('message arrow').addClass(origin).text(message);
-        }
-    }, {
-        key: 'messages',
-        get: function get() {
-            return this._messages;
-        }
-
-        //
-        // static get current() {
-        //     return this._current;
-        // }
-        //
-        // static set current(value) {
-        //     this._current = value;
-        // }
-
-    }]);
-
-    return ChatWindow;
+  return ChatWindow;
 }();
 
 exports.default = ChatWindow;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
+var EventEmitter = __webpack_require__(2);
 var Negotiator = __webpack_require__(8);
-var Reliable = __webpack_require__(17);
+var Reliable = __webpack_require__(19);
 
 /**
  * Wraps a DataChannel between two Peers.
@@ -3306,11 +3450,11 @@ module.exports = DataConnection;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
+var EventEmitter = __webpack_require__(2);
 var Negotiator = __webpack_require__(8);
 
 /**
@@ -3407,11 +3551,11 @@ module.exports = MediaConnection;
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(1);
+var EventEmitter = __webpack_require__(2);
 
 /**
  * An abstraction on top of WebSockets and XHR streaming to provide fastest
@@ -3627,10 +3771,10 @@ module.exports = Socket;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(18);
+var util = __webpack_require__(20);
 
 /**
  * Reliable transfer for Chrome Canary DataChannel impl.
@@ -3951,7 +4095,7 @@ module.exports.Reliable = Reliable;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BinaryPack = __webpack_require__(6);
@@ -4052,7 +4196,7 @@ module.exports = util;
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4066,10 +4210,6 @@ var _utils = __webpack_require__(4);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _config = __webpack_require__(3);
-
-var _config2 = _interopRequireDefault(_config);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(function () {
@@ -4079,32 +4219,32 @@ $(function () {
         var chat = new _chat2.default();
         chat.start();
 
-        // Prepare file drop box.
-        var box = $('#box');
-        box.on('dragenter', _utils2.default.doNothing);
-        box.on('dragover', _utils2.default.doNothing);
-        box.on('drop', function (e) {
-            e.originalEvent.preventDefault();
-            var file = e.originalEvent.dataTransfer.files[0];
-
-            chat.eachActiveConnection(function (connection, activeChat) {
-                if (connection.label === 'file') {
-                    var fileWithMetaData = {
-                        filename: file.name,
-                        type: file.type,
-                        file: file
-                    };
-                    connection.send(fileWithMetaData);
-
-                    var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
-
-                    if (htmlString) {
-                        _utils2.default.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
-                    }
-                }
-            });
-        });
-
+        // // Prepare file drop box.
+        // let box = $('#box');
+        // box.on('dragenter', Utils.doNothing);
+        // box.on('dragover', Utils.doNothing);
+        // box.on('drop', function (e) {
+        //     e.originalEvent.preventDefault();
+        //     let file = e.originalEvent.dataTransfer.files[0];
+        //
+        //     chat.eachActiveConnection(function (connection, activeChat) {
+        //         if (connection.label === 'file') {
+        //             let fileWithMetaData = {
+        //                 filename: file.name,
+        //                 type: file.type,
+        //                 file: file
+        //             };
+        //             connection.send(fileWithMetaData);
+        //
+        //             let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
+        //
+        //             if (htmlString) {
+        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="file">You sent a file:' + htmlString + '</span></div>');
+        //             }
+        //         }
+        //     });
+        // });
+        //
         // /**
         //  * Connect to a peer
         //  */
@@ -4123,34 +4263,34 @@ $(function () {
         //     }
         // });
 
-        // Close a connection.
-        $('#close').click(function () {
-            chat.eachActiveConnection(function (connection) {
-                connection.close();
-            });
-        });
+        // // Close a connection.
+        // $('#close').click(function () {
+        //     chat.eachActiveConnection(function (connection) {
+        //         connection.close();
+        //     });
+        // });
 
-        // Send a chat message to all active connections.
-        $('#send').submit(function (e) {
-            e.preventDefault();
-            // For each active connection, send the message.
-            var msg = $('#text').val();
-
-            if (msg) {
-                chat.eachActiveConnection(function (connection, activeChat) {
-                    if (connection.label === 'chat') {
-                        connection.send(msg);
-                        _utils2.default.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
-                    }
-                });
-            }
-            $('#text').val('');
-            $('#text').focus();
-        });
+        // // Send a chat message to all active connections.
+        // $('#send').submit(function (e) {
+        //     e.preventDefault();
+        //     // For each active connection, send the message.
+        //     let msg = $('#text').val();
+        //
+        //     if (msg) {
+        //         chat.eachActiveConnection(function (connection, activeChat) {
+        //             if (connection.label === 'chat') {
+        //                 connection.send(msg);
+        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
+        //             }
+        //         });
+        //     }
+        //     $('#text').val('');
+        //     $('#text').focus();
+        // });
 
         window.onunload = window.onbeforeunload = function (e) {
             if (!!chat.peer && !chat.peer.destroyed) {
-                chat.peer.connect();
+                chat.peer.disconnect();
             }
         };
     }

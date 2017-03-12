@@ -7,8 +7,6 @@ import Utils from "../utils";
  */
 class ChatWindow {
 
-    // static _current;
-
     /**
      * @type {User}
      * @private
@@ -40,7 +38,6 @@ class ChatWindow {
         this._user = user;
 
         this._messages = $('<ul></ul>').addClass('messages');
-        this._messages.append().addClass('messages');
     }
 
     /**
@@ -52,18 +49,13 @@ class ChatWindow {
         let user = this._user;
         let chatWindow = this;
 
-        $('#connections').append(this._messages);
-
         this._dataConnection.on('data', function (data) {
-
             let message = chatWindow.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
         });
 
         this._dataConnection.on('close', function () {
-
             let data = user.name + ' has left the chat.';
-
             let message = chatWindow.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
         });
@@ -75,8 +67,8 @@ class ChatWindow {
      */
     initFileChat(fileConnection) {
         this._fileConnection = fileConnection;
-        let chatbox = this._messages;
-        let user = this._user;
+        let messages = this._messages;
+        let chatWindow = this;
 
         this._fileConnection.on('data', function (data) {
             let type = data.type;
@@ -86,29 +78,28 @@ class ChatWindow {
             let htmlString = Utils.createBlobHtmlView(file, type, filename);
 
             if (htmlString) {
-                // todo adjust output
-                Utils.appendAndScrollDown(chatbox, '<div><span class="file">' + user.name + ' has sent you a file: ' + htmlString + '.</span></div>');
+                let message = chatWindow.createMessage(htmlString, 'foreign file');
+                Utils.appendAndScrollDown(messages, message);
             }
         });
     }
 
+    /**
+     * Creates a message
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
+     */
     createMessage(message, origin) {
-
         return $('<li></li>').addClass('message arrow').addClass(origin).text(message);
     }
 
+    /**
+     * @returns {Object}
+     */
     get messages() {
         return this._messages;
     }
-
-    //
-    // static get current() {
-    //     return this._current;
-    // }
-    //
-    // static set current(value) {
-    //     this._current = value;
-    // }
 }
 
 export default ChatWindow;

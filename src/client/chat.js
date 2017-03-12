@@ -3,6 +3,8 @@
 import Factory from "./factory";
 import Peer from "peerjs";
 import config from "./config";
+import UserList from "./domain/userlist";
+import ChatWindowList from "./domain/chatwindowlist";
 
 /**
  * Chat main class
@@ -14,10 +16,6 @@ class Chat {
      * @private
      */
     _peer = null;
-
-    _userList = {};
-
-    _chatWindowList = {};
 
     /**
      * Constructor
@@ -35,56 +33,6 @@ class Chat {
      */
     get peer() {
         return this._peer;
-    }
-
-    // /**
-    //  * @returns {{}}
-    //  */
-    // get userList() {
-    //     return this._userList;
-    // }
-
-    /**
-     * @param username
-     */
-    getUserFromList(username) {
-        return this._userList[username];
-    }
-
-    /**
-     * @param user
-     */
-    addUserToList(user) {
-        this._userList[user.name] = user;
-    }
-
-    /**
-     * @param user
-     */
-    deleteUserFromList(user) {
-        delete this._userList[user.name];
-    }
-
-    /**
-     * @param user
-     */
-    getChatWindowFromList(user) {
-        return this._chatWindowList[user.name];
-    }
-
-    /**
-     * @param user
-     * @param chatWindow
-     */
-    addChatWindowToList(user, chatWindow) {
-        this._chatWindowList[user.name] = chatWindow;
-    }
-
-    /**
-     * @param user
-     */
-    deleteChatWindowFromList(user) {
-        delete this._chatWindowList[user.name];
     }
 
     //
@@ -107,12 +55,11 @@ class Chat {
         // this.postPublicKey(publicKey);
 
         // Await connections from others
-        this._peer.on('connection', this.connect);
+        this._peer.on('connection', this.connect, this);
 
         this._peer.on('error', function (err) {
             config.gui.errorField.append(err + '<br>');
         });
-
 
         let chat = this;
 
@@ -122,73 +69,63 @@ class Chat {
                 // just for safety reasons, server already manages not to listing of own user
                 if (username !== config.peerjs.username) {
 
-                    let user = chat.getOrCreateUser(username);
-
-                    let userListEntry = $('<li class="user disconnected" id="' + user.name + '">' +
-                        '<img class="gravatar" src="' + user.image + '">' +
-                        '<span class="name">' + user.name + '</span>' +
-                        '</li>');
-
-                    userListEntry.on('click', function () {
-
-                        // inactivate all users in userlist
-                        config.gui.userlist.find('.user').each(function (index, element) {
-                            $(element).removeClass('active');
-                        });
-
-                        // activate this selected user list entry
-                        userListEntry.addClass('active');
-
-                        // remove unread messages hint
-
-                        // connect if not already connected
-
-                        if (!user.connected) {
-                            // connect
-                            // Create 2 connections, one labelled chat and another labelled file.
-                            let dataConnection = chat.peer.connect(username, {
-                                label: 'chat',
-                                serialization: 'none',
-                                metadata: {message: 'hi i want to chat with you!'}
-                            });
-                            dataConnection.on('open', function () {
-                                chat.connect(dataConnection);
-                            });
-                            dataConnection.on('error', function (err) {
-                                alert(err);
-                            });
-
-
-                            let fileConnection = chat.peer.connect(username, {
-                                label: 'file', reliable: true
-                            });
-
-                            fileConnection.on('open', function () {
-                                chat.connect(fileConnection);
-                            });
-
-                            fileConnection.on('error', function (err) {
-                                alert(err);
-                            });
-
-                            chat.addUserToList(user);
-                        }
-
-                        // create chat window if necessary
-                        let chatwindow = chat.getOrCreateChatWindow(user);
-
-                        // set headline
-                        config.gui.activeChatHeadline.html(user.name);
-
-                        // set chat messages
-                        config.gui.messagesList.html(chatwindow.messages);
-                    });
-
-                    config.gui.userlist.append(userListEntry);
+                    let user = UserList.getOrCreateUser(username);
+                    UserList.addUserToGui(user, function() {
+                        chat.userListItemClick(user, this)
+                    })
                 }
             })
         });
     }
+
+    userListItemClick = function (user) {
+
+        let chat = this;
+
+        UserList.markUserActive(user);
+
+        // remove unread messages hint
+
+        // connect if not already connected
+
+        if (!user.connected) {
+            // connect
+            // Create 2 connections, one labelled chat and another labelled file.
+            let dataConnection = chat.peer.connect(user.name, {
+                label: 'chat',
+                serialization: 'none',
+                metadata: {message: 'hi i want to chat with you!'}
+            });
+            dataConnection.on('open', function () {
+                chat.connect(dataConnection);
+            });
+            dataConnection.on('error', function (err) {
+                alert(err);
+            });
+
+
+            let fileConnection = chat.peer.connect(user.name, {
+                label: 'file', reliable: true
+            });
+
+            fileConnection.on('open', function () {
+                chat.connect(fileConnection);
+            });
+
+            fileConnection.on('error', function (err) {
+                alert(err);
+            });
+        }
+
+        // create chat window if necessary
+        let chatwindow = ChatWindowList.getOrCreateChatWindow(user);
+
+        // set headline
+        config.gui.activeChatHeadline.html(user.name);
+
+        // set chat messages
+        config.gui.messagesList.html(chatwindow.messages);
+    };
 
     connect = function (connection) {
 
@@ -214,17 +151,12 @@ class Chat {
     initChatConnection(dataConnection) {
         let username = dataConnection.peer;
 
-        // fix for peer call of this in closure connect
-        let chat = this;
-        if (this instanceof Peer) {
-            chat = this.chat;
-        }
-
-        let user = chat.getOrCreateUser(username);
-        let chatWindow = chat.getOrCreateChatWindow(user);
+        let user = UserList.getOrCreateUser(username);
+        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
 
         chatWindow.initChat(dataConnection);
 
+        // todo check if needed any longer
         $('.filler').hide();
 
         dataConnection.on('close', function () {
@@ -236,11 +168,12 @@ class Chat {
             $(userListEntry).removeClass('connected').addClass('disconnected');
 
             user.connected = false;
-            chat.deleteUserFromList(user);
-            chat.deleteChatWindowFromList(user);
+            UserList.deleteUser(user);
+            ChatWindowList.deleteChatWindow(user);
         });
 
-        let userListEntry = config.gui.userlist.find('#' + user.name);
+        let userListEntry = UserList.getGuiUserListEntry(user);
+
         $(userListEntry).removeClass('disconnected').addClass('connected');
 
         user.connected = true;
@@ -252,46 +185,10 @@ class Chat {
     initFileConnection(fileConnection) {
         let username = fileConnection.peer;
 
-        // fix for peer call of this in closure connect
-        let chat = this;
-        if (this instanceof Peer) {
-            chat = this.chat;
-        }
-
-        let user = chat.getOrCreateUser(username);
-        let chatWindow = chat.getOrCreateChatWindow(user);
+        let user = UserList.getOrCreateUser(username);
+        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
 
         chatWindow.initFileChat(fileConnection);
-    }
-
-    /**
-     * @param username
-     * @returns {User}
-     */
-    getOrCreateUser(username) {
-        let user = this.getUserFromList(username);
-
-        if (!user) {
-            user = Factory.createUser(username);
-            this.addUserToList(user)
-        }
-
-        return user;
-    }
-
-    /**
-     * @param user
-     * @returns {User}
-     */
-    getOrCreateChatWindow(user) {
-        let chatWindow = this.getChatWindowFromList(user);
-
-        if (!chatWindow) {
-            chatWindow = Factory.createChatWindow(user);
-            this.addChatWindowToList(user, chatWindow);
-        }
-
-        return chatWindow;
     }
 
     /**

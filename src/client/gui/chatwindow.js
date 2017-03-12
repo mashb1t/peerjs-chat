@@ -52,6 +52,7 @@ class ChatWindow {
         this._dataConnection.on('data', function (data) {
             let message = chatWindow.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
+            Utils.pushNotification(user, data);
         });
 
         this._dataConnection.on('close', function () {
@@ -71,6 +72,7 @@ class ChatWindow {
     initFileChat(fileConnection) {
         this._fileConnection = fileConnection;
         let messages = this._messages;
+        let user = this._user;
         let chatWindow = this;
 
         this._fileConnection.on('data', function (data) {
@@ -83,6 +85,7 @@ class ChatWindow {
             if (htmlString) {
                 let message = chatWindow.createMessage(htmlString, 'foreign file');
                 Utils.appendAndScrollDown(messages, message);
+                Utils.pushNotification(user, 'File ' + data.filename);
             }
         });
     }

@@ -3,6 +3,7 @@
 import util from "peerjs/lib/util";
 import config from "./config";
 import ChatWindowList from "./domain/chatwindowlist";
+import Push from "push.js";
 
 class Utils {
 
@@ -180,12 +181,26 @@ class Utils {
         config.gui.videoChatButton.prop('disabled', true);
     }
 
+    /**
+     * Triggers refresh on lightboxes
+     */
     static refreshLightBox() {
         try {
             config.gui.lightbox();
         } catch (e) {
             // todo handle error due to no images
         }
+    }
+
+    static pushNotification(user, data) {
+        Push.create(user.name, {
+            body: data,
+            // icon: {
+            //     x16: user.icon,
+            //     x32: user.icon
+            // },
+            timeout: 5000
+        });
     }
 }
 

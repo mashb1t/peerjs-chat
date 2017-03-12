@@ -11,7 +11,7 @@ let config = {
         refreshUsersButton: $('#refresh'), //inactive
         closeConnectionButton: $('#close-connection'), //inactive
         videoChatButton: $('#video-chat'), //inactive
-        sendFileButton: $('#send-file'), //inactive
+        sendFileButton: $('#send-file'),
         fileUploadField: $('#fileupload'), //inactive
         emojiButton: $('#emoji'), //inactive
         logField: $('.log'),

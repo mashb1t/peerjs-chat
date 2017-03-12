@@ -74,6 +74,14 @@ $(function () {
             chat.handleSendMessage();
         });
 
+        config.gui.sendFileButton.click(function() {
+            config.gui.fileUploadField.click();
+        });
+
+        config.gui.fileUploadField.change(function(e) {
+            chat.handleSendFile(e);
+        });
+
         window.onunload = window.onbeforeunload = function (e) {
             if (!!chat.peer && !chat.peer.destroyed) {
                 chat.peer.disconnect();

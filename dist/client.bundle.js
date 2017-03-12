@@ -414,7 +414,8 @@ var config = {
         refreshUsersButton: $('#refresh'), //inactive
         closeConnectionButton: $('#close-connection'), //inactive
         videoChatButton: $('#video-chat'), //inactive
-        sendFileButton: $('#fileupload'), //inactive
+        sendFileButton: $('#send-file'), //inactive
+        fileUploadField: $('#fileupload'), //inactive
         emojiButton: $('#emoji'), //inactive
         logField: $('.log')
     },
@@ -563,25 +564,22 @@ var Utils = function () {
     }, {
         key: "_getHtmlStringByType",
         value: function _getHtmlStringByType(url, type, filename) {
-            var htmlString = null;
+            var htmlString = '';
             var firstPartOfType = type.substr(0, type.indexOf('/'));
 
             switch (firstPartOfType) {
                 case 'image':
-                    htmlString = '<img src="' + url + '" alt="' + filename + '">';
-                    htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    htmlString = '<img src="' + url + '" alt="' + filename + '"><br>';
                     break;
                 case 'audio':
-                    htmlString = '<audio controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 audio elements.' + '</audio>';
-                    htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    htmlString = '<audio controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 audio elements.' + '</audio><br>';
                     break;
                 case 'video':
-                    htmlString = '<video controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 video elements.' + '</video>';
-                    htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    htmlString = '<video controls>' + '<source src="' + url + '" type="' + type + '">' + 'Your browser does not support html5 video elements.' + '</video><br>';
                     break;
-                default:
-                    htmlString = '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
             }
+
+            htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
 
             return htmlString;
         }
@@ -619,6 +617,14 @@ var Utils = function () {
             chatDiv.find('.content').show();
             return true;
         }
+
+        /**
+         * Enable chat fields
+         * If param is given, check if chatWindow is currently active
+         *
+         * @param chatWindow
+         */
+
     }, {
         key: "enableChatFields",
         value: function enableChatFields() {
@@ -635,6 +641,14 @@ var Utils = function () {
             // todo still disabled for now, enable after implementing video feature
             _config2.default.gui.videoChatButton.prop('disabled', true);
         }
+
+        /**
+         * Disable chat fields
+         * If param is given, check if chatWindow is currently active
+         *
+         * @param chatWindow
+         */
+
     }, {
         key: "disableChatFields",
         value: function disableChatFields() {
@@ -2816,14 +2830,36 @@ var Chat = function () {
             var chatWindow = _chatwindowlist2.default.currentChatWindow;
 
             if (message && chatWindow && chatWindow.user.connected) {
-                if (chatWindow) {
-                    chatWindow.sendChatMessage(message);
+                chatWindow.sendMessage(message);
 
-                    var messageObject = chatWindow.createMessage(message, 'mine');
+                var messageObject = chatWindow.createMessage(message, 'mine');
+                _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
+
+                _config2.default.gui.messageField.val('');
+                _config2.default.gui.messageField.focus();
+            }
+        }
+    }, {
+        key: "handleSendFile",
+        value: function handleSendFile(e) {
+            var file = e.target.files[0];
+            var chatWindow = _chatwindowlist2.default.currentChatWindow;
+
+            if (file && chatWindow && chatWindow.user.connected) {
+
+                var fileWithMetaData = {
+                    filename: file.name,
+                    type: file.type,
+                    file: file
+                };
+
+                chatWindow.sendFile(fileWithMetaData);
+
+                var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
+
+                if (htmlString) {
+                    var messageObject = chatWindow.createMessage(htmlString, 'mine');
                     _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
-
-                    _config2.default.gui.messageField.val('');
-                    _config2.default.gui.messageField.focus();
                 }
             }
         }
@@ -3164,7 +3200,7 @@ exports.default = UserList;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3182,146 +3218,163 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ChatWindow = function () {
 
-    /**
-     * @param user
-     */
+  /**
+   * @param user
+   */
 
 
-    /**
-     * @type {MediaConnection}
-     * @private
-     */
+  /**
+   * @type {MediaConnection}
+   * @private
+   */
 
 
-    /**
-     * @type {User}
-     * @private
-     */
-    function ChatWindow(user) {
-        _classCallCheck(this, ChatWindow);
+  /**
+   * @type {User}
+   * @private
+   */
+  function ChatWindow(user) {
+    _classCallCheck(this, ChatWindow);
 
-        this._user = null;
-        this._dataConnection = null;
-        this._fileConnection = null;
-        this._messages = null;
+    this._user = null;
+    this._dataConnection = null;
+    this._fileConnection = null;
+    this._messages = null;
 
-        this._user = user;
+    this._user = user;
 
-        this._messages = $('<ul></ul>').addClass('messages');
+    this._messages = $('<ul></ul>').addClass('messages');
+  }
+
+  /**
+   * @param dataConnection
+   */
+
+
+  /**
+   * @type {Object}
+   * @private
+   */
+
+
+  /**
+   * @type {DataConnection}
+   * @private
+   */
+
+
+  _createClass(ChatWindow, [{
+    key: 'initChat',
+    value: function initChat(dataConnection) {
+      this._dataConnection = dataConnection;
+      var messages = this._messages;
+      var user = this._user;
+      var chatWindow = this;
+
+      this._dataConnection.on('data', function (data) {
+        var message = chatWindow.createMessage(data, 'foreign');
+        _utils2.default.appendAndScrollDown(messages, message);
+      });
+
+      this._dataConnection.on('close', function () {
+        var data = user.name + ' has left the chat.';
+        var message = chatWindow.createMessage(data, 'foreign');
+        _utils2.default.appendAndScrollDown(messages, message);
+      });
+
+      var message = chatWindow.createMessage('Connected', 'foreign');
+      _utils2.default.appendAndScrollDown(chatWindow.messages, message);
     }
 
     /**
-     * @param dataConnection
+     * @type {MediaConnection}
+     * @param fileConnection
      */
 
+  }, {
+    key: 'initFileChat',
+    value: function initFileChat(fileConnection) {
+      this._fileConnection = fileConnection;
+      var messages = this._messages;
+      var chatWindow = this;
+
+      this._fileConnection.on('data', function (data) {
+        var type = data.type;
+        var filename = data.filename;
+        var file = data.file;
+
+        var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
+
+        if (htmlString) {
+          var message = chatWindow.createMessage(htmlString, 'foreign file');
+          _utils2.default.appendAndScrollDown(messages, message);
+        }
+      });
+    }
 
     /**
-     * @type {Object}
-     * @private
+     * Creates a message
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
      */
 
+  }, {
+    key: 'createMessage',
+    value: function createMessage(message, origin) {
+      var messageObject = $('<li></li>').addClass('message-wrapper');
+      var content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+      messageObject.append(content);
+
+      return messageObject;
+    }
 
     /**
-     * @type {DataConnection}
-     * @private
+     * Sends a chat message
+     *
+     * @param message
      */
 
+  }, {
+    key: 'sendMessage',
+    value: function sendMessage(message) {
+      this._dataConnection.send(message);
+    }
 
-    _createClass(ChatWindow, [{
-        key: 'initChat',
-        value: function initChat(dataConnection) {
-            this._dataConnection = dataConnection;
-            var messages = this._messages;
-            var user = this._user;
-            var chatWindow = this;
+    /**
+     * Sends a file message
+     *
+     * @param fileWithMetaData
+     */
 
-            this._dataConnection.on('data', function (data) {
-                var message = chatWindow.createMessage(data, 'foreign');
-                _utils2.default.appendAndScrollDown(messages, message);
-            });
+  }, {
+    key: 'sendFile',
+    value: function sendFile(fileWithMetaData) {
+      this._fileConnection.send(fileWithMetaData);
+    }
 
-            this._dataConnection.on('close', function () {
-                var data = user.name + ' has left the chat.';
-                var message = chatWindow.createMessage(data, 'foreign');
-                _utils2.default.appendAndScrollDown(messages, message);
-            });
+    /**
+     * @returns {Object}
+     */
 
-            var message = chatWindow.createMessage('Connected', 'foreign');
-            _utils2.default.appendAndScrollDown(chatWindow.messages, message);
-        }
+  }, {
+    key: 'messages',
+    get: function get() {
+      return this._messages;
+    }
 
-        /**
-         * @type {MediaConnection}
-         * @param fileConnection
-         */
+    /**
+     * @returns {User}
+     */
 
-    }, {
-        key: 'initFileChat',
-        value: function initFileChat(fileConnection) {
-            this._fileConnection = fileConnection;
-            var messages = this._messages;
-            var chatWindow = this;
+  }, {
+    key: 'user',
+    get: function get() {
+      return this._user;
+    }
+  }]);
 
-            this._fileConnection.on('data', function (data) {
-                var type = data.type;
-                var filename = data.filename;
-                var file = data.file;
-
-                var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
-
-                if (htmlString) {
-                    var message = chatWindow.createMessage(htmlString, 'foreign file');
-                    _utils2.default.appendAndScrollDown(messages, message);
-                }
-            });
-        }
-
-        /**
-         * Creates a message
-         * @param message
-         * @param origin
-         * @returns {XMLList|*|jQuery}
-         */
-
-    }, {
-        key: 'createMessage',
-        value: function createMessage(message, origin) {
-            var messageObject = $('<li></li>').addClass('message-wrapper');
-            var content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
-            messageObject.append(content);
-
-            return messageObject;
-        }
-
-        /**
-         * Sends a chat message
-         *
-         * @param message
-         */
-
-    }, {
-        key: 'sendChatMessage',
-        value: function sendChatMessage(message) {
-            this._dataConnection.send(message);
-        }
-
-        /**
-         * @returns {Object}
-         */
-
-    }, {
-        key: 'messages',
-        get: function get() {
-            return this._messages;
-        }
-    }, {
-        key: 'user',
-        get: function get() {
-            return this._user;
-        }
-    }]);
-
-    return ChatWindow;
+  return ChatWindow;
 }();
 
 exports.default = ChatWindow;
@@ -4434,6 +4487,14 @@ $(function () {
 
         _config2.default.gui.sendMessageButton.click(function () {
             chat.handleSendMessage();
+        });
+
+        _config2.default.gui.sendFileButton.click(function () {
+            _config2.default.gui.fileUploadField.click();
+        });
+
+        _config2.default.gui.fileUploadField.change(function (e) {
+            chat.handleSendFile(e);
         });
 
         window.onunload = window.onbeforeunload = function (e) {

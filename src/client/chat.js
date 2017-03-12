@@ -225,14 +225,35 @@ class Chat {
         let chatWindow = ChatWindowList.currentChatWindow;
 
         if (message && chatWindow && chatWindow.user.connected) {
-            if (chatWindow) {
-                chatWindow.sendChatMessage(message);
+            chatWindow.sendMessage(message);
 
-                let messageObject = chatWindow.createMessage(message, 'mine');
+            let messageObject = chatWindow.createMessage(message, 'mine');
+            Utils.appendAndScrollDown(chatWindow.messages, messageObject);
+
+            config.gui.messageField.val('');
+            config.gui.messageField.focus();
+        }
+    }
+
+    handleSendFile(e) {
+        let file = e.target.files[0];
+        let chatWindow = ChatWindowList.currentChatWindow;
+
+        if (file && chatWindow && chatWindow.user.connected) {
+
+            let fileWithMetaData = {
+                filename: file.name,
+                type: file.type,
+                file: file
+            };
+
+            chatWindow.sendFile(fileWithMetaData);
+
+            let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
+
+            if (htmlString) {
+                let messageObject = chatWindow.createMessage(htmlString, 'mine');
                 Utils.appendAndScrollDown(chatWindow.messages, messageObject);
-
-                config.gui.messageField.val('');
-                config.gui.messageField.focus();
             }
         }
     }

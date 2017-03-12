@@ -86,31 +86,29 @@ class Utils {
      * @private
      */
     static _getHtmlStringByType(url, type, filename) {
-        let htmlString = null;
+        let htmlString = '';
         let firstPartOfType = type.substr(0, type.indexOf('/'));
 
         switch (firstPartOfType) {
             case 'image':
-                htmlString = '<img src="' + url + '" alt="' + filename + '">';
-                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                htmlString = '<img src="' + url + '" alt="' + filename + '"><br>';
                 break;
             case 'audio':
                 htmlString = '<audio controls>' +
                     '<source src="' + url + '" type="' + type + '">' +
                     'Your browser does not support html5 audio elements.' +
-                    '</audio>';
-                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    '</audio><br>';
                 break;
             case 'video':
                 htmlString = '<video controls>' +
                     '<source src="' + url + '" type="' + type + '">' +
                     'Your browser does not support html5 video elements.' +
-                    '</video>';
-                htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+                    '</video><br>';
                 break;
-            default:
-                htmlString = '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
         }
+
+        htmlString += '<a download="' + filename + '" href="' + url + '">' + filename + '</a>';
+
 
         return htmlString;
     }

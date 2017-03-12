@@ -95,7 +95,7 @@ class ChatWindow {
      */
     createMessage(message, origin) {
         let messageObject = $('<li></li>').addClass('message-wrapper');
-        let content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
         messageObject.append(content);
 
         return messageObject;
@@ -106,8 +106,17 @@ class ChatWindow {
      *
      * @param message
      */
-    sendChatMessage(message) {
+    sendMessage(message) {
         this._dataConnection.send(message);
+    }
+
+    /**
+     * Sends a file message
+     *
+     * @param fileWithMetaData
+     */
+    sendFile(fileWithMetaData) {
+        this._fileConnection.send(fileWithMetaData);
     }
 
     /**

@@ -73,8 +73,8 @@
 var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
-var BinaryPack = __webpack_require__(6);
-var RTCPeerConnection = __webpack_require__(4).RTCPeerConnection;
+var BinaryPack = __webpack_require__(7);
+var RTCPeerConnection = __webpack_require__(5).RTCPeerConnection;
 
 var util = {
   noop: function() {},
@@ -397,11 +397,71 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _utils = __webpack_require__(2);
+
+var _utils2 = _interopRequireDefault(_utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var config = {
+    gui: {
+        errorField: $('.chat-errors'),
+        userlist: $('.userlist'),
+        activeChatHeadline: $('.active-chat-headline'),
+        messageList: $('.message-container'),
+        messageField: $('#message-field'),
+        sendMessageButton: $('#send-message'),
+        refreshUsersButton: $('#refresh'), //inactive
+        closeConnectionButton: $('#close-connection'), //inactive
+        videoChatButton: $('#video-chat'), //inactive
+        sendFileButton: $('#fileupload'), //inactive
+        emojiButton: $('#emoji'), //inactive
+        logField: $('.log')
+    },
+    peerjs: {
+        username: $('#username').text(),
+        options: {
+            host: window.location.hostname,
+            port: 9000,
+            path: "/",
+            debug: 3,
+            logFunction: function logFunction() {
+                var copy = Array.prototype.slice.call(arguments).join(' ');
+                config.gui.logField.append(copy + '<br>');
+            }
+        }
+    },
+    encryption: {
+        bits: 1024
+    }
+};
+
+exports.default = config;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _util = __webpack_require__(0);
 
 var _util2 = _interopRequireDefault(_util);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _chatwindowlist = __webpack_require__(6);
+
+var _chatwindowlist2 = _interopRequireDefault(_chatwindowlist);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -413,7 +473,7 @@ var Utils = function () {
     }
 
     _createClass(Utils, null, [{
-        key: 'appendAndScrollDown',
+        key: "appendAndScrollDown",
 
 
         /**
@@ -426,13 +486,8 @@ var Utils = function () {
             activeChat.append(content);
             Utils.scrollDown(activeChat);
         }
-
-        /**
-         * Function for logging to logfield
-         */
-
     }, {
-        key: 'scrollDown',
+        key: "scrollDown",
         value: function scrollDown(element) {
             element.animate({ scrollTop: element[0].scrollHeight }, 1000);
         }
@@ -446,7 +501,7 @@ var Utils = function () {
          */
 
     }, {
-        key: 'createBlob',
+        key: "createBlob",
         value: function createBlob(data, type) {
             try {
                 return new Blob([data], { type: type });
@@ -475,7 +530,7 @@ var Utils = function () {
          */
 
     }, {
-        key: 'createBlobHtmlView',
+        key: "createBlobHtmlView",
         value: function createBlobHtmlView(file, type, filename) {
             var url = null;
             var htmlString = null;
@@ -506,7 +561,7 @@ var Utils = function () {
          */
 
     }, {
-        key: '_getHtmlStringByType',
+        key: "_getHtmlStringByType",
         value: function _getHtmlStringByType(url, type, filename) {
             var htmlString = null;
             var firstPartOfType = type.substr(0, type.indexOf('/'));
@@ -536,14 +591,14 @@ var Utils = function () {
          */
 
     }, {
-        key: 'doNothing',
+        key: "doNothing",
         value: function doNothing(e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('Did nothing');
         }
     }, {
-        key: 'checkCompatibility',
+        key: "checkCompatibility",
         value: function checkCompatibility() {
             var supportedFeatures = _util2.default.supports;
             var chatDiv = $('#chat');
@@ -564,22 +619,45 @@ var Utils = function () {
             chatDiv.find('.content').show();
             return true;
         }
+    }, {
+        key: "enableChatFields",
+        value: function enableChatFields() {
+            var chatWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+                return;
+            }
+
+            _config2.default.gui.messageField.prop('disabled', false);
+            _config2.default.gui.sendMessageButton.prop('disabled', false);
+            _config2.default.gui.sendFileButton.prop('disabled', false);
+
+            // todo still disabled for now, enable after implementing video feature
+            _config2.default.gui.videoChatButton.prop('disabled', true);
+        }
+    }, {
+        key: "disableChatFields",
+        value: function disableChatFields() {
+            var chatWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+                return;
+            }
+
+            _config2.default.gui.messageField.prop('disabled', true);
+            _config2.default.gui.sendMessageButton.prop('disabled', true);
+            _config2.default.gui.sendFileButton.prop('disabled', true);
+            _config2.default.gui.videoChatButton.prop('disabled', true);
+        }
     }]);
 
     return Utils;
 }();
 
-Utils.logField = $('.log');
-
-Utils.logFunction = function () {
-    var copy = Array.prototype.slice.call(arguments).join(' ');
-    Utils.logField.append(copy + '<br>');
-};
-
 exports.default = Utils;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -599,15 +677,15 @@ var _chatwindow = __webpack_require__(15);
 
 var _chatwindow2 = _interopRequireDefault(_chatwindow);
 
-var _channelmanager = __webpack_require__(11);
+var _channelmanager = __webpack_require__(12);
 
 var _channelmanager2 = _interopRequireDefault(_channelmanager);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _peerjs = __webpack_require__(9);
+var _peerjs = __webpack_require__(10);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
@@ -676,7 +754,7 @@ var Factory = function () {
 exports.default = Factory;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -912,7 +990,7 @@ module.exports = EventEmitter;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports.RTCSessionDescription = window.RTCSessionDescription ||
@@ -924,58 +1002,140 @@ module.exports.RTCIceCandidate = window.RTCIceCandidate ||
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
-var _utils = __webpack_require__(1);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils2 = _interopRequireDefault(_utils);
+var _factory = __webpack_require__(3);
+
+var _factory2 = _interopRequireDefault(_factory);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var config = {
-    gui: {
-        errorField: $('.chat-errors'),
-        userlist: $('.userlist'),
-        activeChatHeadline: $('.active-chat-headline'),
-        messageList: $('.message-container'),
-        messageField: $('#message-field'), //inactive
-        sendMessageButton: $('#send-message'), //inactive
-        refreshUsersButton: $('#refresh'), //inactive
-        closeConnectionButton: $('#close-connection'), //inactive
-        videoChatButton: $('#video-chat'), //inactive
-        uploadButton: $('#fileupload'), //inactive
-        emojiButton: $('#emoji') },
-    peerjs: {
-        username: $('#username').text(),
-        options: {
-            host: window.location.hostname,
-            port: 9000,
-            path: "/",
-            debug: 3,
-            logFunction: _utils2.default.logFunction
-        }
-    },
-    encryption: {
-        bits: 1024
-    }
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-exports.default = config;
+/**
+ * Domain object for chat windows
+ */
+var ChatWindowList = function () {
+  function ChatWindowList() {
+    _classCallCheck(this, ChatWindowList);
+  }
+
+  _createClass(ChatWindowList, null, [{
+    key: "getChatWindow",
+
+
+    /**
+     * @param user
+     */
+
+
+    /**
+     *
+     * @type {{ChatWindow}}
+     * @private
+     */
+    value: function getChatWindow(user) {
+      return this.chatWindowList[user.name];
+    }
+
+    /**
+     * @param user
+     * @returns ChatWindow
+     */
+
+
+    /**
+     * @type {ChatWindow}
+     * @private
+     */
+
+  }, {
+    key: "getOrCreateChatWindow",
+    value: function getOrCreateChatWindow(user) {
+      var chatWindow = this.getChatWindow(user);
+
+      if (!chatWindow) {
+        chatWindow = _factory2.default.createChatWindow(user);
+        this.addChatWindow(user, chatWindow);
+      }
+
+      return chatWindow;
+    }
+
+    /**
+     * @param user
+     * @param chatWindow
+     */
+
+  }, {
+    key: "addChatWindow",
+    value: function addChatWindow(user, chatWindow) {
+      this.chatWindowList[user.name] = chatWindow;
+    }
+
+    /**
+     * @param user
+     */
+
+  }, {
+    key: "deleteChatWindow",
+    value: function deleteChatWindow(user) {
+      delete this.chatWindowList[user.name];
+    }
+
+    /**
+     * @returns {{ChatWindow}}
+     */
+
+  }, {
+    key: "chatWindowList",
+    get: function get() {
+      return this._chatWindowList;
+    }
+
+    /**
+     * @returns {ChatWindow}
+     */
+
+  }, {
+    key: "currentChatWindow",
+    get: function get() {
+      return this._currentChatWindow;
+    }
+
+    /**
+     * @type {ChatWindow}
+     * @param value
+     */
+    ,
+    set: function set(value) {
+      this._currentChatWindow = value;
+    }
+  }]);
+
+  return ChatWindowList;
+}();
+
+ChatWindowList._chatWindowList = {};
+ChatWindowList._currentChatWindow = null;
+exports.default = ChatWindowList;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BufferBuilder = __webpack_require__(7).BufferBuilder;
-var binaryFeatures = __webpack_require__(7).binaryFeatures;
+var BufferBuilder = __webpack_require__(8).BufferBuilder;
+var binaryFeatures = __webpack_require__(8).binaryFeatures;
 
 var BinaryPack = {
   unpack: function(data){
@@ -1496,7 +1656,7 @@ function utf8Length(str){
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 var binaryFeatures = {};
@@ -1566,13 +1726,13 @@ module.exports.BufferBuilder = BufferBuilder;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var RTCPeerConnection = __webpack_require__(4).RTCPeerConnection;
-var RTCSessionDescription = __webpack_require__(4).RTCSessionDescription;
-var RTCIceCandidate = __webpack_require__(4).RTCIceCandidate;
+var RTCPeerConnection = __webpack_require__(5).RTCPeerConnection;
+var RTCSessionDescription = __webpack_require__(5).RTCSessionDescription;
+var RTCIceCandidate = __webpack_require__(5).RTCIceCandidate;
 
 /**
  * Manages all negotiations between Peers.
@@ -1881,11 +2041,11 @@ module.exports = Negotiator;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(3);
+var EventEmitter = __webpack_require__(4);
 var Socket = __webpack_require__(18);
 var MediaConnection = __webpack_require__(17);
 var DataConnection = __webpack_require__(16);
@@ -2384,7 +2544,7 @@ module.exports = Peer;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2396,15 +2556,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(2);
+var _factory = __webpack_require__(3);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _peerjs = __webpack_require__(9);
+var _peerjs = __webpack_require__(10);
 
 var _peerjs2 = _interopRequireDefault(_peerjs);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -2412,11 +2572,11 @@ var _userlist = __webpack_require__(14);
 
 var _userlist2 = _interopRequireDefault(_userlist);
 
-var _chatwindowlist = __webpack_require__(12);
+var _chatwindowlist = __webpack_require__(6);
 
 var _chatwindowlist2 = _interopRequireDefault(_chatwindowlist);
 
-var _utils = __webpack_require__(1);
+var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
@@ -2441,13 +2601,20 @@ var Chat = function () {
 
             var chat = this;
 
+            _userlist2.default.currentUser = user;
             _userlist2.default.markUserActive(user);
+
+            // create chat window if necessary
+            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
+            _chatwindowlist2.default.currentChatWindow = chatWindow;
 
             // remove unread messages hint
 
             // connect if not already connected
 
             if (!user.connected) {
+                _utils2.default.disableChatFields(chatWindow);
+
                 // connect
                 // Create 2 connections, one labelled chat and another labelled file.
                 var dataConnection = chat.peer.connect(user.name, {
@@ -2473,19 +2640,16 @@ var Chat = function () {
                 fileConnection.on('error', function (err) {
                     alert(err);
                 });
+            } else {
+                _utils2.default.enableChatFields();
             }
 
-            // create chat window if necessary
-            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
-
+            // todo move to utils class
             // set headline
             _config2.default.gui.activeChatHeadline.html(user.name);
 
             // set chat messages
             _config2.default.gui.messageList.html(chatWindow.messages);
-
-            _userlist2.default.currentUser = user;
-            _chatwindowlist2.default.currentChatWindow = chatWindow;
         };
 
         this.connect = function (connection) {
@@ -2552,13 +2716,17 @@ var Chat = function () {
 
             this._peer.on('error', function (err) {
                 var chatWindow = _chatwindowlist2.default.currentChatWindow;
+
                 if (!chatWindow) {
                     chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(_factory2.default.createUser('ERROR'));
                     _chatwindowlist2.default.currentChatWindow = chatWindow;
                     _config2.default.gui.messageList.html(chatWindow.messages);
                 }
+
                 var message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+
                 _utils2.default.appendAndScrollDown(chatWindow.messages, message);
+                _utils2.default.disableChatFields();
             });
 
             var chat = this;
@@ -2576,6 +2744,8 @@ var Chat = function () {
                     }
                 });
             });
+
+            _utils2.default.disableChatFields();
         }
     }, {
         key: "initChatConnection",
@@ -2598,24 +2768,26 @@ var Chat = function () {
 
             chatWindow.initChat(dataConnection);
 
-            // todo check if needed any longer
-            $('.filler').hide();
+            // // todo check if needed any longer
+            // $('.filler').hide();
 
             dataConnection.on('close', function () {
-                if ($('.connection').length === 0) {
-                    $('.filler').show();
-                }
+                // if ($('.connection').length === 0) {
+                //     $('.filler').show();
+                // }
 
-                var userListEntry = _config2.default.gui.userlist.find('#' + user.name);
-                $(userListEntry).removeClass('connected').addClass('disconnected');
+                _userlist2.default.markUserDisonnected(user);
 
                 user.connected = false;
                 _userlist2.default.deleteUser(user);
                 _chatwindowlist2.default.deleteChatWindow(user);
+
+                _utils2.default.disableChatFields(chatWindow);
             });
 
             user.connected = true;
             _userlist2.default.markUserConnected(user);
+            _utils2.default.enableChatFields(chatWindow);
         }
 
         /**
@@ -2633,37 +2805,28 @@ var Chat = function () {
             chatWindow.initFileChat(fileConnection);
         }
 
-        // /**
-        //  * Executes a given function for each active connection
-        //  *
-        //  * @param fn
-        //  */
-        // eachActiveConnection(fn) {
-        //     let actives = $('.connection.active');
-        //     let checkedIds = {};
-        //
-        //     let chat = this;
-        //
-        //     actives.each(function () {
-        //         // todo swap with reference to connection
-        //         let username = $(this).attr('id');
-        //
-        //         if (!checkedIds[username]) {
-        //             let connections = chat._peer.connections[username];
-        //             for (let i = 0, ii = connections.length; i < ii; i += 1) {
-        //                 let connection = connections[i];
-        //
-        //                 // todo workaround for closed peers which are still in the array
-        //                 if (connection.open) {
-        //                     fn(connection, $(this));
-        //                 }
-        //             }
-        //         }
-        //
-        //         checkedIds[username] = 1;
-        //     });
-        // }
+        /**
+         * Handle message sending
+         */
 
+    }, {
+        key: "handleSendMessage",
+        value: function handleSendMessage() {
+            var message = _config2.default.gui.messageField.val();
+            var chatWindow = _chatwindowlist2.default.currentChatWindow;
+
+            if (message && chatWindow && chatWindow.user.connected) {
+                if (chatWindow) {
+                    chatWindow.sendChatMessage(message);
+
+                    var messageObject = chatWindow.createMessage(message, 'mine');
+                    _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
+
+                    _config2.default.gui.messageField.val('');
+                    _config2.default.gui.messageField.focus();
+                }
+            }
+        }
     }, {
         key: "peer",
         get: function get() {
@@ -2677,7 +2840,7 @@ var Chat = function () {
 exports.default = Chat;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2687,7 +2850,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _factory = __webpack_require__(2);
+var _factory = __webpack_require__(3);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -2707,135 +2870,6 @@ var ChannelManager = function ChannelManager() {
 };
 
 exports.default = ChannelManager;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _factory = __webpack_require__(2);
-
-var _factory2 = _interopRequireDefault(_factory);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Domain object for chat windows
- */
-var ChatWindowList = function () {
-  function ChatWindowList() {
-    _classCallCheck(this, ChatWindowList);
-  }
-
-  _createClass(ChatWindowList, null, [{
-    key: "getChatWindow",
-
-
-    /**
-     * @param user
-     */
-
-
-    /**
-     *
-     * @type {{ChatWindow}}
-     * @private
-     */
-    value: function getChatWindow(user) {
-      return this.chatWindowList[user.name];
-    }
-
-    /**
-     * @param user
-     * @returns ChatWindow
-     */
-
-
-    /**
-     * @type {ChatWindow}
-     * @private
-     */
-
-  }, {
-    key: "getOrCreateChatWindow",
-    value: function getOrCreateChatWindow(user) {
-      var chatWindow = this.getChatWindow(user);
-
-      if (!chatWindow) {
-        chatWindow = _factory2.default.createChatWindow(user);
-        this.addChatWindow(user, chatWindow);
-      }
-
-      return chatWindow;
-    }
-
-    /**
-     * @param user
-     * @param chatWindow
-     */
-
-  }, {
-    key: "addChatWindow",
-    value: function addChatWindow(user, chatWindow) {
-      this.chatWindowList[user.name] = chatWindow;
-    }
-
-    /**
-     * @param user
-     */
-
-  }, {
-    key: "deleteChatWindow",
-    value: function deleteChatWindow(user) {
-      delete this.chatWindowList[user.name];
-    }
-
-    /**
-     * @returns {{ChatWindow}}
-     */
-
-  }, {
-    key: "chatWindowList",
-    get: function get() {
-      return this._chatWindowList;
-    }
-
-    /**
-     * @returns {ChatWindow}
-     */
-
-  }, {
-    key: "currentChatWindow",
-    get: function get() {
-      return this._currentChatWindow;
-    }
-
-    /**
-     * @type {ChatWindow}
-     * @param value
-     */
-    ,
-    set: function set(value) {
-      this._currentChatWindow = value;
-    }
-  }]);
-
-  return ChatWindowList;
-}();
-
-ChatWindowList._chatWindowList = {};
-ChatWindowList._currentChatWindow = null;
-exports.default = ChatWindowList;
 
 /***/ }),
 /* 13 */
@@ -2928,11 +2962,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(2);
+var _factory = __webpack_require__(3);
 
 var _factory2 = _interopRequireDefault(_factory);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -3135,7 +3169,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(1);
+var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
@@ -3253,10 +3287,22 @@ var ChatWindow = function () {
         key: 'createMessage',
         value: function createMessage(message, origin) {
             var messageObject = $('<li></li>').addClass('message-wrapper');
-            var content = $('<span></span>').addClass('message-content arrow').addClass(origin).text(message);
+            var content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
             messageObject.append(content);
 
             return messageObject;
+        }
+
+        /**
+         * Sends a chat message
+         *
+         * @param message
+         */
+
+    }, {
+        key: 'sendChatMessage',
+        value: function sendChatMessage(message) {
+            this._dataConnection.send(message);
         }
 
         /**
@@ -3267,6 +3313,11 @@ var ChatWindow = function () {
         key: 'messages',
         get: function get() {
             return this._messages;
+        }
+    }, {
+        key: 'user',
+        get: function get() {
+            return this._user;
         }
     }]);
 
@@ -3280,8 +3331,8 @@ exports.default = ChatWindow;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(3);
-var Negotiator = __webpack_require__(8);
+var EventEmitter = __webpack_require__(4);
+var Negotiator = __webpack_require__(9);
 var Reliable = __webpack_require__(19);
 
 /**
@@ -3553,8 +3604,8 @@ module.exports = DataConnection;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(3);
-var Negotiator = __webpack_require__(8);
+var EventEmitter = __webpack_require__(4);
+var Negotiator = __webpack_require__(9);
 
 /**
  * Wraps the streaming interface between two Peers.
@@ -3654,7 +3705,7 @@ module.exports = MediaConnection;
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(0);
-var EventEmitter = __webpack_require__(3);
+var EventEmitter = __webpack_require__(4);
 
 /**
  * An abstraction on top of WebSockets and XHR streaming to provide fastest
@@ -4197,7 +4248,7 @@ module.exports.Reliable = Reliable;
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var BinaryPack = __webpack_require__(6);
+var BinaryPack = __webpack_require__(7);
 
 var util = {
   debug: false,
@@ -4301,13 +4352,17 @@ module.exports = util;
 "use strict";
 
 
-var _chat = __webpack_require__(10);
+var _chat = __webpack_require__(11);
 
 var _chat2 = _interopRequireDefault(_chat);
 
-var _utils = __webpack_require__(1);
+var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
+
+var _config = __webpack_require__(1);
+
+var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4369,23 +4424,17 @@ $(function () {
         //     });
         // });
 
-        // // Send a chat message to all active connections.
-        // $('#send').submit(function (e) {
-        //     e.preventDefault();
-        //     // For each active connection, send the message.
-        //     let msg = $('#text').val();
-        //
-        //     if (msg) {
-        //         chat.eachActiveConnection(function (connection, activeChat) {
-        //             if (connection.label === 'chat') {
-        //                 connection.send(msg);
-        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
-        //             }
-        //         });
-        //     }
-        //     $('#text').val('');
-        //     $('#text').focus();
-        // });
+        _config2.default.gui.messageField.on('keydown', function handle(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+
+                chat.handleSendMessage();
+            }
+        });
+
+        _config2.default.gui.sendMessageButton.click(function () {
+            chat.handleSendMessage();
+        });
 
         window.onunload = window.onbeforeunload = function (e) {
             if (!!chat.peer && !chat.peer.destroyed) {

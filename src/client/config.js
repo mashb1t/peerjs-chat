@@ -6,13 +6,14 @@ let config = {
         userlist: $('.userlist'),
         activeChatHeadline: $('.active-chat-headline'),
         messageList: $('.message-container'),
-        messageField: $('#message-field'),//inactive
-        sendMessageButton: $('#send-message'),//inactive
+        messageField: $('#message-field'),
+        sendMessageButton: $('#send-message'),
         refreshUsersButton: $('#refresh'), //inactive
         closeConnectionButton: $('#close-connection'), //inactive
         videoChatButton: $('#video-chat'), //inactive
-        uploadButton: $('#fileupload'), //inactive
+        sendFileButton: $('#fileupload'), //inactive
         emojiButton: $('#emoji'), //inactive
+        logField: $('.log'),
     },
     peerjs: {
         username: $('#username').text(),
@@ -21,7 +22,10 @@ let config = {
             port: 9000,
             path: "/",
             debug: 3,
-            logFunction: Utils.logFunction
+            logFunction: function () {
+                let copy = Array.prototype.slice.call(arguments).join(' ');
+                config.gui.logField.append(copy + '<br>');
+            },
         }
     },
     encryption: {

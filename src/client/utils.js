@@ -1,18 +1,10 @@
 'use strict';
 
 import util from "peerjs/lib/util";
+import config from "./config";
+import ChatWindowList from "./domain/chatwindowlist";
 
 class Utils {
-
-    static logField = $('.log');
-
-    /**
-     * Function for logging to logfield
-     */
-    static logFunction = function () {
-        let copy = Array.prototype.slice.call(arguments).join(' ');
-        Utils.logField.append(copy + '<br>');
-    };
 
     /**
      * Appends a string to an element and scrolls to the bottom
@@ -143,8 +135,7 @@ class Utils {
             }
         }
 
-
-        if(!supportedFeatures.data) {
+        if (!supportedFeatures.data) {
             chatDiv.append('<div class="error">Your browser does not support WebRTC Data Channels, sry!</div>');
             chatDiv.append(errorHtml);
             return false;
@@ -152,6 +143,43 @@ class Utils {
 
         chatDiv.find('.content').show();
         return true;
+    }
+
+    /**
+     * Enable chat fields
+     * If param is given, check if chatWindow is currently active
+     *
+     * @param chatWindow
+     */
+    static enableChatFields(chatWindow = null) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        config.gui.messageField.prop('disabled', false);
+        config.gui.sendMessageButton.prop('disabled', false);
+        config.gui.sendFileButton.prop('disabled', false);
+
+        // todo still disabled for now, enable after implementing video feature
+        config.gui.videoChatButton.prop('disabled', true);
+    }
+
+    /**
+     * Disable chat fields
+     * If param is given, check if chatWindow is currently active
+     *
+     * @param chatWindow
+     */
+    static disableChatFields(chatWindow = null) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        config.gui.messageField.prop('disabled', true);
+        config.gui.sendMessageButton.prop('disabled', true);
+        config.gui.sendFileButton.prop('disabled', true);
+        config.gui.videoChatButton.prop('disabled', true);
+
     }
 }
 

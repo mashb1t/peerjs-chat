@@ -95,10 +95,19 @@ class ChatWindow {
      */
     createMessage(message, origin) {
         let messageObject = $('<li></li>').addClass('message-wrapper');
-        let content = $('<span></span>').addClass('message-content arrow').addClass(origin).text(message);
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
         messageObject.append(content);
 
         return messageObject;
+    }
+
+    /**
+     * Sends a chat message
+     *
+     * @param message
+     */
+    sendChatMessage(message) {
+        this._dataConnection.send(message);
     }
 
     /**
@@ -106,6 +115,13 @@ class ChatWindow {
      */
     get messages() {
         return this._messages;
+    }
+
+    /**
+     * @returns {User}
+     */
+    get user() {
+        return this._user;
     }
 }
 

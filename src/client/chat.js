@@ -60,13 +60,17 @@ class Chat {
 
         this._peer.on('error', function (err) {
             let chatWindow = ChatWindowList.currentChatWindow;
+
             if (!chatWindow) {
                 chatWindow = ChatWindowList.getOrCreateChatWindow(Factory.createUser('ERROR'));
                 ChatWindowList.currentChatWindow = chatWindow;
                 config.gui.messageList.html(chatWindow.messages);
             }
+
             let message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+
             Utils.appendAndScrollDown(chatWindow.messages, message);
+            Utils.disableChatFields();
         });
 
         let chat = this;
@@ -84,19 +88,28 @@ class Chat {
                 }
             });
         });
+
+        Utils.disableChatFields();
     }
 
     userListItemClick = function (user) {
 
         let chat = this;
 
+        UserList.currentUser = user;
         UserList.markUserActive(user);
+
+        // create chat window if necessary
+        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
+        ChatWindowList.currentChatWindow = chatWindow;
 
         // remove unread messages hint
 
         // connect if not already connected
 
         if (!user.connected) {
+            Utils.disableChatFields(chatWindow);
+
             // connect
             // Create 2 connections, one labelled chat and another labelled file.
             let dataConnection = chat.peer.connect(user.name, {
@@ -123,19 +136,16 @@ class Chat {
             fileConnection.on('error', function (err) {
                 alert(err);
             });
+        } else {
+            Utils.enableChatFields();
         }
 
-        // create chat window if necessary
-        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
-
+        // todo move to utils class
         // set headline
         config.gui.activeChatHeadline.html(user.name);
 
         // set chat messages
         config.gui.messageList.html(chatWindow.messages);
-
-        UserList.currentUser = user;
-        ChatWindowList.currentChatWindow = chatWindow;
     };
 
     connect = function (connection) {
@@ -173,24 +183,26 @@ class Chat {
 
         chatWindow.initChat(dataConnection);
 
-        // todo check if needed any longer
-        $('.filler').hide();
+        // // todo check if needed any longer
+        // $('.filler').hide();
 
         dataConnection.on('close', function () {
-            if ($('.connection').length === 0) {
-                $('.filler').show();
-            }
+            // if ($('.connection').length === 0) {
+            //     $('.filler').show();
+            // }
 
-            let userListEntry = config.gui.userlist.find('#' + user.name);
-            $(userListEntry).removeClass('connected').addClass('disconnected');
+            UserList.markUserDisonnected(user);
 
             user.connected = false;
             UserList.deleteUser(user);
             ChatWindowList.deleteChatWindow(user);
+
+            Utils.disableChatFields(chatWindow);
         });
 
         user.connected = true;
         UserList.markUserConnected(user);
+        Utils.enableChatFields(chatWindow);
     }
 
     /**
@@ -205,36 +217,25 @@ class Chat {
         chatWindow.initFileChat(fileConnection);
     }
 
-    // /**
-    //  * Executes a given function for each active connection
-    //  *
-    //  * @param fn
-    //  */
-    // eachActiveConnection(fn) {
-    //     let actives = $('.connection.active');
-    //     let checkedIds = {};
-    //
-    //     let chat = this;
-    //
-    //     actives.each(function () {
-    //         // todo swap with reference to connection
-    //         let username = $(this).attr('id');
-    //
-    //         if (!checkedIds[username]) {
-    //             let connections = chat._peer.connections[username];
-    //             for (let i = 0, ii = connections.length; i < ii; i += 1) {
-    //                 let connection = connections[i];
-    //
-    //                 // todo workaround for closed peers which are still in the array
-    //                 if (connection.open) {
-    //                     fn(connection, $(this));
-    //                 }
-    //             }
-    //         }
-    //
-    //         checkedIds[username] = 1;
-    //     });
-    // }
+    /**
+     * Handle message sending
+     */
+    handleSendMessage() {
+        let message = config.gui.messageField.val();
+        let chatWindow = ChatWindowList.currentChatWindow;
+
+        if (message && chatWindow && chatWindow.user.connected) {
+            if (chatWindow) {
+                chatWindow.sendChatMessage(message);
+
+                let messageObject = chatWindow.createMessage(message, 'mine');
+                Utils.appendAndScrollDown(chatWindow.messages, messageObject);
+
+                config.gui.messageField.val('');
+                config.gui.messageField.focus();
+            }
+        }
+    }
 }
 
 export default Chat;

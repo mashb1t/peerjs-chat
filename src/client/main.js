@@ -2,6 +2,7 @@
 
 import Chat from "./chat";
 import Utils from "./utils";
+import config from "./config";
 
 $(function () {
 
@@ -61,23 +62,17 @@ $(function () {
         //     });
         // });
 
-        // // Send a chat message to all active connections.
-        // $('#send').submit(function (e) {
-        //     e.preventDefault();
-        //     // For each active connection, send the message.
-        //     let msg = $('#text').val();
-        //
-        //     if (msg) {
-        //         chat.eachActiveConnection(function (connection, activeChat) {
-        //             if (connection.label === 'chat') {
-        //                 connection.send(msg);
-        //                 Utils.appendAndScrollDown(activeChat, '<div><span class="you">You: </span>' + msg + '</div>');
-        //             }
-        //         });
-        //     }
-        //     $('#text').val('');
-        //     $('#text').focus();
-        // });
+        config.gui.messageField.on('keydown', function handle(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+
+                chat.handleSendMessage();
+            }
+        });
+
+        config.gui.sendMessageButton.click(function() {
+            chat.handleSendMessage();
+        });
 
         window.onunload = window.onbeforeunload = function (e) {
             if (!!chat.peer && !chat.peer.destroyed) {

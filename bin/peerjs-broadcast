@@ -92,7 +92,7 @@ var server = new BroadcastServer(opts, function(server) {
   var port = server.address().port;
 
   console.log(
-    'Started PeerServer (with Broadcast) on %s, port: %s, path: %s (v. %s)',
-    host, port, userPath || '/', version
+    'Started PeerServer (with Broadcast) on %s, port: %s, path: %s (v. %s), autodiscover: %s',
+    host, port, userPath || '/', version, opts.allow_discovery
   );
 }).addBroadcast();

@@ -110,8 +110,85 @@ class Chat {
         this._peer.on('connection', this.connect);
 
         this._peer.on('error', function (err) {
-            console.log(err);
-        })
+            config.gui.errorField.append(err + '<br>');
+        });
+
+
+        let chat = this;
+
+        this.peer.listAllPeers(function (peerList) {
+            peerList.forEach(function (username) {
+
+                // just for safety reasons, server already manages not to listing of own user
+                if (username !== config.peerjs.username) {
+
+                    let user = chat.getOrCreateUser(username);
+
+                    let userListEntry = $('<li class="user" id="' + user.name + '">' +
+                        '<img class="gravatar" src="' + user.image + '">' +
+                        '<span class="name">' + user.name + '</span>' +
+                        '</li>');
+
+                    userListEntry.on('click', function () {
+
+                        // inactivate all users in userlist
+                        config.gui.userlist.find('.user').each(function (index, element) {
+                            $(element).removeClass('active');
+                        });
+
+                        // activate this selected user list entry
+                        userListEntry.addClass('active');
+
+                        // remove unread messages hint
+
+                        // connect if not already connected
+
+                        if (!user.connected) {
+                            // connect
+                            // Create 2 connections, one labelled chat and another labelled file.
+                            let dataConnection = chat.peer.connect(username, {
+                                label: 'chat',
+                                serialization: 'none',
+                                metadata: {message: 'hi i want to chat with you!'}
+                            });
+                            dataConnection.on('open', function () {
+                                chat.connect(dataConnection);
+                            });
+                            dataConnection.on('error', function (err) {
+                                alert(err);
+                            });
+
+
+                            let fileConnection = chat.peer.connect(username, {
+                                label: 'file', reliable: true
+                            });
+
+                            fileConnection.on('open', function () {
+                                chat.connect(fileConnection);
+                            });
+
+                            fileConnection.on('error', function (err) {
+                                alert(err);
+                            });
+
+                            user.connected = true;
+                            chat.addUserToList(user);
+                        }
+
+                        // create chat window if necessary
+                        let chatwindow = chat.getOrCreateChatWindow(user);
+
+                        // set headline
+                        config.gui.activeChatHeadline.html(user.name);
+
+                        // set chat messages
+                        config.gui.messagesList.html(chatwindow.messages);
+                    });
+
+                    config.gui.userlist.append(userListEntry);
+                }
+            })
+        });
     }
 
     connect = function (connection) {
@@ -158,6 +235,8 @@ class Chat {
             chat.deleteUserFromList(user);
             chat.deleteChatWindowFromList(user);
         });
+
+        user.connected = true;
     }
 
     /**

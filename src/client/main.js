@@ -37,49 +37,23 @@ $(function () {
             });
         });
 
-        /**
-         * Connect to a peer
-         */
-        $('#connect').click(function () {
-            let username = $('#rid').val();
-
-            if (!username) {
-                alert('Please enter a username to connect to');
-            } else if (username == config.peerjs.username) {
-                alert('You can\'t connect to yourself!');
-            } else if (chat.getUserFromList(username)) {
-                alert('You are already connected to ' + username);
-            } else {
-                // Create 2 connections, one labelled chat and another labelled file.
-                let dataConnection = chat.peer.connect(username, {
-                    label: 'chat',
-                    serialization: 'none',
-                    metadata: {message: 'hi i want to chat with you!'}
-                });
-                dataConnection.on('open', function () {
-                    chat.connect(dataConnection);
-                });
-                dataConnection.on('error', function (err) {
-                    alert(err);
-                });
-
-
-                let fileConnection = chat.peer.connect(username, {
-                    label: 'file', reliable: true
-                });
-
-                fileConnection.on('open', function () {
-                    chat.connect(fileConnection);
-                });
-
-                fileConnection.on('error', function (err) {
-                    alert(err);
-                });
-
-                let user = chat.getOrCreateUser();
-                chat.addUserToList(username);
-            }
-        });
+        // /**
+        //  * Connect to a peer
+        //  */
+        // $('#connect').click(function () {
+        //     let username = $('#rid').val();
+        //
+        //     if (!username) {
+        //         alert('Please enter a username to connect to');
+        //     } else if (username == config.peerjs.username) {
+        //         alert('You can\'t connect to yourself!');
+        //     } else if (chat.getUserFromList(username)) {
+        //         alert('You are already connected to ' + username);
+        //     } else {
+        //         let user = chat.getOrCreateUser();
+        //         chat.addUserToList(username);
+        //     }
+        // });
 
         // Close a connection.
         $('#close').click(function () {

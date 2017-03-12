@@ -1,6 +1,12 @@
 import Utils from "./utils";
 
 let config = {
+    gui: {
+        errorField: $('.chat-errors'),
+        userlist: $('.userlist'),
+        messagesList: $('.message-container'),
+        activeChatHeadline: $('.active-chat-headline'),
+    },
     peerjs: {
         username: $('#username').text(),
         options: {

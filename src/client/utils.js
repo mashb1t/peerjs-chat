@@ -22,11 +22,11 @@ class Utils {
      */
     static appendAndScrollDown(activeChat, content) {
         activeChat.append(content);
-        activeChat.animate({scrollTop: activeChat[0].scrollHeight}, 1000);
+        Utils.scrollDown(activeChat);
     }
 
-    static beginsWith(needle, haystack) {
-        return (haystack.substr(0, needle.length) == needle);
+    static scrollDown(element) {
+        element.animate({scrollTop: element[0].scrollHeight}, 1000);
     }
 
     /**

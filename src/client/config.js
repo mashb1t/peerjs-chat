@@ -4,8 +4,14 @@ let config = {
     gui: {
         errorField: $('.chat-errors'),
         userlist: $('.userlist'),
-        messagesList: $('.message-container'),
         activeChatHeadline: $('.active-chat-headline'),
+        messageList: $('.message-container'),
+        messageField: $('#message-field'),//inactive
+        refreshUsersButton: $('#refresh'), //inactive
+        closeConnectionButton: $('#close-connection'), //inactive
+        videoChatButton: $('#video-chat'), //inactive
+        uploadButton: $('#fileupload'), //inactive
+        emojiButton: $('#emoji'), //inactive
     },
     peerjs: {
         username: $('#username').text(),

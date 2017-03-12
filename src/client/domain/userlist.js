@@ -56,20 +56,22 @@ class UserList {
      * @param clickFunctionCallback
      */
     static addUserToGui(user, clickFunctionCallback) {
-        let userListEntry = $('<li class="user disconnected" id="' + user.name + '">' +
-            '<img class="gravatar" src="' + user.image + '">' +
-            '<span class="name">' + user.name + '</span>' +
-            '</li>');
+        if (!UserList.getGuiUserListEntry(user)) {
+            let userListEntry = $('<li class="user disconnected" id="' + user.name + '">' +
+                '<img class="gravatar" src="' + user.image + '">' +
+                '<span class="name">' + user.name + '</span>' +
+                '</li>');
 
-        if (clickFunctionCallback) {
-            userListEntry.click(clickFunctionCallback);
+            if (clickFunctionCallback) {
+                userListEntry.click(clickFunctionCallback);
+            }
+
+            config.gui.userlist.append(userListEntry);
         }
-
-        config.gui.userlist.append(userListEntry);
     }
 
     static getGuiUserListEntry(user) {
-        return config.gui.userlist.find('#' + user.name);
+        return config.gui.userlist.find('#' + user.name)[0];
     }
 
     /**
@@ -101,6 +103,30 @@ class UserList {
         let userListEntries = config.gui.userlist.find('#' + user.name);
         userListEntries.each(function (index, element) {
             $(element).addClass('active');
+        });
+    }
+
+    /**
+     * Marks user as connected in gui userlist
+     *
+     * @param user
+     */
+    static markUserConnected(user) {
+        // inactivate all users in userlist
+        let userListEntry = UserList.getGuiUserListEntry(user);
+        $(userListEntry).removeClass('disconnected').addClass('connected');
+    }
+
+    /**
+     * Marks user as disconnected in gui userlist
+     *
+     * @param user
+     */
+    static markUserDisonnected(user) {
+        // inactivate all users in userlist
+        config.gui.userlist.find('.user').each(function (index, element) {
+            $(element).removeClass('connected').addClass('disconnected');
+
         });
     }
 

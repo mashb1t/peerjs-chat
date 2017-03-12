@@ -5,6 +5,7 @@ import Peer from "peerjs";
 import config from "./config";
 import UserList from "./domain/userlist";
 import ChatWindowList from "./domain/chatwindowlist";
+import Utils from "./utils";
 
 /**
  * Chat main class
@@ -58,7 +59,14 @@ class Chat {
         this._peer.on('connection', this.connect, this);
 
         this._peer.on('error', function (err) {
-            config.gui.errorField.append(err + '<br>');
+            let chatWindow = ChatWindowList.currentChatWindow;
+            if (!chatWindow) {
+                chatWindow = ChatWindowList.getOrCreateChatWindow(Factory.createUser('ERROR'));
+                ChatWindowList.currentChatWindow = chatWindow;
+                config.gui.messageList.html(chatWindow.messages);
+            }
+            let message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+            Utils.appendAndScrollDown(chatWindow.messages, message);
         });
 
         let chat = this;
@@ -70,11 +78,11 @@ class Chat {
                 if (username !== config.peerjs.username) {
 
                     let user = UserList.getOrCreateUser(username);
-                    UserList.addUserToGui(user, function() {
-                        chat.userListItemClick(user, this)
-                    })
+                    UserList.addUserToGui(user, function () {
+                        chat.userListItemClick(user);
+                    });
                 }
-            })
+            });
         });
     }
 
@@ -124,7 +132,7 @@ class Chat {
         config.gui.activeChatHeadline.html(user.name);
 
         // set chat messages
-        config.gui.messagesList.html(chatWindow.messages);
+        config.gui.messageList.html(chatWindow.messages);
 
         UserList.currentUser = user;
         ChatWindowList.currentChatWindow = chatWindow;
@@ -152,9 +160,15 @@ class Chat {
      * @param dataConnection
      */
     initChatConnection(dataConnection) {
-        let username = dataConnection.peer;
+        let chat = this;
 
+        let username = dataConnection.peer;
         let user = UserList.getOrCreateUser(username);
+
+        UserList.addUserToGui(user, function () {
+            chat.userListItemClick(user, this)
+        });
+
         let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
 
         chatWindow.initChat(dataConnection);
@@ -175,11 +189,8 @@ class Chat {
             ChatWindowList.deleteChatWindow(user);
         });
 
-        let userListEntry = UserList.getGuiUserListEntry(user);
-
-        $(userListEntry).removeClass('disconnected').addClass('connected');
-
         user.connected = true;
+        UserList.markUserConnected(user);
     }
 
     /**
@@ -194,36 +205,36 @@ class Chat {
         chatWindow.initFileChat(fileConnection);
     }
 
-    /**
-     * Executes a given function for each active connection
-     *
-     * @param fn
-     */
-    eachActiveConnection(fn) {
-        let actives = $('.connection.active');
-        let checkedIds = {};
-
-        let chat = this;
-
-        actives.each(function () {
-            // todo swap with reference to connection
-            let username = $(this).attr('id');
-
-            if (!checkedIds[username]) {
-                let connections = chat._peer.connections[username];
-                for (let i = 0, ii = connections.length; i < ii; i += 1) {
-                    let connection = connections[i];
-
-                    // todo workaround for closed peers which are still in the array
-                    if (connection.open) {
-                        fn(connection, $(this));
-                    }
-                }
-            }
-
-            checkedIds[username] = 1;
-        });
-    }
+    // /**
+    //  * Executes a given function for each active connection
+    //  *
+    //  * @param fn
+    //  */
+    // eachActiveConnection(fn) {
+    //     let actives = $('.connection.active');
+    //     let checkedIds = {};
+    //
+    //     let chat = this;
+    //
+    //     actives.each(function () {
+    //         // todo swap with reference to connection
+    //         let username = $(this).attr('id');
+    //
+    //         if (!checkedIds[username]) {
+    //             let connections = chat._peer.connections[username];
+    //             for (let i = 0, ii = connections.length; i < ii; i += 1) {
+    //                 let connection = connections[i];
+    //
+    //                 // todo workaround for closed peers which are still in the array
+    //                 if (connection.open) {
+    //                     fn(connection, $(this));
+    //                 }
+    //             }
+    //         }
+    //
+    //         checkedIds[username] = 1;
+    //     });
+    // }
 }
 
 export default Chat;

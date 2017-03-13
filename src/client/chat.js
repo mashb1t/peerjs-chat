@@ -95,11 +95,18 @@ class Chat {
 
         let chat = this;
 
+        // mark unread messages as read
+        let chatWindow = ChatWindowList.currentChatWindow;
+        if (chatWindow) {
+            Utils.removeUnread(chatWindow);
+        }
+
+
         UserList.currentUser = user;
         UserList.markUserActive(user);
 
         // create chat window if necessary
-        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
+        chatWindow = ChatWindowList.getOrCreateChatWindow(user);
         ChatWindowList.currentChatWindow = chatWindow;
 
         // remove unread messages hint
@@ -147,7 +154,6 @@ class Chat {
         config.gui.messageList.html(chatWindow.messages);
 
         Utils.scrollDown(chatWindow.messages, false);
-        Utils.removeUnread(chatWindow);
         Utils.clearAndFocusMessageField(chatWindow);
     };
 
@@ -235,6 +241,7 @@ class Chat {
             Utils.appendAndScrollDown(chatWindow.messages, messageObject);
 
             Utils.clearAndFocusMessageField(chatWindow);
+            Utils.removeUnread(chatWindow);
         }
     }
 

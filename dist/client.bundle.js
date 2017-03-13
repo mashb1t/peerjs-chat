@@ -787,15 +787,13 @@ var Utils = function () {
             }
 
             var messages = _chatwindowlist2.default.currentChatWindow.messages;
-            var unreadSeparator = messages.find('.unread-separator');
             var unreadMessages = messages.find('.unread');
+            var unreadSeparator = messages.find('.unread-separator');
 
-            setTimeout(function () {
-                unreadSeparator.fadeOut().queue(function () {
-                    unreadSeparator.remove();
-                });
-                unreadMessages.removeClass('unread');
-            }, 3000);
+            unreadMessages.removeClass('unread');
+            unreadSeparator.fadeOut().queue(function () {
+                unreadSeparator.remove();
+            });
         }
     }]);
 
@@ -2735,11 +2733,17 @@ var Chat = function () {
 
             var chat = this;
 
+            // mark unread messages as read
+            var chatWindow = _chatwindowlist2.default.currentChatWindow;
+            if (chatWindow) {
+                _utils2.default.removeUnread(chatWindow);
+            }
+
             _userlist2.default.currentUser = user;
             _userlist2.default.markUserActive(user);
 
             // create chat window if necessary
-            var chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
+            chatWindow = _chatwindowlist2.default.getOrCreateChatWindow(user);
             _chatwindowlist2.default.currentChatWindow = chatWindow;
 
             // remove unread messages hint
@@ -2786,7 +2790,6 @@ var Chat = function () {
             _config2.default.gui.messageList.html(chatWindow.messages);
 
             _utils2.default.scrollDown(chatWindow.messages, false);
-            _utils2.default.removeUnread(chatWindow);
             _utils2.default.clearAndFocusMessageField(chatWindow);
         };
 
@@ -2960,6 +2963,7 @@ var Chat = function () {
                 _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
 
                 _utils2.default.clearAndFocusMessageField(chatWindow);
+                _utils2.default.removeUnread(chatWindow);
             }
         }
     }, {

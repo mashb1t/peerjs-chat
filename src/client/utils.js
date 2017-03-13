@@ -284,15 +284,13 @@ class Utils {
         }
 
         let messages = ChatWindowList.currentChatWindow.messages;
-        let unreadSeparator = messages.find('.unread-separator');
         let unreadMessages = messages.find('.unread');
+        let unreadSeparator = messages.find('.unread-separator');
 
-        setTimeout(function () {
-            unreadSeparator.fadeOut().queue(function () {
-                unreadSeparator.remove()
-            });
-            unreadMessages.removeClass('unread');
-        }, 3000);
+        unreadMessages.removeClass('unread');
+        unreadSeparator.fadeOut().queue(function () {
+            unreadSeparator.remove()
+        });
     }
 }
 

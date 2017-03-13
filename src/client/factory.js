@@ -14,8 +14,8 @@ class Factory {
      * @returns {Peer}
      */
     static createPeerConnection() {
-        // return new Peer(config.peerjs.username, config.peerjs.options);
-        return new Peer(config.peerjs.options);
+        return new Peer(config.peerjs.username, config.peerjs.options);
+        // return new Peer(config.peerjs.options);
     }
 
     /**

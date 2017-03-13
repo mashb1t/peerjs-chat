@@ -26,7 +26,6 @@ class Chat {
 
         // fix for peer call of function connect when connecting
         this._peer.chat = this;
-        // this._channelManager = Factory.createChannelManager();
     }
 
     /**
@@ -67,7 +66,7 @@ class Chat {
                 config.gui.messageList.html(chatWindow.messages);
             }
 
-            let message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+            let message = Utils.createMessage(err.type + ' - ' + err, 'foreign');
 
             Utils.appendAndScrollDown(chatWindow.messages, message);
             Utils.disableChatFields();
@@ -146,6 +145,9 @@ class Chat {
 
         // set chat messages
         config.gui.messageList.html(chatWindow.messages);
+
+        Utils.scrollDown(chatWindow.messages, false)
+        Utils.removeUnread(chatWindow);
     };
 
     connect = function (connection) {
@@ -227,11 +229,10 @@ class Chat {
         if (message && chatWindow && chatWindow.user.connected) {
             chatWindow.sendMessage(message);
 
-            let messageObject = chatWindow.createMessage(message, 'mine');
+            let messageObject = Utils.createMessage(message, 'mine');
             Utils.appendAndScrollDown(chatWindow.messages, messageObject);
 
-            config.gui.messageField.val('');
-            config.gui.messageField.focus();
+            Utils.clearAndFocusMessageField(chatWindow);
         }
     }
 
@@ -252,7 +253,7 @@ class Chat {
             let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
 
             if (htmlString) {
-                let messageObject = chatWindow.createMessage(htmlString, 'mine');
+                let messageObject = Utils.createMessage(htmlString, 'mine');
                 Utils.appendAndScrollDown(chatWindow.messages, messageObject);
             }
         }

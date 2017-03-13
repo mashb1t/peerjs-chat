@@ -78,7 +78,7 @@ class UserList {
      * @param user
      */
     static deleteUser(user) {
-        delete UserList.userList[user.name];
+        // delete UserList.userList[user.name];
     }
 
     /**

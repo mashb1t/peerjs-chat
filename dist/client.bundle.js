@@ -486,18 +486,25 @@ var Utils = function () {
         /**
          * Appends a string to an element and scrolls to the bottom
          *
-         * @param activeChat
+         * @param divToAppendDataTo
          * @param content
          */
-        value: function appendAndScrollDown(activeChat, content) {
-            activeChat.append(content);
-            Utils.scrollDown(activeChat);
+        value: function appendAndScrollDown(divToAppendDataTo, content) {
+            Utils._addUnread(divToAppendDataTo, content);
+            divToAppendDataTo.append(content);
+            Utils.scrollDown(divToAppendDataTo);
             Utils.refreshLightBox();
         }
     }, {
         key: "scrollDown",
         value: function scrollDown(element) {
-            element.animate({ scrollTop: element[0].scrollHeight }, 1000);
+            var animate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+            if (animate) {
+                element.animate({ scrollTop: element[0].scrollHeight }, 1000);
+            } else {
+                element[0].scrollTop = element[0].scrollHeight;
+            }
         }
 
         /**
@@ -592,6 +599,8 @@ var Utils = function () {
         }
 
         /**
+         * Do nothing (used on file drop events)
+         *
          * @param e
          */
 
@@ -695,6 +704,90 @@ var Utils = function () {
                 // },
                 timeout: 5000
             });
+        }
+    }, {
+        key: "clearAndFocusMessageField",
+        value: function clearAndFocusMessageField() {
+            var chatWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+                return;
+            }
+
+            _config2.default.gui.messageField.val('');
+            _config2.default.gui.messageField.focus();
+        }
+
+        /**
+         *
+         * @returns {*|jQuery}
+         * @private
+         */
+
+    }, {
+        key: "_createBasicChatItem",
+        value: function _createBasicChatItem() {
+            return $('<li></li>').addClass('message-wrapper');
+        }
+
+        /**
+         * Creates a message
+         * @param message
+         * @param origin
+         * @returns {XMLList|*|jQuery}
+         */
+
+    }, {
+        key: "createMessage",
+        value: function createMessage(message, origin) {
+            var messageObject = Utils._createBasicChatItem();
+            var content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+            messageObject.append(content);
+
+            return messageObject;
+        }
+
+        /**
+         *
+         * @param divToAppendDataTo
+         * @param content
+         * @private
+         */
+
+    }, {
+        key: "_addUnread",
+        value: function _addUnread(divToAppendDataTo, content) {
+            if (divToAppendDataTo && _chatwindowlist2.default.currentChatWindow.messages == divToAppendDataTo) {
+                return;
+            }
+
+            var unreadSeparator = Utils._createBasicChatItem();
+            unreadSeparator.addClass('unread-separator');
+            divToAppendDataTo.append(unreadSeparator);
+
+            content.addClass('unread');
+        }
+
+        /**
+         *
+         * @param chatWindow
+         */
+
+    }, {
+        key: "removeUnread",
+        value: function removeUnread(chatWindow) {
+            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+                return;
+            }
+
+            var messages = _chatwindowlist2.default.currentChatWindow.messages;
+            var unreadSeparator = messages.find('.unread-separator');
+            var unreadMessages = messages.find('.unread');
+
+            setTimeout(function () {
+                unreadSeparator.remove();
+                unreadMessages.removeClass('unread');
+            }, 3000);
         }
     }]);
 
@@ -1000,8 +1093,8 @@ var Factory = function () {
      * @returns {Peer}
      */
     value: function createPeerConnection() {
-      // return new Peer(config.peerjs.username, config.peerjs.options);
-      return new _peerjs2.default(_config2.default.peerjs.options);
+      return new _peerjs2.default(_config2.default.peerjs.username, _config2.default.peerjs.options);
+      // return new Peer(config.peerjs.options);
     }
 
     /**
@@ -1122,9 +1215,9 @@ var ChatWindowList = function () {
 
   }, {
     key: "deleteChatWindow",
-    value: function deleteChatWindow(user) {
-      delete this.chatWindowList[user.name];
-    }
+    value: function deleteChatWindow(user) {}
+    // delete this.chatWindowList[user.name];
+
 
     /**
      * @returns {{ChatWindow}}
@@ -2683,6 +2776,9 @@ var Chat = function () {
 
             // set chat messages
             _config2.default.gui.messageList.html(chatWindow.messages);
+
+            _utils2.default.scrollDown(chatWindow.messages, false);
+            _utils2.default.removeUnread(chatWindow);
         };
 
         this.connect = function (connection) {
@@ -2707,7 +2803,6 @@ var Chat = function () {
 
         // fix for peer call of function connect when connecting
         this._peer.chat = this;
-        // this._channelManager = Factory.createChannelManager();
     }
 
     /**
@@ -2756,7 +2851,7 @@ var Chat = function () {
                     _config2.default.gui.messageList.html(chatWindow.messages);
                 }
 
-                var message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+                var message = _utils2.default.createMessage(err.type + ' - ' + err, 'foreign');
 
                 _utils2.default.appendAndScrollDown(chatWindow.messages, message);
                 _utils2.default.disableChatFields();
@@ -2851,11 +2946,10 @@ var Chat = function () {
             if (message && chatWindow && chatWindow.user.connected) {
                 chatWindow.sendMessage(message);
 
-                var messageObject = chatWindow.createMessage(message, 'mine');
+                var messageObject = _utils2.default.createMessage(message, 'mine');
                 _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
 
-                _config2.default.gui.messageField.val('');
-                _config2.default.gui.messageField.focus();
+                _utils2.default.clearAndFocusMessageField(chatWindow);
             }
         }
     }, {
@@ -2877,7 +2971,7 @@ var Chat = function () {
                 var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
 
                 if (htmlString) {
-                    var messageObject = chatWindow.createMessage(htmlString, 'mine');
+                    var messageObject = _utils2.default.createMessage(htmlString, 'mine');
                     _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
                 }
             }
@@ -3088,9 +3182,9 @@ var UserList = function () {
 
     }, {
         key: "deleteUser",
-        value: function deleteUser(user) {
-            delete UserList.userList[user.name];
-        }
+        value: function deleteUser(user) {}
+        // delete UserList.userList[user.name];
+
 
         /**
          * @returns {{User}}
@@ -3259,19 +3353,21 @@ var ChatWindow = function () {
       var chatWindow = this;
 
       this._dataConnection.on('data', function (data) {
-        var message = chatWindow.createMessage(data, 'foreign');
+        var message = _utils2.default.createMessage(data, 'foreign');
         _utils2.default.appendAndScrollDown(messages, message);
         _utils2.default.pushNotification(user, data);
       });
 
       this._dataConnection.on('close', function () {
         var data = user.name + ' has left the chat.';
-        var message = chatWindow.createMessage(data, 'foreign');
+        var message = _utils2.default.createMessage(data, 'foreign');
         _utils2.default.appendAndScrollDown(messages, message);
       });
 
-      var message = chatWindow.createMessage('Connected', 'foreign');
+      var message = _utils2.default.createMessage('Connected', 'foreign');
       _utils2.default.appendAndScrollDown(chatWindow.messages, message);
+
+      _utils2.default.clearAndFocusMessageField(chatWindow);
     }
 
     /**
@@ -3295,28 +3391,11 @@ var ChatWindow = function () {
         var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
 
         if (htmlString) {
-          var message = chatWindow.createMessage(htmlString, 'foreign file');
+          var message = _utils2.default.createMessage(htmlString, 'foreign file');
           _utils2.default.appendAndScrollDown(messages, message);
           _utils2.default.pushNotification(user, 'File ' + data.filename);
         }
       });
-    }
-
-    /**
-     * Creates a message
-     * @param message
-     * @param origin
-     * @returns {XMLList|*|jQuery}
-     */
-
-  }, {
-    key: 'createMessage',
-    value: function createMessage(message, origin) {
-      var messageObject = $('<li></li>').addClass('message-wrapper');
-      var content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
-      messageObject.append(content);
-
-      return messageObject;
     }
 
     /**

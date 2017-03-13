@@ -50,19 +50,21 @@ class ChatWindow {
         let chatWindow = this;
 
         this._dataConnection.on('data', function (data) {
-            let message = chatWindow.createMessage(data, 'foreign');
+            let message = Utils.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
             Utils.pushNotification(user, data);
         });
 
         this._dataConnection.on('close', function () {
             let data = user.name + ' has left the chat.';
-            let message = chatWindow.createMessage(data, 'foreign');
+            let message = Utils.createMessage(data, 'foreign');
             Utils.appendAndScrollDown(messages, message);
         });
 
-        let message = chatWindow.createMessage('Connected', 'foreign');
+        let message = Utils.createMessage('Connected', 'foreign');
         Utils.appendAndScrollDown(chatWindow.messages, message);
+
+        Utils.clearAndFocusMessageField(chatWindow);
     }
 
     /**
@@ -83,25 +85,11 @@ class ChatWindow {
             let htmlString = Utils.createBlobHtmlView(file, type, filename);
 
             if (htmlString) {
-                let message = chatWindow.createMessage(htmlString, 'foreign file');
+                let message = Utils.createMessage(htmlString, 'foreign file');
                 Utils.appendAndScrollDown(messages, message);
                 Utils.pushNotification(user, 'File ' + data.filename);
             }
         });
-    }
-
-    /**
-     * Creates a message
-     * @param message
-     * @param origin
-     * @returns {XMLList|*|jQuery}
-     */
-    createMessage(message, origin) {
-        let messageObject = $('<li></li>').addClass('message-wrapper');
-        let content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
-        messageObject.append(content);
-
-        return messageObject;
     }
 
     /**

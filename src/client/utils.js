@@ -10,17 +10,22 @@ class Utils {
     /**
      * Appends a string to an element and scrolls to the bottom
      *
-     * @param activeChat
+     * @param divToAppendDataTo
      * @param content
      */
-    static appendAndScrollDown(activeChat, content) {
-        activeChat.append(content);
-        Utils.scrollDown(activeChat);
+    static appendAndScrollDown(divToAppendDataTo, content) {
+        Utils._addUnread(divToAppendDataTo, content);
+        divToAppendDataTo.append(content);
+        Utils.scrollDown(divToAppendDataTo);
         Utils.refreshLightBox();
     }
 
-    static scrollDown(element) {
-        element.animate({scrollTop: element[0].scrollHeight}, 1000);
+    static scrollDown(element, animate = true) {
+        if (animate) {
+            element.animate({scrollTop: element[0].scrollHeight}, 1000);
+        } else {
+            element[0].scrollTop = element[0].scrollHeight;
+        }
     }
 
     /**
@@ -116,6 +121,8 @@ class Utils {
     }
 
     /**
+     * Do nothing (used on file drop events)
+     *
      * @param e
      */
     static doNothing(e) {
@@ -201,6 +208,78 @@ class Utils {
             // },
             timeout: 5000
         });
+    }
+
+    static clearAndFocusMessageField(chatWindow = null) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        config.gui.messageField.val('');
+        config.gui.messageField.focus();
+    }
+
+    /**
+     *
+     * @returns {*|jQuery}
+     * @private
+     */
+    static _createBasicChatItem() {
+        return $('<li></li>').addClass('message-wrapper');
+    }
+
+    /**
+     * Creates a message
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
+     */
+    static createMessage(message, origin) {
+        let messageObject = Utils._createBasicChatItem();
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+        messageObject.append(content);
+
+        return messageObject;
+    }
+
+    /**
+     * Add separator and mark messages as unread
+     *
+     * @param divToAppendDataTo
+     * @param content
+     * @private
+     */
+    static _addUnread(divToAppendDataTo, content) {
+        if (divToAppendDataTo && ChatWindowList.currentChatWindow.messages == divToAppendDataTo) {
+            return;
+        }
+
+        let unreadSeparator = Utils._createBasicChatItem();
+        unreadSeparator.addClass('unread-separator');
+        divToAppendDataTo.append(unreadSeparator);
+
+        content.addClass('unread');
+
+    }
+
+    /**
+     * Remove unread separator and marking of messages as unread
+     *
+     * @param chatWindow
+     */
+    static removeUnread(chatWindow) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        let messages = ChatWindowList.currentChatWindow.messages;
+        let unreadSeparator = messages.find('.unread-separator');
+        let unreadMessages = messages.find('.unread');
+
+        setTimeout(function () {
+            unreadSeparator.remove();
+            unreadMessages.removeClass('unread');
+        }, 3000);
     }
 }
 

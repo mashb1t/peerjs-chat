@@ -54,7 +54,7 @@ class ChatWindowList {
      * @param user
      */
     static deleteChatWindow(user) {
-        delete this.chatWindowList[user.name];
+        // delete this.chatWindowList[user.name];
     }
 
     /**

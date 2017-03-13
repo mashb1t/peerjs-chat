@@ -758,7 +758,7 @@ var Utils = function () {
     }, {
         key: "_addUnread",
         value: function _addUnread(divToAppendDataTo, content) {
-            if (divToAppendDataTo && _chatwindowlist2.default.currentChatWindow.messages == divToAppendDataTo) {
+            if (!_chatwindowlist2.default.currentChatWindow || _chatwindowlist2.default.currentChatWindow.messages.length == 0 || _chatwindowlist2.default.currentChatWindow.messages == divToAppendDataTo) {
                 return;
             }
 
@@ -3211,15 +3211,34 @@ var UserList = function () {
          */
         value: function markUserActive(user) {
             // inactivate all users in userlist
-            _config2.default.gui.userlist.find('.user').each(function (index, element) {
-                $(element).removeClass('active');
-            });
+            var guiUserList = _config2.default.gui.userlist.find('.user');
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
 
-            // activate user list entry of given user
-            var userListEntries = _config2.default.gui.userlist.find('#' + user.name);
-            userListEntries.each(function (index, element) {
-                $(element).addClass('active');
-            });
+            try {
+                for (var _iterator = guiUserList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var _userListEntry = _step.value;
+
+                    $(_userListEntry).removeClass('active');
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            var userListEntry = UserList.getGuiUserListEntry(user);
+            $(userListEntry).addClass('active');
         }
 
         /**
@@ -3245,10 +3264,8 @@ var UserList = function () {
     }, {
         key: "markUserDisonnected",
         value: function markUserDisonnected(user) {
-            // inactivate all users in userlist
-            _config2.default.gui.userlist.find('.user').each(function (index, element) {
-                $(element).removeClass('connected').addClass('disconnected');
-            });
+            var userListEntry = UserList.getGuiUserListEntry(user);
+            $(userListEntry).removeClass('connected').addClass('disconnected');
         }
 
         /**

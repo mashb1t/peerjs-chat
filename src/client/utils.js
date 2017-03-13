@@ -254,7 +254,10 @@ class Utils {
      * @private
      */
     static _addUnread(divToAppendDataTo, content) {
-        if (divToAppendDataTo && ChatWindowList.currentChatWindow.messages == divToAppendDataTo) {
+        if (!ChatWindowList.currentChatWindow
+            || ChatWindowList.currentChatWindow.messages.length == 0
+            || ChatWindowList.currentChatWindow.messages == divToAppendDataTo
+        ) {
             return;
         }
 
@@ -285,7 +288,7 @@ class Utils {
         let unreadMessages = messages.find('.unread');
 
         setTimeout(function () {
-            unreadSeparator.fadeOut().queue(function() {
+            unreadSeparator.fadeOut().queue(function () {
                 unreadSeparator.remove()
             });
             unreadMessages.removeClass('unread');

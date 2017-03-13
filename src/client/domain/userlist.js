@@ -95,15 +95,13 @@ class UserList {
      */
     static markUserActive(user) {
         // inactivate all users in userlist
-        config.gui.userlist.find('.user').each(function (index, element) {
-            $(element).removeClass('active');
-        });
+        let guiUserList = config.gui.userlist.find('.user');
+        for (let userListEntry of guiUserList) {
+            $(userListEntry).removeClass('active');
+        }
 
-        // activate user list entry of given user
-        let userListEntries = config.gui.userlist.find('#' + user.name);
-        userListEntries.each(function (index, element) {
-            $(element).addClass('active');
-        });
+        let userListEntry = UserList.getGuiUserListEntry(user);
+        $(userListEntry).addClass('active');
     }
 
     /**
@@ -123,11 +121,8 @@ class UserList {
      * @param user
      */
     static markUserDisonnected(user) {
-        // inactivate all users in userlist
-        config.gui.userlist.find('.user').each(function (index, element) {
-            $(element).removeClass('connected').addClass('disconnected');
-
-        });
+        let userListEntry = UserList.getGuiUserListEntry(user);
+        $(userListEntry).removeClass('connected').addClass('disconnected');
     }
 
     /**

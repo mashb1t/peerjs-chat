@@ -710,7 +710,7 @@ var Utils = function () {
         value: function clearAndFocusMessageField() {
             var chatWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-            if (chatWindow && _chatwindowlist2.default.currentChatWindow !== chatWindow) {
+            if (!chatWindow || !_chatwindowlist2.default.currentChatWindow || _chatwindowlist2.default.currentChatWindow !== chatWindow || !chatWindow.user.connected) {
                 return;
             }
 
@@ -748,6 +748,7 @@ var Utils = function () {
         }
 
         /**
+         * Add separator and mark messages as unread
          *
          * @param divToAppendDataTo
          * @param content
@@ -761,14 +762,19 @@ var Utils = function () {
                 return;
             }
 
-            var unreadSeparator = Utils._createBasicChatItem();
-            unreadSeparator.addClass('unread-separator');
-            divToAppendDataTo.append(unreadSeparator);
+            var unreadSeparator = divToAppendDataTo.find('.unread-separator');
+
+            if (!unreadSeparator[0]) {
+                unreadSeparator = Utils._createBasicChatItem();
+                unreadSeparator.addClass('unread-separator');
+                divToAppendDataTo.append(unreadSeparator);
+            }
 
             content.addClass('unread');
         }
 
         /**
+         * Remove unread separator and marking of messages as unread
          *
          * @param chatWindow
          */
@@ -785,7 +791,9 @@ var Utils = function () {
             var unreadMessages = messages.find('.unread');
 
             setTimeout(function () {
-                unreadSeparator.remove();
+                unreadSeparator.fadeOut().queue(function () {
+                    unreadSeparator.remove();
+                });
                 unreadMessages.removeClass('unread');
             }, 3000);
         }
@@ -2779,6 +2787,7 @@ var Chat = function () {
 
             _utils2.default.scrollDown(chatWindow.messages, false);
             _utils2.default.removeUnread(chatWindow);
+            _utils2.default.clearAndFocusMessageField(chatWindow);
         };
 
         this.connect = function (connection) {
@@ -2916,6 +2925,7 @@ var Chat = function () {
             user.connected = true;
             _userlist2.default.markUserConnected(user);
             _utils2.default.enableChatFields(chatWindow);
+            _utils2.default.clearAndFocusMessageField(chatWindow);
         }
 
         /**
@@ -3366,8 +3376,6 @@ var ChatWindow = function () {
 
       var message = _utils2.default.createMessage('Connected', 'foreign');
       _utils2.default.appendAndScrollDown(chatWindow.messages, message);
-
-      _utils2.default.clearAndFocusMessageField(chatWindow);
     }
 
     /**

@@ -211,7 +211,11 @@ class Utils {
     }
 
     static clearAndFocusMessageField(chatWindow = null) {
-        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+        if (!chatWindow
+            || !ChatWindowList.currentChatWindow
+            || ChatWindowList.currentChatWindow !== chatWindow
+            || !chatWindow.user.connected
+        ) {
             return;
         }
 
@@ -254,9 +258,13 @@ class Utils {
             return;
         }
 
-        let unreadSeparator = Utils._createBasicChatItem();
-        unreadSeparator.addClass('unread-separator');
-        divToAppendDataTo.append(unreadSeparator);
+        let unreadSeparator = divToAppendDataTo.find('.unread-separator');
+
+        if (!unreadSeparator[0]) {
+            unreadSeparator = Utils._createBasicChatItem();
+            unreadSeparator.addClass('unread-separator');
+            divToAppendDataTo.append(unreadSeparator);
+        }
 
         content.addClass('unread');
 
@@ -277,7 +285,9 @@ class Utils {
         let unreadMessages = messages.find('.unread');
 
         setTimeout(function () {
-            unreadSeparator.remove();
+            unreadSeparator.fadeOut().queue(function() {
+                unreadSeparator.remove()
+            });
             unreadMessages.removeClass('unread');
         }, 3000);
     }

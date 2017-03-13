@@ -146,8 +146,9 @@ class Chat {
         // set chat messages
         config.gui.messageList.html(chatWindow.messages);
 
-        Utils.scrollDown(chatWindow.messages, false)
+        Utils.scrollDown(chatWindow.messages, false);
         Utils.removeUnread(chatWindow);
+        Utils.clearAndFocusMessageField(chatWindow);
     };
 
     connect = function (connection) {
@@ -205,6 +206,7 @@ class Chat {
         user.connected = true;
         UserList.markUserConnected(user);
         Utils.enableChatFields(chatWindow);
+        Utils.clearAndFocusMessageField(chatWindow);
     }
 
     /**

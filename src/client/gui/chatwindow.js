@@ -63,8 +63,6 @@ class ChatWindow {
 
         let message = Utils.createMessage('Connected', 'foreign');
         Utils.appendAndScrollDown(chatWindow.messages, message);
-
-        Utils.clearAndFocusMessageField(chatWindow);
     }
 
     /**

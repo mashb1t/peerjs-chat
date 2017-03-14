@@ -19,4 +19,4 @@ EXPOSE 80
 
 ENTRYPOINT ["/app/bin/peerjs-broadcast"]
 
-CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/cert.pem"]
+CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]

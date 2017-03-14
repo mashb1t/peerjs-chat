@@ -508,7 +508,7 @@ var Utils = function () {
         }
 
         /**
-         * Creates a blub, hopefully compatible with all relevant browsers
+         * Creates a blob, hopefully compatible with all relevant browsers
          *
          * @param data
          * @param type
@@ -516,17 +516,17 @@ var Utils = function () {
          */
 
     }, {
-        key: "createBlob",
-        value: function createBlob(data, type) {
+        key: "_createBlob",
+        value: function _createBlob(data, type) {
             try {
                 return new Blob([data], { type: type });
             } catch (e) {
                 try {
                     var BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
-                    if (e.name == 'TypeError' && window.BlobBuilder) {
-                        var bb = new BlobBuilder();
-                        bb.append([data]);
-                        return bb.getBlob(type);
+                    if (e.name == 'TypeError' && BlobBuilder) {
+                        var blobBuilder = new BlobBuilder();
+                        blobBuilder.append([data]);
+                        return blobBuilder.getBlob(type);
                     } else if (e.name == 'InvalidStateError') {
                         return new Blob([data], { type: type });
                     }
@@ -552,7 +552,7 @@ var Utils = function () {
 
             if (file.constructor === ArrayBuffer) {
                 var dataView = new Uint8Array(file);
-                var blob = Utils.createBlob(dataView, type);
+                var blob = Utils._createBlob(dataView, type);
                 url = window.URL.createObjectURL(blob);
             } else if (file.constructor === File) {
                 url = window.URL.createObjectURL(file);
@@ -748,6 +748,24 @@ var Utils = function () {
         }
 
         /**
+         * Creates a message and escapes non-html characters
+         * @param message
+         * @param origin
+         * @returns {XMLList|*|jQuery}
+         */
+
+    }, {
+        key: "createAndEscapeMessage",
+        value: function createAndEscapeMessage(message, origin) {
+            var messageObject = Utils._createBasicChatItem();
+            // let strippedMessage = Utils._stripHtmlFromString(message);
+            var content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
+            messageObject.append(content);
+
+            return messageObject;
+        }
+
+        /**
          * Add separator and mark messages as unread
          *
          * @param divToAppendDataTo
@@ -794,6 +812,20 @@ var Utils = function () {
             unreadSeparator.fadeOut().queue(function () {
                 unreadSeparator.remove();
             });
+        }
+
+        /**
+         * Strips html tags
+         *
+         * @param message
+         * @returns {*|jQuery}
+         * @private
+         */
+
+    }, {
+        key: "_stripHtmlFromString",
+        value: function _stripHtmlFromString(message) {
+            return $(message).text();
         }
     }]);
 
@@ -2863,7 +2895,7 @@ var Chat = function () {
                     _config2.default.gui.messageList.html(chatWindow.messages);
                 }
 
-                var message = _utils2.default.createMessage(err.type + ' - ' + err, 'foreign');
+                var message = _utils2.default.createAndEscapeMessage(err.type + ' - ' + err, 'foreign');
 
                 _utils2.default.appendAndScrollDown(chatWindow.messages, message);
                 _utils2.default.disableChatFields();
@@ -2959,7 +2991,7 @@ var Chat = function () {
             if (message && chatWindow && chatWindow.user.connected) {
                 chatWindow.sendMessage(message);
 
-                var messageObject = _utils2.default.createMessage(message, 'mine');
+                var messageObject = _utils2.default.createAndEscapeMessage(message, 'mine');
                 _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
 
                 _utils2.default.clearAndFocusMessageField(chatWindow);
@@ -3384,14 +3416,16 @@ var ChatWindow = function () {
       var chatWindow = this;
 
       this._dataConnection.on('data', function (data) {
-        var message = _utils2.default.createMessage(data, 'foreign');
+        var message = _utils2.default.createAndEscapeMessage(data, 'foreign');
         _utils2.default.appendAndScrollDown(messages, message);
         _utils2.default.pushNotification(user, data);
       });
 
       this._dataConnection.on('close', function () {
         var data = user.name + ' has left the chat.';
-        var message = _utils2.default.createMessage(data, 'foreign');
+
+        // escaping of message is not necessarily needed here
+        var message = _utils2.default.createAndEscapeMessage(data, 'foreign');
         _utils2.default.appendAndScrollDown(messages, message);
       });
 

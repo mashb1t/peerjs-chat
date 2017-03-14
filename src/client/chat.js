@@ -66,7 +66,7 @@ class Chat {
                 config.gui.messageList.html(chatWindow.messages);
             }
 
-            let message = Utils.createMessage(err.type + ' - ' + err, 'foreign');
+            let message = Utils.createTextMessage(err.type + ' - ' + err, 'foreign');
 
             Utils.appendAndScrollDown(chatWindow.messages, message);
             Utils.disableChatFields();
@@ -237,7 +237,7 @@ class Chat {
         if (message && chatWindow && chatWindow.user.connected) {
             chatWindow.sendMessage(message);
 
-            let messageObject = Utils.createMessage(message, 'mine');
+            let messageObject = Utils.createTextMessage(message, 'mine');
             Utils.appendAndScrollDown(chatWindow.messages, messageObject);
 
             Utils.clearAndFocusMessageField(chatWindow);
@@ -262,7 +262,7 @@ class Chat {
             let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
 
             if (htmlString) {
-                let messageObject = Utils.createMessage(htmlString, 'mine');
+                let messageObject = Utils.createHtmlMessage(htmlString, 'mine');
                 Utils.appendAndScrollDown(chatWindow.messages, messageObject);
             }
         }

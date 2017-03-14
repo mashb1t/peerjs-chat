@@ -29,22 +29,22 @@ class Utils {
     }
 
     /**
-     * Creates a blub, hopefully compatible with all relevant browsers
+     * Creates a blob, hopefully compatible with all relevant browsers
      *
      * @param data
      * @param type
      * @returns {Blob}
      */
-    static createBlob(data, type) {
+    static _createBlob(data, type) {
         try {
             return new Blob([data], {type: type});
         } catch (e) {
             try {
                 let BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
-                if (e.name == 'TypeError' && window.BlobBuilder) {
-                    let bb = new BlobBuilder();
-                    bb.append([data]);
-                    return bb.getBlob(type);
+                if (e.name == 'TypeError' && BlobBuilder) {
+                    let blobBuilder = new BlobBuilder();
+                    blobBuilder.append([data]);
+                    return blobBuilder.getBlob(type);
                 } else if (e.name == 'InvalidStateError') {
                     return new Blob([data], {type: type});
                 }
@@ -68,9 +68,9 @@ class Utils {
 
         if (file.constructor === ArrayBuffer) {
             let dataView = new Uint8Array(file);
-            let blob = Utils.createBlob(dataView, type);
+            let blob = Utils._createBlob(dataView, type);
             url = window.URL.createObjectURL(blob);
-
+            
         } else if (file.constructor === File) {
             url = window.URL.createObjectURL(file);
         }
@@ -233,14 +233,28 @@ class Utils {
     }
 
     /**
-     * Creates a message
+     * Creates a html message (html output, used for files)
      * @param message
      * @param origin
      * @returns {XMLList|*|jQuery}
      */
-    static createMessage(message, origin) {
+    static createHtmlMessage(message, origin) {
         let messageObject = Utils._createBasicChatItem();
         let content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+        messageObject.append(content);
+
+        return messageObject;
+    }
+
+    /**
+     * Creates a text message (only text output)
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
+     */
+    static createTextMessage(message, origin) {
+        let messageObject = Utils._createBasicChatItem();
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
         messageObject.append(content);
 
         return messageObject;

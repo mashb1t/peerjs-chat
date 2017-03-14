@@ -18,7 +18,7 @@ let config = {
         lightbox: function() {},
     },
     peerjs: {
-        username: $('#username').text(),
+        username: $('#chat').find('#username').val(),
         options: {
             host: 'mash1t.de',
             port: 9000,

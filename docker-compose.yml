@@ -5,4 +5,4 @@ peerjs-server:
     - LETSENCRYPT_HOST=chat.mash1t.de
     - LETSENCRYPT_EMAIL=info@mash1t.de
     - VIRTUAL_HOST=chat.mash1t.de
-    - VIRTUAL_PORT=80
+    - VIRTUAL_PORT=9000

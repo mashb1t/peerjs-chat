@@ -15,8 +15,8 @@ RUN chmod +x /app/bin/peerjs-broadcast
 
 COPY ./dist/server.js /app/dist/server.js
 
-EXPOSE 80
+EXPOSE 9000
 
 ENTRYPOINT ["/app/bin/peerjs-broadcast"]
 
-CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
+CMD ["--port", "9000","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]

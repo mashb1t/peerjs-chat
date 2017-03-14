@@ -4,6 +4,7 @@ MAINTAINER github.com/mash1t
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git
 
+COPY ./dockerfiles/certificates /app/certificates
 COPY ./dockerfiles/package.json /app/package.json
 WORKDIR /app
 
@@ -18,4 +19,4 @@ EXPOSE 80
 
 ENTRYPOINT ["/app/bin/peerjs-broadcast"]
 
-CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "2"]
+CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/cert.pem"]

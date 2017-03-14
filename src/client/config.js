@@ -23,7 +23,7 @@ let config = {
             host: 'chat.mash1t.de',
             port: 80,
             path: "/",
-            secure: false,
+            secure: true,
             debug: 3,
             logFunction: function () {
                 let copy = Array.prototype.slice.call(arguments).join(' ');

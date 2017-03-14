@@ -20,7 +20,7 @@ let config = {
     peerjs: {
         username: $('#chat').find('#username').val(),
         options: {
-            host: 'chat.mash1t.de',
+            host: 'mash1t.de',
             port: 9000,
             path: "/",
             secure: true,

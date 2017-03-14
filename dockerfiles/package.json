@@ -1,0 +1,21 @@
+{
+  "name": "peerjs-chat",
+  "version": "1.0.0",
+  "description": "Secure chat using WebRTC via PeerJS and RSA-Encryption",
+  "main": "index.js",
+  "bin": {
+    "peerjs-broadcast": "/app/bin/peerjs-broadcast"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.mash1t.de/js-modules/peerjs-chat.git"
+  },
+  "author": "Manuel Schmid (mash1t)",
+  "license": "MIT",
+  "dependencies": {
+    "peer": "^0.2.8"
+  }
+}

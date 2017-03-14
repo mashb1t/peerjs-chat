@@ -20,10 +20,10 @@ let config = {
     peerjs: {
         username: $('#chat').find('#username').val(),
         options: {
-            host: 'mash1t.de',
-            port: 9000,
+            host: 'chat.mash1t.dev',
+            port: 80,
             path: "/",
-            secure: true,
+            secure: false,
             debug: 3,
             logFunction: function () {
                 let copy = Array.prototype.slice.call(arguments).join(' ');

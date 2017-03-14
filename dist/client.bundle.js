@@ -423,10 +423,10 @@ var config = {
     peerjs: {
         username: $('#chat').find('#username').val(),
         options: {
-            host: 'mash1t.de',
-            port: 9000,
+            host: 'chat.mash1t.dev',
+            port: 80,
             path: "/",
-            secure: true,
+            secure: false,
             debug: 3,
             logFunction: function logFunction() {
                 var copy = Array.prototype.slice.call(arguments).join(' ');
@@ -731,15 +731,15 @@ var Utils = function () {
         }
 
         /**
-         * Creates a message
+         * Creates a html message (html output, used for files)
          * @param message
          * @param origin
          * @returns {XMLList|*|jQuery}
          */
 
     }, {
-        key: "createMessage",
-        value: function createMessage(message, origin) {
+        key: "createHtmlMessage",
+        value: function createHtmlMessage(message, origin) {
             var messageObject = Utils._createBasicChatItem();
             var content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
             messageObject.append(content);
@@ -748,17 +748,16 @@ var Utils = function () {
         }
 
         /**
-         * Creates a message and escapes non-html characters
+         * Creates a text message (only text output)
          * @param message
          * @param origin
          * @returns {XMLList|*|jQuery}
          */
 
     }, {
-        key: "createAndEscapeMessage",
-        value: function createAndEscapeMessage(message, origin) {
+        key: "createTextMessage",
+        value: function createTextMessage(message, origin) {
             var messageObject = Utils._createBasicChatItem();
-            // let strippedMessage = Utils._stripHtmlFromString(message);
             var content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
             messageObject.append(content);
 
@@ -812,20 +811,6 @@ var Utils = function () {
             unreadSeparator.fadeOut().queue(function () {
                 unreadSeparator.remove();
             });
-        }
-
-        /**
-         * Strips html tags
-         *
-         * @param message
-         * @returns {*|jQuery}
-         * @private
-         */
-
-    }, {
-        key: "_stripHtmlFromString",
-        value: function _stripHtmlFromString(message) {
-            return $(message).text();
         }
     }]);
 
@@ -2895,7 +2880,7 @@ var Chat = function () {
                     _config2.default.gui.messageList.html(chatWindow.messages);
                 }
 
-                var message = _utils2.default.createAndEscapeMessage(err.type + ' - ' + err, 'foreign');
+                var message = _utils2.default.createTextMessage(err.type + ' - ' + err, 'foreign');
 
                 _utils2.default.appendAndScrollDown(chatWindow.messages, message);
                 _utils2.default.disableChatFields();
@@ -2991,7 +2976,7 @@ var Chat = function () {
             if (message && chatWindow && chatWindow.user.connected) {
                 chatWindow.sendMessage(message);
 
-                var messageObject = _utils2.default.createAndEscapeMessage(message, 'mine');
+                var messageObject = _utils2.default.createTextMessage(message, 'mine');
                 _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
 
                 _utils2.default.clearAndFocusMessageField(chatWindow);
@@ -3017,7 +3002,7 @@ var Chat = function () {
                 var htmlString = _utils2.default.createBlobHtmlView(file, file.type, file.name);
 
                 if (htmlString) {
-                    var messageObject = _utils2.default.createMessage(htmlString, 'mine');
+                    var messageObject = _utils2.default.createHtmlMessage(htmlString, 'mine');
                     _utils2.default.appendAndScrollDown(chatWindow.messages, messageObject);
                 }
             }
@@ -3416,7 +3401,7 @@ var ChatWindow = function () {
       var chatWindow = this;
 
       this._dataConnection.on('data', function (data) {
-        var message = _utils2.default.createAndEscapeMessage(data, 'foreign');
+        var message = _utils2.default.createTextMessage(data, 'foreign');
         _utils2.default.appendAndScrollDown(messages, message);
         _utils2.default.pushNotification(user, data);
       });
@@ -3425,11 +3410,11 @@ var ChatWindow = function () {
         var data = user.name + ' has left the chat.';
 
         // escaping of message is not necessarily needed here
-        var message = _utils2.default.createAndEscapeMessage(data, 'foreign');
+        var message = _utils2.default.createTextMessage(data, 'foreign');
         _utils2.default.appendAndScrollDown(messages, message);
       });
 
-      var message = _utils2.default.createMessage('Connected', 'foreign');
+      var message = _utils2.default.createTextMessage('Connected', 'foreign');
       _utils2.default.appendAndScrollDown(chatWindow.messages, message);
     }
 
@@ -3454,7 +3439,7 @@ var ChatWindow = function () {
         var htmlString = _utils2.default.createBlobHtmlView(file, type, filename);
 
         if (htmlString) {
-          var message = _utils2.default.createMessage(htmlString, 'foreign file');
+          var message = _utils2.default.createHtmlMessage(htmlString, 'foreign file');
           _utils2.default.appendAndScrollDown(messages, message);
           _utils2.default.pushNotification(user, 'File ' + data.filename);
         }

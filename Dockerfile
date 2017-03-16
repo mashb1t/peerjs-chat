@@ -16,9 +16,10 @@ COPY ./bin/peerjs-broadcast /app/bin/peerjs-broadcast
 RUN chmod +x /app/bin/peerjs-broadcast
 
 
-EXPOSE 80
+EXPOSE 443
 
 ENTRYPOINT ["/app/bin/peerjs-broadcast"]
 
-CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "3", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
-#CMD ["--port", "80","--allow_discovery", "--d", "3"]
+# certificates are obtained by proxy, container can't be called without proxy, so no need to set ssl certificate information here
+#CMD ["--port", "443","--allow_discovery", "--proxied", "--d", "3", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
+CMD ["--port", "443","--allow_discovery", "--d", "3", "--proxied"]

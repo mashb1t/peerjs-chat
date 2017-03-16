@@ -6607,10 +6607,10 @@ var config = {
     peerjs: {
         username: $('#chat').find('#username').val(),
         options: {
-            host: 'chat.mash1t.dev',
-            port: 80,
+            host: 'chat.mash1t.de',
+            port: 443,
             path: "/",
-            secure: false,
+            secure: true,
             debug: 3,
             logFunction: function logFunction() {
                 var copy = Array.prototype.slice.call(arguments).join(' ');

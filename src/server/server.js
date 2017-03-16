@@ -20,7 +20,7 @@ class BroadcastServer {
     }
 }
 
-exports = module.exports = {
+module.exports = {
     BroadcastServer: BroadcastServer,
 };
 

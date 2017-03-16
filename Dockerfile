@@ -10,13 +10,15 @@ WORKDIR /app
 
 RUN npm install
 
+COPY ./dist/server.js /app/dist/server.js
+
 COPY ./bin/peerjs-broadcast /app/bin/peerjs-broadcast
 RUN chmod +x /app/bin/peerjs-broadcast
 
-COPY ./dist/server.js /app/dist/server.js
 
-EXPOSE 9000
+EXPOSE 80
 
 ENTRYPOINT ["/app/bin/peerjs-broadcast"]
 
-CMD ["--port", "9000","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
+CMD ["--port", "80","--allow_discovery", "--proxied", "--d", "3", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
+#CMD ["--port", "80","--allow_discovery", "--d", "3"]

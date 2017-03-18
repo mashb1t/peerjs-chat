@@ -10,36 +10,41 @@ class Utils {
     /**
      * Appends a string to an element and scrolls to the bottom
      *
-     * @param activeChat
+     * @param divToAppendDataTo
      * @param content
      */
-    static appendAndScrollDown(activeChat, content) {
-        activeChat.append(content);
-        Utils.scrollDown(activeChat);
+    static appendAndScrollDown(divToAppendDataTo, content) {
+        Utils._addUnread(divToAppendDataTo, content);
+        divToAppendDataTo.append(content);
+        Utils.scrollDown(divToAppendDataTo);
         Utils.refreshLightBox();
     }
 
-    static scrollDown(element) {
-        element.animate({scrollTop: element[0].scrollHeight}, 1000);
+    static scrollDown(element, animate = true) {
+        if (animate) {
+            element.animate({scrollTop: element[0].scrollHeight}, 1000);
+        } else {
+            element[0].scrollTop = element[0].scrollHeight;
+        }
     }
 
     /**
-     * Creates a blub, hopefully compatible with all relevant browsers
+     * Creates a blob, hopefully compatible with all relevant browsers
      *
      * @param data
      * @param type
      * @returns {Blob}
      */
-    static createBlob(data, type) {
+    static _createBlob(data, type) {
         try {
             return new Blob([data], {type: type});
         } catch (e) {
             try {
                 let BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
-                if (e.name == 'TypeError' && window.BlobBuilder) {
-                    let bb = new BlobBuilder();
-                    bb.append([data]);
-                    return bb.getBlob(type);
+                if (e.name == 'TypeError' && BlobBuilder) {
+                    let blobBuilder = new BlobBuilder();
+                    blobBuilder.append([data]);
+                    return blobBuilder.getBlob(type);
                 } else if (e.name == 'InvalidStateError') {
                     return new Blob([data], {type: type});
                 }
@@ -63,9 +68,9 @@ class Utils {
 
         if (file.constructor === ArrayBuffer) {
             let dataView = new Uint8Array(file);
-            let blob = Utils.createBlob(dataView, type);
+            let blob = Utils._createBlob(dataView, type);
             url = window.URL.createObjectURL(blob);
-
+            
         } else if (file.constructor === File) {
             url = window.URL.createObjectURL(file);
         }
@@ -116,6 +121,8 @@ class Utils {
     }
 
     /**
+     * Do nothing (used on file drop events)
+     *
      * @param e
      */
     static doNothing(e) {
@@ -200,6 +207,103 @@ class Utils {
             //     x32: user.icon
             // },
             timeout: 5000
+        });
+    }
+
+    static clearAndFocusMessageField(chatWindow = null) {
+        if (!chatWindow
+            || !ChatWindowList.currentChatWindow
+            || ChatWindowList.currentChatWindow !== chatWindow
+            || !chatWindow.user.connected
+        ) {
+            return;
+        }
+
+        config.gui.messageField.val('');
+        config.gui.messageField.focus();
+    }
+
+    /**
+     *
+     * @returns {*|jQuery}
+     * @private
+     */
+    static _createBasicChatItem() {
+        return $('<li></li>').addClass('message-wrapper');
+    }
+
+    /**
+     * Creates a html message (html output, used for files)
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
+     */
+    static createHtmlMessage(message, origin) {
+        let messageObject = Utils._createBasicChatItem();
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).html(message);
+        messageObject.append(content);
+
+        return messageObject;
+    }
+
+    /**
+     * Creates a text message (only text output)
+     * @param message
+     * @param origin
+     * @returns {XMLList|*|jQuery}
+     */
+    static createTextMessage(message, origin) {
+        let messageObject = Utils._createBasicChatItem();
+        let content = $('<span></span>').addClass('message arrow').addClass(origin).text(message);
+        messageObject.append(content);
+
+        return messageObject;
+    }
+
+    /**
+     * Add separator and mark messages as unread
+     *
+     * @param divToAppendDataTo
+     * @param content
+     * @private
+     */
+    static _addUnread(divToAppendDataTo, content) {
+        if (!ChatWindowList.currentChatWindow
+            || ChatWindowList.currentChatWindow.messages.length == 0
+            || ChatWindowList.currentChatWindow.messages == divToAppendDataTo
+        ) {
+            return;
+        }
+
+        let unreadSeparator = divToAppendDataTo.find('.unread-separator');
+
+        if (!unreadSeparator[0]) {
+            unreadSeparator = Utils._createBasicChatItem();
+            unreadSeparator.addClass('unread-separator');
+            divToAppendDataTo.append(unreadSeparator);
+        }
+
+        content.addClass('unread');
+
+    }
+
+    /**
+     * Remove unread separator and marking of messages as unread
+     *
+     * @param chatWindow
+     */
+    static removeUnread(chatWindow) {
+        if (chatWindow && ChatWindowList.currentChatWindow !== chatWindow) {
+            return;
+        }
+
+        let messages = ChatWindowList.currentChatWindow.messages;
+        let unreadMessages = messages.find('.unread');
+        let unreadSeparator = messages.find('.unread-separator');
+
+        unreadMessages.removeClass('unread');
+        unreadSeparator.fadeOut().queue(function () {
+            unreadSeparator.remove()
         });
     }
 }

@@ -18,11 +18,12 @@ let config = {
         lightbox: function() {},
     },
     peerjs: {
-        username: $('#username').text(),
+        username: $('#chat').find('#username').val(),
         options: {
-            host: window.location.hostname,
-            port: 9000,
+            host: 'chat.mash1t.de',
+            port: 443,
             path: "/",
+            secure: true,
             debug: 3,
             logFunction: function () {
                 let copy = Array.prototype.slice.call(arguments).join(' ');

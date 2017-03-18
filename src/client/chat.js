@@ -26,7 +26,6 @@ class Chat {
 
         // fix for peer call of function connect when connecting
         this._peer.chat = this;
-        // this._channelManager = Factory.createChannelManager();
     }
 
     /**
@@ -67,7 +66,7 @@ class Chat {
                 config.gui.messageList.html(chatWindow.messages);
             }
 
-            let message = chatWindow.createMessage(err.type + ' - ' + err, 'foreign');
+            let message = Utils.createTextMessage(err.type + ' - ' + err, 'foreign');
 
             Utils.appendAndScrollDown(chatWindow.messages, message);
             Utils.disableChatFields();
@@ -96,11 +95,18 @@ class Chat {
 
         let chat = this;
 
+        // mark unread messages as read
+        let chatWindow = ChatWindowList.currentChatWindow;
+        if (chatWindow) {
+            Utils.removeUnread(chatWindow);
+        }
+
+
         UserList.currentUser = user;
         UserList.markUserActive(user);
 
         // create chat window if necessary
-        let chatWindow = ChatWindowList.getOrCreateChatWindow(user);
+        chatWindow = ChatWindowList.getOrCreateChatWindow(user);
         ChatWindowList.currentChatWindow = chatWindow;
 
         // remove unread messages hint
@@ -146,6 +152,9 @@ class Chat {
 
         // set chat messages
         config.gui.messageList.html(chatWindow.messages);
+
+        Utils.scrollDown(chatWindow.messages, false);
+        Utils.clearAndFocusMessageField(chatWindow);
     };
 
     connect = function (connection) {
@@ -203,6 +212,7 @@ class Chat {
         user.connected = true;
         UserList.markUserConnected(user);
         Utils.enableChatFields(chatWindow);
+        Utils.clearAndFocusMessageField(chatWindow);
     }
 
     /**
@@ -227,11 +237,11 @@ class Chat {
         if (message && chatWindow && chatWindow.user.connected) {
             chatWindow.sendMessage(message);
 
-            let messageObject = chatWindow.createMessage(message, 'mine');
+            let messageObject = Utils.createTextMessage(message, 'mine');
             Utils.appendAndScrollDown(chatWindow.messages, messageObject);
 
-            config.gui.messageField.val('');
-            config.gui.messageField.focus();
+            Utils.clearAndFocusMessageField(chatWindow);
+            Utils.removeUnread(chatWindow);
         }
     }
 
@@ -252,7 +262,7 @@ class Chat {
             let htmlString = Utils.createBlobHtmlView(file, file.type, file.name);
 
             if (htmlString) {
-                let messageObject = chatWindow.createMessage(htmlString, 'mine');
+                let messageObject = Utils.createHtmlMessage(htmlString, 'mine');
                 Utils.appendAndScrollDown(chatWindow.messages, messageObject);
             }
         }

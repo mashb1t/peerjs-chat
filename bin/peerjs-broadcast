@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 var path = require('path')
-  , pkg = require('../package.json')
   , fs = require('fs')
-  , version = pkg.version
+  , version = '0.2.0'
   , BroadcastServer = require('../dist/server').BroadcastServer
   , util = require('util')
   , opts = require('optimist')

@@ -2,7 +2,6 @@ peerjs-server:
   restart: unless-stopped
   build: .
   environment:
+    - VIRTUAL_HOST=chat.mash1t.de
     - LETSENCRYPT_HOST=chat.mash1t.de
     - LETSENCRYPT_EMAIL=info@mash1t.de
-    - VIRTUAL_HOST=chat.mash1t.de
-    - VIRTUAL_PORT=9000

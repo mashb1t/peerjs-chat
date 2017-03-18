@@ -32,7 +32,7 @@ var BroadcastServer = function () {
     return BroadcastServer;
 }();
 
-exports = module.exports = {
+module.exports = {
     BroadcastServer: BroadcastServer
 };
 

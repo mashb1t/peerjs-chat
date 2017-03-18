@@ -10,13 +10,16 @@ WORKDIR /app
 
 RUN npm install
 
+COPY ./dist/server.js /app/dist/server.js
+
 COPY ./bin/peerjs-broadcast /app/bin/peerjs-broadcast
 RUN chmod +x /app/bin/peerjs-broadcast
 
-COPY ./dist/server.js /app/dist/server.js
 
-EXPOSE 9000
+EXPOSE 443
 
 ENTRYPOINT ["/app/bin/peerjs-broadcast"]
 
-CMD ["--port", "9000","--allow_discovery", "--proxied", "--d", "2", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
+# certificates are obtained by proxy, container can't be called without proxy, so no need to set ssl certificate information here
+#CMD ["--port", "443","--allow_discovery", "--proxied", "--d", "3", "--sslkey", "/app/certificates/key.pem", "--sslcert", "/app/certificates/fullchain.pem"]
+CMD ["--port", "443","--allow_discovery", "--d", "3", "--proxied"]

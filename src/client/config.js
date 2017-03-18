@@ -21,7 +21,7 @@ let config = {
         username: $('#chat').find('#username').val(),
         options: {
             host: 'chat.mash1t.de',
-            port: 80,
+            port: 443,
             path: "/",
             secure: true,
             debug: 3,
